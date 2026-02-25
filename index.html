@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Care Service (HCS)</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo"> HCS</div>
+        <nav>
+            <ul>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#objective">Objective</a></li>
+                <li><a href="#scope">Scope</a></li>
+                <li><a href="#management">Management</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+        <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    </header>
+
+    <section class="hero">
+        <h1>Reliable Care. Trusted Support. Peace of Mind.</h1>
+        <p>
+            Home Care Service (HCS) provides comprehensive assistance with 
+            household management, personal care, and home security support.
+        </p>
+        <button onclick="scrollToSection('services')">Explore Services</button>
+    </section>
+
+    <section id="services" class="section">
+        <h2>Our Services</h2>
+        <div class="cards">
+            <div class="card">
+                <h3> House Cleaning</h3>
+                <p>General cleaning, deep cleaning, and home organization.</p>
+            </div>
+            <div class="card">
+                <h3> Garden Maintenance</h3>
+                <p>Lawn care, trimming, watering, and landscaping upkeep.</p>
+            </div>
+            <div class="card">
+                <h3> Pet Care</h3>
+                <p>Feeding, pet sitting, grooming assistance, and walking.</p>
+            </div>
+            <div class="card">
+                <h3> Elderly Care & Support</h3>
+                <p>Companionship and assistance with daily activities.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="objective" class="section light">
+        <h2>Our Objective</h2>
+        <p>
+            To provide reliable, trustworthy, and convenient home care services
+            that improve the quality of life for clients, while ensuring peace
+            of mind for their families.
+        </p>
+    </section>
+
+    <section id="scope" class="section">
+        <h2>Scope of Services</h2>
+        <ul class="scope-list">
+            <li><strong>Service Areas:</strong> Selected neighborhoods and cities.</li>
+            <li><strong>Types of Services:</strong> Cleaning, pet care, elderly care, gardening.</li>
+            <li><strong>Target Clients:</strong> Families, elderly, students, busy professionals.</li>
+            <li><strong>Service Frequency:</strong> One-time, regular, or emergency services.</li>
+            <li><strong>Quality Standards:</strong> Trained, background-checked staff.</li>
+        </ul>
+    </section>
+
+    <section id="management" class="section light">
+        <h2>Management & Employment</h2>
+        <div class="management-content">
+            <div>
+                <h3>For Job Seekers</h3>
+                <p>
+                    All submitted credentials must be verified before employment.
+                    HCS ensures proper screening for safety and reliability.
+                </p>
+            </div>
+            <div>
+                <h3>For Employees</h3>
+                <p>
+                    An independent contractor agreement is required between
+                    the company and employee prior to service deployment.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section">
+        <h2>Get Started Today</h2>
+        <p>Contact us to schedule your service or apply for employment.</p>
+        <button onclick="showAlert()">Contact HCS</button>
+    </section>
+
+    <footer>
+        <p>© 2026 Home Care Service (HCS). All Rights Reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
