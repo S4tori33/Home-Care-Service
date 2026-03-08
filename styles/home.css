@@ -12,6 +12,7 @@
     --soft:       rgba(255,255,255,0.88);
     --muted:      rgba(255,255,255,0.60);
     --accent:     rgba(255,255,255,0.22);
+    --dark:       #1a1a1a;
     --sidebar-w:  250px;
     --nav-h:      64px;
 }
@@ -405,6 +406,48 @@ body {
     border-radius: 2px;
 }
 
+/* Override text colors for sections with white backgrounds */
+.section:not(.light) h2 {
+    color: var(--bg-start);
+}
+.section:not(.light) h2::after {
+    background: var(--bg-start);
+}
+.section:not(.light) p {
+    color: var(--bg-start) !important;
+}
+
+/* For dark background sections (.light), keep white text */
+.section.light h2 {
+    color: var(--white);
+}
+.section.light h2::after {
+    background: rgba(255,255,255,0.5);
+}
+.section.light p {
+    color: var(--soft) !important;
+}
+
+/* Scope list colors based on section background */
+.section:not(.light) .scope-list li {
+    color: var(--bg-start);
+}
+.section:not(.light) .scope-list li::before {
+    color: var(--bg-start);
+}
+.section:not(.light) .scope-list strong {
+    color: var(--bg-start);
+}
+.section.light .scope-list li {
+    color: var(--soft);
+}
+.section.light .scope-list li::before {
+    color: rgba(255,255,255,0.6);
+}
+.section.light .scope-list strong {
+    color: var(--white);
+}
+
 /* Cards */
 .cards {
     display: grid;
@@ -418,6 +461,7 @@ body {
     padding: 26px 22px;
     transition: transform 0.2s, background 0.2s;
     backdrop-filter: blur(8px);
+    color: var(--bg-start);
 }
 .card:hover {
     transform: translateY(-4px);
@@ -427,10 +471,10 @@ body {
     font-family: 'Outfit', sans-serif;
     font-size: 16px;
     font-weight: 700;
-    color: var(--white);
+    color: var(--bg-start);
     margin-bottom: 10px;
 }
-.card p { font-size: 13.5px; color: rgba(255,255,255,0.82); line-height: 1.6; }
+.card p { font-size: 13.5px; color: var(--bg-start); line-height: 1.6; }
 
 .scope-list {
     list-style: none;

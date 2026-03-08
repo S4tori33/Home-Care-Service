@@ -9,9 +9,10 @@ function toggleMenu() {
     nav.classList.toggle("show");
 }
 
-function showAlert() {
+/*function showAlert() {
     alert("Thank you for choosing HCS! Please email us at contactspeared@gmail.com.");
 }
+*/
 
 // Sidebar toggle — works on ALL screen sizes
 const sidebar = document.getElementById('sidebar');
@@ -58,6 +59,7 @@ window.addEventListener('scroll', () => {
     });
 });
 
-function showAlert() {
-    alert('📞 Thank you for reaching out! HCS will contact you shortly.');
+/*function showAlert() {
+    alert(' Thank you for reaching out! HCS will contact you shortly.');
 }
+*/
