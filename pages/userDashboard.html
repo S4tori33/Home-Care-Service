@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Dashboard</title>
+
+<style>
+
+/* please wag tanggalin ang mga comments para hindi nakakahilo, thank you -Davijean */
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #1e3c72, #2a5298);
+}
+
+header {
+    background: #2c3e50;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    position: sticky;
+    top: 0;
+}
+
+
+.sidebar {
+    height: 100%;
+    width: 200px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: black;
+    overflow-x: hidden;
+    padding-top: 60px;
+}
+
+.sidebar a {
+    padding: 12px 16px;
+    text-decoration: none;
+    font-size: 18px;
+    color: #ddd;
+    display: block;
+}
+
+.sidebar a:hover {
+    background-color: #575757;
+    color: white;
+}
+
+/* MAIN CONTENT */
+.main-content {
+    margin-left: 220px;
+    padding: 20px;
+}
+
+h1 {
+    color: white;
+}
+
+p {
+    color: white;
+}
+
+/* DASHBOARD OVERVIEW */
+.container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.box {
+    flex: 1;
+    background: white;
+    padding: 20px;
+    border: 2px solid #0077aa;
+    border-radius: 6px;
+}
+
+/* PROFILE SECTION */
+#profile {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    max-width: 700px;
+}
+
+/* PROFILE PIC*/
+.myProfile {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border: 2px solid #333;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+}
+
+.circle {
+    width: 80px;
+    height: 80px;
+    background-color: #0f0f0f;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+/* FORM */
+.profile-form input {
+    width: 95%;
+    padding: 7px;
+    margin-top: 5px;
+    margin-bottom: 12px;
+}
+
+
+.edit-btn {
+    padding: 8px 14px;
+    background: #2a5298;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.save-btn {
+    padding: 8px 14px;
+    background: #27ae60;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+<div class="logo">HCS</div>
+
+<nav>
+    <ul style="list-style:none; display:flex;">
+        <li><a href="#notification" style="color:white; text-decoration:none;">🕭 Notifications</a></li>
+    </ul>
+</nav>
+</header>
+
+<div class="sidebar">
+
+<h2 style="color:white; text-align:center;">User Dashboard</h2>
+
+<a href="#profile">👤 Profile</a> <a href="#home">🏠 Home</a> 
+<a href="#appointment">📃 Appointment</a> 
+<a href="#billing">₿ Billing</a> 
+<a href="#emergency">☎ Emergency Help</a>
+
+</div>
+
+
+
+<div class="main-content">
+
+<h1>Welcome!</h1>
+<p>Here's an overview of your account</p>
+
+<!-- dashboard overview -->
+
+<div class="container">
+
+<div class="box">
+<h3>📅 Total Appointments</h3>
+<p>3 Appointments</p>
+</div>
+
+<div class="box">
+<h3>💵 Pending Bills</h3>
+<p>₱1,200</p>
+</div>
+
+<div class="box">
+<h3>📝 Recent Activities</h3>
+<p>Booked appointment</p>
+</div>
+
+</div>
+
+<!-- PROFILE SECTION -->
+
+<section id="profile">
+
+<h3>Profile Settings</h3>
+<p style="color:black;">Manage your personal information and preferences</p>
+
+<!-- Profile Photo -->
+
+<div class="myProfile">
+
+<div class="circle"></div>
+
+<div>
+<h4>Profile Photo</h4>
+<p>Update your photo to personalize your account</p>
+<input type="file">
+</div>
+
+</div>
+
+<button class="edit-btn">Edit Profile</button>
+
+<div class="profile-form">
+
+<!-- PERSONAL INFORMATION -->
+
+<h4>Personal Information</h4>
+
+<label>Full Name</label><br> <input type="text" placeholder="Enter full name">
+
+<label>Birthday</label><br> <input type="date">
+
+<label>Contact Number</label><br> <input type="text" placeholder="Enter contact number">
+
+<label>Email</label><br> <input type="email" placeholder="Enter email">
+
+<!-- ADDRESS SECTION -->
+
+<h4>Address Information</h4>
+
+<label>House Number</label><br> <input type="text">
+
+<label>Street Name</label><br> <input type="text">
+
+<label>City / Municipality</label><br> <input type="text">
+
+<label>Province</label><br> <input type="text">
+
+<label>Zip Code</label><br> <input type="text">
+
+<label>Country</label><br> <input type="text"><br><br>
+
+<button class="save-btn">Save</button>
+
+</div>
+
+</section>
+
+
+
+</div>
+
+</body>
+</html>
