@@ -1,191 +1,188 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>User Dashboard</title>
-<link rel="stylesheet" href="../styles/user-dashboard.css">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>User Dashboard</title>
+        <link rel="stylesheet" href="../styles/user-dashboard.css">
+    </head>
 
-<body>
+    <body>
 
-<header>
-<div class="logo">HCS</div>
+        <header>
+            <div class="logo">HCS</div>
 
-<nav>
-    <ul style="list-style:none; display:flex;">
-        <li><a href="#notification" style="color:white; text-decoration:none;">🕭 Notifications</a></li>
-    </ul>
-</nav>
-</header>
+            <nav>
+                <ul style="list-style:none; display:flex;">
+                    <li><a href="#notification" style="color:white; text-decoration:none;">🕭 Notifications</a></li>
+                </ul>
+            </nav>
+        </header>
 
-<div class="sidebar">
+        <div class="sidebar">
 
-<h2 style="color:white; text-align:center;">User Dashboard</h2>
+            <h2 style="color:white; text-align:center;">User Dashboard</h2>
 
-<a href="#profile">👤 Profile</a> 
-<a href="home.html">🏠 Home</a> 
-<a href="#appointment">📃 Appointment</a> 
-<a href="#billing">₿ Billing</a> 
+            <a href="#profile">👤 Profile</a> 
+            <a href="home.html">🏠 Home</a> 
+            <a href="#appointment">📃 Appointment</a> 
+            <a href="#billing">₿ Billing</a> 
 
-</div>
+        </div>
 
+        <div class="main-content">
 
-
-<div class="main-content">
-
-<h1>Welcome!</h1>
-<p>Here's an overview of your account</p>
+            <h1>Welcome!</h1>
+            <p style="color:white;">Here's an overview of your account</p>
 
 <!-- dashboard overview -->
 
-<div class="container">
+            <div class="container">
 
-<div class="box">
-<h3>📅 Total Appointments</h3>
-<p>3 Appointments</p>
-</div>
+                <div class="box">
+                    <h3>📅 Total Appointments</h3>
+                    <p>3 Appointments</p>
+                </div>
 
-<div class="box">
-<h3>💵 Pending Bills</h3>
-<p>₱1,200</p>
-</div>
+                <div class="box">
+                    <h3>💵 Pending Bills</h3>
+                    <p>₱1,200</p>
+                </div>
 
-<div class="box">
-<h3>📝 Recent Activities</h3>
-<p>Booked appointment</p>
-</div>
+                <div class="box">
+                    <h3>📝 Recent Activities</h3>
+                    <p>Booked appointment</p>
+            </div>
 
-</div>
+        </div>
 
 <!-- PROFILE SECTION -->
 
-<section id="profile">
+        <section id="profile">
 
-<h3>Profile Settings</h3>
-<p style="color:black;">Manage your personal information and preferences</p>
+            <h3>Profile Settings</h3>
+            <p style="color:black;">Manage your personal information and preferences</p>
 
 <!-- Profile Photo -->
 
-<div class="myProfile">
+            <div class="myProfile">
 
-<div class="circle"></div>
+                <div class="circle"></div>
 
-<div>
-<h4>Profile Photo</h4>
-<p>Update your photo to personalize your account</p>
-<input type="file">
-</div>
+                <div>
+                    <h4>Profile Photo</h4>
+                    <p>Update your photo to personalize your account</p>
+                    <input type="file">
+                </div>
 
-</div>
+                </div>
 
-<button class="edit-btn">Edit Profile</button>
+                <button class="edit-btn">Edit Profile</button>
 
-<div class="profile-form">
+                <div class="profile-form">
 
 <!-- PERSONAL INFORMATION -->
 
-<h4>Personal Information</h4>
+                    <h4>Personal Information</h4>
 
-<label>Full Name</label><br> <input type="text" placeholder="Enter full name">
+                    <label>Full Name</label><br> <input type="text" placeholder="Enter full name">
 
-<label>Birthday</label><br> <input type="date">
+                    <label>Birthday</label><br> <input type="date">
 
-<label>Contact Number</label><br> <input type="text" placeholder="Enter contact number">
+                    <label>Contact Number</label><br> <input type="text" placeholder="Enter contact number">
 
-<label>Email</label><br> <input type="email" placeholder="Enter email">
+                    <label>Email</label><br> <input type="email" placeholder="Enter email">
 
 <!-- ADDRESS SECTION -->
 
-<h4>Address Information</h4>
+                    <h4>Address Information</h4>
 
-<label>House Number</label><br> <input type="text">
+                    <label>House Number</label><br> <input type="text">
 
-<label>Street Name</label><br> <input type="text">
+                    <label>Street Name</label><br> <input type="text">
 
-<label>City / Municipality</label><br> <input type="text">
+                    <label>City / Municipality</label><br> <input type="text">
 
-<label>Province</label><br> <input type="text">
+                    <label>Province</label><br> <input type="text">
 
-<label>Zip Code</label><br> <input type="text">
+                    <label>Zip Code</label><br> <input type="text">
 
-<label>Country</label><br> <input type="text"><br><br>
+                    <label>Country</label><br> <input type="text"><br><br>
 
-<button class="save-btn">Save</button>
+                    <button class="save-btn">Save</button>
 
-</div>
+                </div>
 
-</section><br><br>
+        </section><br><br>
 
-<section id="appointment">
-<h3>Appointments</h3>
-<p style="color:black;">Manage your personal information and preferences</p>
-<button class="book-btn" ><a href="availService.html" style="color:white; text-decoration:none;">Book new appointment</a></button>
+        <section id="appointment">
+            <h3>Appointments</h3>
+            <p style="color:black;">Manage your personal information and preferences</p>
+            <button class="book-btn" ><a href="availService.html" style="color:white; text-decoration:none;">Book new appointment</a></button>
 
-<div class="upcoming-appointments">
-    <h3>Upcoming Appointment</h3>
-<div class="up">
+            <div class="upcoming-appointments">
+                <h3>Upcoming Appointment</h3>
+                <div class="up">
 
-    <div class="up up1">
+                    <div class="up up1">
         
-    </div>
-    <div class="up up2"><a href="Reschedule.html" style="color:white; text-decoration:none;">Reschedule</a>
+                    </div>
+                    <div class="up up2"><a href="Reschedule.html" style="color:white; text-decoration:none;">Reschedule</a>
     
-    </div>
-    <div class="up up3">
-    Cancel
-    </div>
-
-
-</div>  
+                    </div>
+                    <div class="up up3">
+                     Cancel
+                    </div>
+                </div>  
   
-</div>
-<div class="recent-appointments">
-    <h3>Recent Appointments</h3>
-    <div class="recent">
+            </div>
+            
+            <div class="recent-appointments">
+                <h3>Recent Appointments</h3>
+                 <div class="recent">
 
-    </div>
-</div>
+                 </div>
+            </div>
 
-</section>
-<br>
+        </section>
+        <br>
 
-<section id="billing">
-<h3>Billing</h3>
-Manage your bills and payment methods
-<button class="pay-btn">Make Payment</button>
+        <section id="billing">
+            <h3>Billing</h3>
+            Manage your bills and payment methods
+            <button class="pay-btn">Make Payment</button>
 
-<h3 class="section-title">Recent Invoices</h3>
+            <h3 class="section-title">Recent Invoices</h3>
 
-<table class="invoice-table">
-<thead>
-<tr>
-<th>Invoice ID</th>
-<th>Date</th>
-<th>Description</th>
-<th>Amount</th>
-<th>Status</th>
-<th>Action</th>
-</tr>
-</thead>
+            <table class="invoice-table">
+                <thead>
+                    <tr>
+                        <th>Invoice ID</th>
+                        <th>Date</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
 
-<tbody id="invoiceTable">
+                <tbody>
 
-</tbody>
-</table>
+                </tbody>
+            </table>
 
-<h3 class="section-title">Payment Methods</h3>
+            <h3 class="section-title">Payment Methods</h3>
 
-<div class="payment-methods">
+            <div class="payment-methods">
 
-</div>
+            </div>
 
-<button class="add-card">Add New Card</button>
+            <button class="add-card">Add New Card</button>
 
-</section>
+        </section>
 
 
 
-</body>
+    </body>
 </html>
