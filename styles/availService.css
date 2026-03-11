@@ -48,3 +48,12 @@
       border-radius: 4px;
       font-size: 18px;
     }
+    .book-btn{
+      width: 100%;
+      padding: 12px;
+      background: #3182ce;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 18px;
+    }

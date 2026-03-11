@@ -137,3 +137,50 @@ p {
     cursor: pointer !important;
     margin-bottom: 15px !important;
 }
+
+/* for appointment recent appointments */
+.up{
+    border-radius: 5px;
+    border: 1px solid;
+    max-height: fit-content;
+    padding:20px;
+    margin: 0px;  
+    max-width: 100%; 
+    
+}
+.up1{
+    border:none;
+    display: inline;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 0px;
+    height: 30px;
+    width: 300px;   
+}
+.up2{
+    background-color: blue;
+    color: white;
+    display: inline;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin-left: 200px;
+}
+.up3{
+    display:inline;
+    padding-top: 10px;
+    margin-left: 20px;
+    padding-bottom: 10px;
+}
+
+.recent{
+     border-radius: 5px;
+    border: 1px solid;
+    max-height: fit-content;
+    padding:20px;
+    margin: 0px;  
+    max-width: 100%; 
+     
+}
+
+
+
