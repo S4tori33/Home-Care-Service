@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book now</title>
+    <style>
+      * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+      color: #333;
+      max-width: 700px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      
+    }
+    /* .form-container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    } */
+    
+    /* p{
+      color:black;
+      font-weight: bold ;
+    } */
+    label{
+      font-weight: bold;
+    }
+    h2{
+      text-align: center;
+    }
+    .agree-btn:hover {
+      background: #2c5282;
+    }
+    .agree-btn {
+      width: 100%;
+      padding: 12px;
+      background: #3182ce;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 18px;
+      
+    }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+    <h1>Service Request Form- Home Care Services</h1><br>
+
+    <form action="                                               
+      
+      <div class="form-section">
+        
+        <div class="terms"><br>
+        <h2>Terms and Policies</h2>
+        <p><b>Payment Terms</b> </p>
+          <p>Full payment due upon completion of service. Accepted payment methods: cash, Gcash, bank transfer.</p><br>
+        <p><b> Policy</b></p>
+        <p>Client must notify 24 hours prior to cancel or reschedule. Late notice may incur fees.</p><br>
+        <p><b>Independent Contractor</b></p>
+        <p>Worker is an independent contractor, not an employee. Client is responsible for no taxes/benefits.</p>
+
+        <button type="agree" class="agree-btn"><center>Agree</center></button>
+
+      </div>
+
+        <h2>Personal Information</h2><br>
+        <label>First Name:</label>
+        <input type="text" name="fullname" placeholder="Enter your First name" required><br> 
+        <label>Middle Name:</label>
+        <input type="text" name="Middle Name" placeholder="Enter your Middle name" required><br> 
+        <label>Surname:</label>
+        <input type="text" name="Surname" placeholder="Enter your Surname" required><br> 
+
+        <label>Email Address:</label>
+        <input type="email" name="email" placeholder="you@example.com" required><br> 
+
+        <label>Phone Number:</label>
+        <input type="tel" name="phone" placeholder="+63 9XX XXX XXXX" required><br> 
+
+        <label>Complete Address:</label>
+        <input type="text" name="location" placeholder="House/unit number /street name/Barangay/City/municipality/province/zip code" required><br> 
+        
+        <label>Preferred Contact Method:</label>
+        <div class="radio-group">
+          <label><input type="radio" name="contact_method" value="email" checked> Email</label>
+          <label><input type="radio" name="contact_method" value="phone"> Phone</label>
+          <label><input type="radio" name="contact_method" value="whatsapp"> WhatsApp</label>
+        </div><br>
+      </div>
+      <div class="availingservices">
+        <label>Service(s) interested in: </label><br>
+        <input type="checkbox" name="avail" id="Housecleaning">House Cleaning</input><br>
+         <input type="checkbox" name="avail" id="Garden maintenance">Garden Maintenance</input><br>
+          <input type="checkbox" name="avail" id="Pet Care">Pet Care</input><br>
+          <input type="checkbox" name="avail" id="Elderly care">Elderly Care</input><br>
+      </div><br>
+
+      <div class="schedule">
+        <label>Preferred Schedule: </label> 
+        <select>
+          <option>One-time</option>
+          <option>Weekly</option>
+          <option>Bi-weekly</option>
+          <option>Monthly</option>
+        </select>
+        <p>One-time: Service will be done just once on the preferred date.</p>
+         <p>Weekly: Service happens every week on the preferred day/time.</p> 
+         <p>Bi-weekly: Service happens every other week on the preferred daytime.</p>
+         <p>Monthly: Service happens once a month on the preferred date.</p>
+      </div><br>
+      
+      <label>Preferred Date: <input type="date" name="date" id="date"></label><br><br>
+      
+      <label>Payment Method: </label>
+      <label><input type="radio" name="payment" id="method">Online Payment</label>
+      <select>
+        <option>Gcash</option>
+        <option>Bank Transfer</option>
+        <option>Credit/Debit Card</option>
+      </select>
+      <label><input type="radio" name="payment" id="method">Cash</label>
+
+      
+      
+    
+    </form> 
+      
+    
+</body>
+</html>
