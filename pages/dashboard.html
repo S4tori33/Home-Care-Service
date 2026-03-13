@@ -1,14 +1,18 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HCS – Home</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/home.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="../styles/dashboard.css">
+
 </head>
+
 <body>
 
     <!-- ── NAVBAR ───────────────────────────────────── -->
@@ -17,7 +21,7 @@
             <span></span><span></span><span></span>
         </button>
 
-        <a href="#" class="navbar-brand">
+        <a href="../home.html" class="navbar-brand">
             <div class="navbar-logo">HCS</div>
             <div class="navbar-brand-text">
                 <h1>Home Care Service</h1>
@@ -26,7 +30,7 @@
         </a>
 
         <div class="navbar-links">
-            <a href="#" class="active">Home</a>
+            <a href="../home.html">Home</a>
             <a href="#services">Services</a>
             <a href="#objective">About</a>
             <a href="#scope">Scope</a>
@@ -36,7 +40,7 @@
 
         <div class="navbar-spacer"></div>
 
-        <a href="pages/userLogin.html" class="btn-nav-login">Log In / Sign Up</a>
+        <a href="userLogin.html" class="btn-nav-login">Log In / Sign Up</a>
     </nav>
 
     <!-- ── SIDEBAR OVERLAY ──────────────────────────── -->
@@ -59,7 +63,7 @@
             <div class="sidebar-section-label">Main</div>
 
             <!-- 1. Dashboard -->
-            <a href="pages/dashboard.html" class="sidebar-item active" data-page="dashboard">
+            <a href="#" class="sidebar-item active" data-page="dashboard">
                 <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
                     <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
@@ -77,7 +81,7 @@
             </a>
 
             <!-- 3. Services -->
-            <a href="#services" class="sidebar-item" data-page="services">
+            <a href="../home.html#services" class="sidebar-item" data-page="services">
                 <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
                 </svg>
@@ -124,7 +128,7 @@
             <!-- 8. Settings -->
             <a href="#" class="sidebar-item" data-page="settings">
                 <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="3"/>
+                    <circle cx="12" y="12" r="3"/>
                     <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
                 </svg>
                 Settings
@@ -135,7 +139,7 @@
             <!-- 9. Help & Support -->
             <a href="#" class="sidebar-item" data-page="help">
                 <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
+                    <circle cx="12" y="12" r="10"/>
                     <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
                 </svg>
                 Help & Support
@@ -144,7 +148,7 @@
         </nav>
 
         <div class="sidebar-footer">
-            <a href="pages/userLogin.html" class="sidebar-item logout" style="margin-bottom:0;">
+            <a href="userLogin.html" class="sidebar-item logout" style="margin-bottom:0;">
                 <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
                     <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
@@ -157,73 +161,94 @@
     <!-- ── MAIN CONTENT ──────────────────────────────── -->
     <div class="main-wrap">
 
-        <section class="hero">
-            <h2>Reliable Care,<br><span class="line-2">Trusted Support.</span></h2>
-            <p class="hero-sub">
-                Home Care Service (HCS) provides comprehensive assistance with
-                household management, personal care, and home security support.
-            </p>
-            <div class="hero-cta">
-                <a href="#services" class="btn btn-primary">Explore Services →</a>
-                <a href="pages/userLogin.html" class="btn btn-secondary">Log In / Sign Up</a>
-            </div>
-        </section>
+<h1>Welcome!</h1>
+<p>Here's an overview of your account</p>
 
-        <section id="services" class="section">
-            <h2>Our Services</h2>
-            <div class="cards">
-                <div class="card"><h3> House Cleaning</h3><p>General cleaning, deep cleaning, and home organization services.</p></div>
-                <div class="card"><h3> Garden Maintenance</h3><p>Lawn care, trimming, watering, and landscaping upkeep.</p></div>
-                <div class="card"><h3>Pet Care</h3><p>Feeding, pet sitting, grooming assistance, and walking.</p></div>
-                <div class="card"><h3>Elderly Care</h3><p>Companionship and assistance with daily activities.</p></div>
-            </div>
-        </section>
+<!-- dashboard overview -->
 
-        <section id="objective" class="section light">
-            <h2>Our Objective</h2>
-            <p style="color:rgba(255,255,255,0.7); max-width:580px; line-height:1.8; font-size:15px;">
-                To provide reliable, trustworthy, and convenient home care services
-                that improve the quality of life for clients, while ensuring peace
-                of mind for their families.
-            </p>
-        </section>
+<div class="container">
 
-        <section id="scope" class="section">
-            <h2>Scope of Services</h2>
-            <ul class="scope-list">
-                <li><strong>Service Areas:</strong> Selected neighborhoods and cities.</li>
-                <li><strong>Types of Services:</strong> Cleaning, pet care, elderly care, gardening.</li>
-                <li><strong>Target Clients:</strong> Families, elderly, students, busy professionals.</li>
-                <li><strong>Service Frequency:</strong> One-time, regular, or emergency services.</li>
-                <li><strong>Quality Standards:</strong> Trained, background-checked staff.</li>
-            </ul>
-        </section>
+<div class="box">
+<h3> Total Appointments</h3>
+<p>3 Appointments</p>
+</div>
 
-        <section id="management" class="section light">
-            <h2>Management & Employment</h2>
-            <div class="management-content">
-                <div>
-                    <h3>For Job Seekers</h3>
-                    <p>All submitted credentials must be verified before employment. HCS ensures proper screening for safety and reliability.</p>
-                </div>
-                <div>
-                    <h3>For Employees</h3>
-                    <p>An independent contractor agreement is required between the company and employee prior to service deployment.</p>
-                </div>
-            </div>
-        </section>
+<div class="box">
+<h3> Pending Bills</h3>
+<p>₱0</p>
+</div>
 
-        <section id="contact" class="section">
-            <h2>Get Started Today</h2>
-            <p>Contact us to schedule your service or apply for employment.</p>
-            <button class="btn btn-primary" onclick="showAlert()">Contact HCS</button>
-        </section>
+<div class="box">
+<h3> Recent Activities</h3>
+<p>Booked appointment</p>
+</div>
 
-        <footer>
-            <p>© 2026 Home Care Service (HCS). All Rights Reserved.</p>
-        </footer>
-    </div>
+</div>
 
-    <script src="js/script.js"></script>
+<!-- PROFILE SECTION -->
+
+<section id="profile">
+
+<h3>Profile Settings</h3>
+<p class="dashboard-info">Manage your personal information and preferences</p>
+
+<!-- Profile Photo -->
+
+<div class="myProfile">
+
+<div class="circle"></div>
+
+<div>
+<h4>Profile Photo</h4>
+<p>Update your photo to personalize your account</p>
+<label for="profilePhoto" class="file-btn">Choose File</label>
+<input type="file" id="profilePhoto" style="display: none;">
+</div>
+
+</div>
+
+<button class="edit-btn">Edit Profile</button>
+
+<form class="profile-form">
+
+<!-- PERSONAL INFORMATION -->
+
+<h4>Personal Information</h4>
+
+<label for="fullName">Full Name</label><br> <input id="fullName" type="text" placeholder="Enter full name">
+
+<label for="birthday">Birthday</label><br> <input id="birthday" type="date">
+
+<label for="contactNumber">Contact Number</label><br> <input id="contactNumber" type="text" placeholder="Enter contact number">
+
+<label for="email">Email</label><br> <input id="email" type="email" placeholder="Enter email">
+
+<!-- ADDRESS SECTION -->
+
+<h4>Address Information</h4>
+
+<label for="houseNumber">House Number</label><br> <input id="houseNumber" type="text">
+
+<label for="streetName">Street Name</label><br> <input id="streetName" type="text">
+
+<label for="city">City / Municipality</label><br> <input id="city" type="text">
+
+<label for="province">Province</label><br> <input id="province" type="text">
+
+<label for="zipCode">Zip Code</label><br> <input id="zipCode" type="text">
+
+<label for="country">Country</label><br> <input id="country" type="text"><br><br>
+
+<button class="save-btn">Save</button>
+
+</form>
+
+</section>
+
+
+
+</div>
+
+    <script src="../js/script.js"></script>
 </body>
 </html>

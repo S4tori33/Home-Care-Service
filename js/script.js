@@ -59,7 +59,6 @@ window.addEventListener('scroll', () => {
     });
 });
 
-/*function showAlert() {
-    alert(' Thank you for reaching out! HCS will contact you shortly.');
+function showAlert() {
+    alert('📞 Thank you for reaching out! HCS will contact you shortly.');
 }
-*/
