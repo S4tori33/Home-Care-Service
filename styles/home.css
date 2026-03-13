@@ -108,8 +108,6 @@ body {
     align-items: center;
     gap: 2px;
     margin-left: 20px;
-    position: relative;
-    left: 630px;
 }
 .navbar-links a {
     font-family: 'Outfit', sans-serif;
