@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Dashboard | HCS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/workerlanding.css">
+</head>
+<body>
+
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="brand-small">
+                <div class="brand-icon-sm"><span>HCS</span></div>
+                <h3>HCS Worker</h3>
+            </div>
+            <nav class="nav-menu">
+                <a href="#" class="nav-item active">Dashboard</a>
+                <a href="#" class="nav-item">Available Jobs</a>
+                <a href="#" class="nav-item">My Schedule</a>
+                <a href="#" class="nav-item">Earnings</a>
+                <a href="#" class="nav-item logout">Log Out</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <h2>Welcome back!</h2>
+                <p>You have 3 tasks remaining for today.</p>
+            </header>
+
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <span>Total Earnings</span>
+                    <h4>₱4,500.00</h4>
+                </div>
+                <div class="stat-card">
+                    <span>Jobs Completed</span>
+                    <h4>24</h4>
+                </div>
+                <div class="stat-card">
+                    <span>Rating</span>
+                    <h4>4.9 star</h4>
+                </div>
+            </section>
+
+            <section class="task-section">
+                <div class="section-header">
+                    <h3>Upcoming Jobs</h3>
+                    <a href="#" class="view-all">View All</a>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Client</th>
+                                <th>Service</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Maria Santos</td>
+                                <td>General Cleaning</td>
+                                <td>09:00 AM</td>
+                                <td><span class="badge badge-pending">Upcoming</span></td>
+                                <td><button class="btn-sm">Details</button></td>
+                            </tr>
+                            <tr>
+                                <td>Juan Dela Cruz</td>
+                                <td>Elderly Care</td>
+                                <td>02:00 PM</td>
+                                <td><span class="badge badge-pending">Upcoming</span></td>
+                                <td><button class="btn-sm">Details</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
