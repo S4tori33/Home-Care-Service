@@ -32,6 +32,7 @@
     } */
     label{
       font-weight: bold;
+      line-height: 2px;
     }
     h2{
       text-align: center;
@@ -56,4 +57,16 @@
       border: none;
       border-radius: 4px;
       font-size: 18px;
+    }
+    .extra {
+        display: none;
+        margin-top: 10px;
+        font-weight: bold;
+        color: #333;
+    }
+    #opt1:checked ~ .extra1 {
+        display: block;
+    }
+    #opt1:checked ~ .extra1 {
+        display: block;
     }

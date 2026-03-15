@@ -1,0 +1,63 @@
+Sure — I’ll rewrite your Payment Method form so that:
+
+The user chooses Online Payment or Cash.
+If Online Payment is selected, a second set of options appears (Bank Transfer, Debit/Credit Card, GCash).
+All done without JavaScript, using only HTML + CSS.
+
+Here’s the fixed and working version:
+Html<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment Method Form</title>
+<style>
+    /* Hide nested payment types by default */
+    .online-options {
+        display: none;
+        margin-left: 20px;
+        margin-top: 5px;
+    }
+
+    /* Show nested options when Online Payment is selected */
+    #online:checked ~ .online-options {
+        display: block;
+    }
+</style>
+</head>
+<body>
+
+<h3>Payment Method:</h3>
+
+<!-- Main payment options -->
+<input type="radio" id="online" name="paymentMethod">
+<label for="online">Online Payment</label>
+
+<input type="radio" id="cash" name="paymentMethod">
+<label for="cash">Cash</label>
+
+<!-- Nested options for Online Payment -->
+<div class="online-options">
+    <p>Please provide type of online payment:</p>
+    <input type="radio" id="bank" name="onlineType">
+    <label for="bank">Bank Transfer</label><br>
+
+    <input type="radio" id="card" name="onlineType">
+    <label for="card">Debit/Credit Card</label><br>
+
+    <input type="radio" id="gcash" name="onlineType">
+    <label for="gcash">GCash</label>
+</div>
+
+</body>
+</html>
+
+How it works:
+
+#online:checked ~ .online-options → Shows the extra payment type choices only when Online Payment is selected.
+Separate name attributes for main payment method (paymentMethod) and online payment type (onlineType) so they don’t conflict.
+Works in all modern browsers without JavaScript.
+
+
+If you want, I can also make it so that Cash hides the online payment options automatically and the layout looks like a clean form.
+Do you want me to style it that way?
