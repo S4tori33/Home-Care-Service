@@ -191,6 +191,8 @@ body {
     cursor: pointer;
     overflow: hidden;
     transition: border-color 0.2s, transform 0.2s;
+    position: relative;
+    left: 75px;
 }
 .avatar:hover { border-color: rgba(255,255,255,0.7); transform: scale(1.04); }
 .avatar img { width: 100%; height: 100%; object-fit: cover; }
@@ -214,6 +216,8 @@ body {
     color: rgba(255,255,255,0.55);
     margin-top: 3px;
     letter-spacing: 0.4px;
+    position: relative;
+    left: 75px;
 }
 
 /* Nav items */

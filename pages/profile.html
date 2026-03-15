@@ -70,12 +70,12 @@
             </a>
 
             <!-- 1. Dashboard -->
-            <a href="#profile" class="sidebar-item active" data-page="dashboard">
+            <a href="dashboard.html" class="sidebar-item" data-page="dashboard">
                 <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
                     <rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
                 </svg>
-                User Dashboard
+                Dashboard
             </a>
 
             <!-- 2. My Bookings -->
@@ -115,7 +115,7 @@
             <div class="sidebar-section-label">Account</div>
 
             <!-- 6. My Profile -->
-            <a href="#" class="sidebar-item" data-page="profile">
+            <a href="#" class="sidebar-item active" data-page="profile">
                 <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                     <circle cx="12" cy="7" r="4"/>
@@ -132,13 +132,13 @@
                 Notifications
             </a>
 
-            <!-- 8. Settings -->
-            <a href="#" class="sidebar-item" data-page="settings">
+            <!-- 8. Profile -->
+            <a href="#" class="sidebar-item active" data-page="settings">
                 <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" y="12" r="3"/>
                     <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
                 </svg>
-                Settings
+                Profile
             </a>
 
             <div class="sidebar-divider"></div>
@@ -168,7 +168,7 @@
     <!-- ── MAIN CONTENT ──────────────────────────────── -->
     <div class="main-wrap">
 
-<h1>Welcome!</h1>
+<h1>Welcome, User!</h1>
 <p>Here's an overview of your account</p>
 
 <!-- dashboard overview -->
@@ -235,7 +235,7 @@
 <input id="birthday" type="date">
 
 <label for="contactNumber">Contact Number</label>
-<input id="contactNumber" type="text" placeholder="Enter contact number">
+<input id="contactNumber" type="number" min="1" max="100" placeholder="Enter contact number">
 
 <label for="email">Email</label>
 <input id="email" type="email" placeholder="Enter email">
@@ -245,22 +245,22 @@
 <h4 style="text-align: center;">Address Information</h4>
 
 <label for="houseNumber">House Number</label>
-<input id="houseNumber" type="text">
+<input id="houseNumber" type="text" placeholder="House number">
 
 <label for="streetName">Street Name</label>
-<input id="streetName" type="text">
+<input id="streetName" type="text" placeholder="Street name"> 
 
 <label for="city">City / Municipality</label>
-<input id="city" type="text">
+<input id="city" type="text" placeholder=" City ">
 
 <label for="province">Province</label>
-<input id="province" type="text">
+<input id="province" type="text" placeholder="Province">
 
 <label for="zipCode">Zip Code</label>
-<input id="zipCode" type="text">
+<input id="zipCode" type="text" placeholder="Zip code">
 
 <label for="country">Country</label>
-<input id="country" type="text">
+<input id="country" type="text" placeholder="Country">
 
 <button class="save-btn">Save</button>
 

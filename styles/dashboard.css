@@ -313,24 +313,18 @@ h1 {
     color: var(--white);
     font-size: 2.5rem;
     margin-bottom: 10px;
-    text-align: center;
 }
 
 p {
     color: var(--white);
     font-size: 1.1rem;
     margin-bottom: 20px;
-    text-align: center;
 }
 
 #profile h3 {
     font-family: 'Outfit', sans-serif;
     color: var(--white);
     margin-bottom: 10px;
-}
-
-h3 {
-    text-align: center;
 }
 
 #profile h4 {
@@ -406,55 +400,27 @@ h3 {
 
 /* FORM */
 .profile-form input {
-    width: 100%;
-    padding: 12px 16px;
-    margin-top: 4px;
-    margin-bottom: 20px;
-    background: rgba(255,255,255,0.08);
+    width: 95%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 12px;
+    background: var(--accent);
     border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 8px;
+    border-radius: 6px;
     color: var(--white);
     font-family: 'DM Sans', sans-serif;
-    font-size: 1rem;
-    transition: all 0.2s;
 }
-
-.profile-form input:focus {
-    outline: none;
-    border-color: var(--bg-mid);
-    background: rgba(255,255,255,0.12);
-    box-shadow: 0 0 0 3px rgba(108, 79, 212, 0.2);
-}
-
 .profile-form input::placeholder {
     color: var(--muted);
 }
-
 .profile-form label {
-    display: block;
     color: var(--soft);
     font-weight: 500;
-    font-size: 0.95rem;
-    margin-bottom: 4px;
-}
-
-/* Form sections spacing */
-.profile-form h4 {
-    color: var(--white);
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.4rem;
-    font-weight: 600;
-    margin: 40px 0 24px 0;
-    text-align: center;
-}
-
-.profile-form h4:first-of-type {
-    margin-top: 20px;
 }
 
 
 .edit-btn {
-    padding: 12px 24px;
+    padding: 10px 16px;
     background: linear-gradient(135deg, var(--bg-mid), var(--bg-end));
     border: 1px solid rgba(255,255,255,0.3);
     color: var(--white);
@@ -462,19 +428,15 @@ h3 {
     cursor: pointer;
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
-    font-size: 1rem;
-    transition: all 0.2s;
-    margin-bottom: 20px;
+    transition: background 0.2s;
+    margin-bottom: 15px;
 }
-
 .edit-btn:hover {
     background: linear-gradient(135deg, var(--bg-end), var(--bg-mid));
-    transform: translateY(-1px);
-    box-shadow: 0 4px 15px rgba(108, 79, 212, 0.3);
 }
 
 .save-btn {
-    padding: 12px 24px;
+    padding: 10px 16px;
     background: linear-gradient(135deg, #27ae60, #2ecc71);
     border: 1px solid rgba(255,255,255,0.3);
     color: var(--white);
@@ -482,15 +444,10 @@ h3 {
     cursor: pointer;
     font-family: 'DM Sans', sans-serif;
     font-weight: 500;
-    font-size: 1rem;
-    transition: all 0.2s;
-    margin-top: 20px;
+    transition: background 0.2s;
 }
-
 .save-btn:hover {
     background: linear-gradient(135deg, #2ecc71, #27ae60);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 15px rgba(46, 204, 113, 0.3);
 }
 
 .file-btn {
@@ -733,6 +690,7 @@ footer {
 /* Form Styles */
 .profile-form {
     display: grid;
+    gap: 24px;
 }
 
 .form-section {
@@ -1018,5 +976,291 @@ footer {
         flex-direction: column;
         align-items: flex-start;
         gap: 12px;
+    }
+}
+
+/* ── DASHBOARD PAGE STYLES ───────────────────────────────────── */
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    padding: 28px 24px;
+    margin-bottom: 24px;
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(12, 22, 120, 0.1);
+}
+
+.dashboard-header h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 2rem;
+    color: var(--white);
+    margin: 0;
+}
+
+.dashboard-header .wave {
+    display: inline-block;
+    transform: translateY(-2px);
+}
+
+.dashboard-subtitle {
+    color: rgba(255,255,255,0.72);
+    margin-top: 8px;
+}
+
+.dashboard-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.dashboard-tabs {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.tab-btn {
+    padding: 12px 18px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 12px;
+    color: rgba(255,255,255,0.75);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab-btn.active {
+    background: rgba(255,255,255,0.18);
+    border-color: rgba(255,255,255,0.22);
+    color: var(--white);
+}
+
+.tab-btn:hover {
+    background: rgba(255,255,255,0.14);
+}
+
+.tab-content {
+    padding: 0 0 24px;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 20px;
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(12, 22, 120, 0.06);
+}
+
+.stat-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.12);
+    display: grid;
+    place-items: center;
+    font-size: 1.25rem;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+}
+
+.stat-value {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--white);
+}
+
+.bookings-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(12, 22, 120, 0.06);
+    margin-bottom: 28px;
+}
+
+.bookings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.bookings-header h3 {
+    margin: 0;
+    font-size: 1.15rem;
+    color: var(--white);
+}
+
+.link-link {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.link-link:hover {
+    color: var(--white);
+}
+
+.booking-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 18px;
+    align-items: center;
+    padding: 14px 14px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    margin-bottom: 14px;
+}
+
+.booking-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 16px;
+    background: rgba(255,255,255,0.16);
+    display: grid;
+    place-items: center;
+    font-size: 1.3rem;
+}
+
+.booking-body {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.booking-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.booking-title {
+    font-weight: 700;
+    color: var(--white);
+}
+
+.booking-badge {
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.booking-badge.confirmed {
+    background: rgba(39, 174, 96, 0.18);
+    color: #2ecc71;
+}
+
+.booking-badge.pending {
+    background: rgba(241, 196, 15, 0.18);
+    color: #f1c40f;
+}
+
+.booking-meta {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.7);
+}
+
+.booking-amount {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--white);
+}
+
+.dashboard-cta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 22px 24px;
+    background: linear-gradient(135deg, rgba(42, 79, 212, 0.35), rgba(100, 80, 245, 0.35));
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(12, 22, 120, 0.12);
+}
+
+.cta-content h3 {
+    margin: 0;
+    color: var(--white);
+    font-size: 1.2rem;
+}
+
+.cta-content p {
+    margin: 4px 0 0;
+    color: rgba(255,255,255,0.75);
+    font-size: 0.95rem;
+}
+
+@media (max-width: 900px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .dashboard-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .dashboard-cta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 620px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .dashboard-tabs {
+        flex-direction: column;
+    }
+
+    .booking-item {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .booking-amount {
+        text-align: right;
     }
 }
