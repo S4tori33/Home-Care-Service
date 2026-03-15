@@ -75,18 +75,28 @@
       
       <label>Preferred Date: <input type="date" name="date" id="date"></label><br><br>
       
-      <label>Payment Method: </label>
-      <label for="opt1"><input type="radio" id="opt1" name="payment" >Online Payment</label>
+
+      <label>Payment method: </label><br><br>
+      <input type="radio" id="online" name="paymentMethod">
+      <label for="online">Online Payment</label>
+
+      <input type="radio" id="cash" name="paymentMethod">
+      <label for="cash">Cash</label>
+
+      <div class="online-options">
+          <p>Please provide type of online payment:</p>
+          <input type="radio" id="bank" name="onlineType">
+          <label for="bank">Bank Transfer</label><br>
+
+          <input type="radio" id="card" name="onlineType">
+          <label for="card">Debit/Credit Card</label><br>
+
+          <input type="radio" id="gcash" name="onlineType">
+          <label for="gcash">GCash</label>
       
-      <div class="extra extra1">Please provide type of online payment.
-        <input type="radio" id="choice1" name="payment">
-        <label for="choice1">Bank transfer</label><br>
-        <input type="radio" id="choice2" name="payment">
-        <label for="choice2">Debit/Credit Card</label>
-        <input type="radio" id="choice3" name="payment">
-        <label for="choice3">Gcash</label>
-      </div>
-      <label for="opt2"><input type="radio" id="opt2" name="payment" >Cash</label><br><br>
+        </div><br><br>
+
+
 
       <button type="book" class="book-btn"><center>Book</center></button>
 
