@@ -28,12 +28,17 @@ tabBtns.forEach(btn => {
 // Form submission handlers (placeholder)
 document.getElementById('loginForm').addEventListener('submit', (e) => {
     e.preventDefault();
-    // temporary redirect to home
-    window.location.href = '../home.html';
+    const role = document.querySelector('input[name="loginRole"]:checked').value;
+    if (role === 'user') {
+        window.location.href = '../home.html';
+    } else if (role === 'jobseeker') {
+        window.location.href = 'dashboard.html'; // Assuming job seekers go to dashboard
+    }
 });
 
 document.getElementById('signupForm').addEventListener('submit', (e) => {
     e.preventDefault();
+    const role = document.querySelector('input[name="signupRole"]:checked').value;
     // Handle signup logic here
-    alert('Sign up functionality would be implemented here');
+    alert(`Sign up as ${role} functionality would be implemented here`);
 });
