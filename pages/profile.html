@@ -34,7 +34,9 @@
             <a href="#services">Services</a>
             <a href="about.html">About</a>
             <a href="jobSeekerApplication.html">Careers</a>
+            <a href="profile.html" class="active">Profile</a>
             <a href="#contact">Contact</a>
+            <a href="adminLogin.html">Admin</a>
         </div>
 
         <div class="navbar-spacer"></div>
@@ -168,117 +170,125 @@
     <!-- ── MAIN CONTENT ──────────────────────────────── -->
     <div class="main-wrap">
 
-<h1>Welcome, User!</h1>
-<p>Here's an overview of your account</p>
+        <section class="profile-header">
+            <div class="profile-avatar-section">
+                <div class="profile-avatar">
+                    <img src="../assets/icons/customers.png" alt="User avatar">
+                    <div class="avatar-edit-overlay">
+                        <button class="avatar-edit-btn" id="avatarEditBtn" aria-label="Change profile photo">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 20h9"/>
+                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="profile-info">
+                    <h1>John Doe</h1>
+                    <p class="dashboard-info">Member</p>
+                    <div class="profile-status">
+                        <span class="status-badge active">Active</span>
+                        <span class="member-since">Member since January 2024</span>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-actions">
+                <button class="btn btn-primary" id="editProfileBtn">Edit Profile</button>
+                <a href="jobseekerProfile.html" class="btn btn-secondary">View as Jobseeker</a>
+                <a href="dashboard.html" class="btn btn-secondary">Dashboard</a>
+            </div>
+        </section>
 
-<!-- dashboard overview -->
+        <div class="container">
+            <div class="box">
+                <h3>Total Bookings</h3>
+                <p>0</p>
+            </div>
+            <div class="box">
+                <h3>Appointments</h3>
+                <p>0</p>
+            </div>
+            <div class="box">
+                <h3>Billing</h3>
+                <p>₱0</p>
+            </div>
+        </div>
 
-<div class="container">
+        <section class="profile-tabs">
+            <div class="tabs-nav">
+                <button class="tab-btn active" data-tab="personal">Personal Info</button>
+                <button class="tab-btn" data-tab="address">Service Address</button>
+            </div>
+            <div class="tab-content">
+                <div class="tab-pane active" id="personal">
+                    <form class="profile-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label required" for="firstName">First Name</label>
+                                <input id="firstName" class="form-input" type="text" value="John">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label required" for="lastName">Last Name</label>
+                                <input id="lastName" class="form-input" type="text" value="Doe">
+                            </div>
+                        </div>
 
-<div class="box">
-<h3> Total Appointments</h3>
-<p> 0 Appointments</p>
-</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="email">Email Address</label>
+                                <input id="email" class="form-input" type="email" value="john.doe@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="phone">Phone Number</label>
+                                <input id="phone" class="form-input" type="tel" value="(555) 123-4567">
+                            </div>
+                        </div>
 
-<div class="box">
-<h3> Pending Bills</h3>
-<p>₱0</p>
-</div>
+                        <button class="btn btn-success" type="button">Save Changes</button>
+                    </form>
+                </div>
 
-<div class="box">
-<h3> Recent Activities</h3>
-<p>0 Booked appointment</p>
-</div>
+                <div class="tab-pane" id="address">
+                    <form class="profile-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="street">Street Address</label>
+                                <input id="street" class="form-input" type="text" value="123 Main St">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="city">City</label>
+                                <input id="city" class="form-input" type="text" value="Anytown">
+                            </div>
+                        </div>
 
-</div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="state">State / Province</label>
+                                <input id="state" class="form-input" type="text" value="Metro">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="zip">ZIP / Postal</label>
+                                <input id="zip" class="form-input" type="text" value="12345">
+                            </div>
+                        </div>
 
-<!-- PROFILE SECTION -->
+                        <button class="btn btn-success" type="button">Save Address</button>
+                    </form>
+                </div>
+            </div>
+        </section>
 
-<section id="profile">
+        <footer>
+            <p>© 2026 Home Care Service (HCS). All Rights Reserved.</p>
+        </footer>
 
-<h3>Profile Settings</h3>
-<p class="dashboard-info">Manage your personal information and preferences</p>
-
-<!-- Profile Photo -->
-
-<div class="myProfile">
-
-<div class="circle"></div>
-
-<div>
-<h4>Profile Photo</h4>
-<p>Update your photo to personalize your account</p>
-<label for="profilePhoto" class="file-btn">Choose File</label>
-<input type="file" id="profilePhoto" style="display: none;">
-</div>
-
-</div>
-
-<button class="edit-btn">Edit Profile</button>
-
-<form class="profile-form">
-
-<!-- PERSONAL INFORMATION -->
-
-<h4 style="text-align: center;">Personal Information</h4>
-
-<label for="lastName">Last Name</label>
-<input id="lastname" type="text" placeholder="Enter Surname">
-
-<label for="firstName">Given Name</label>
-<input id="firstName" type="text" placeholder="Enter Given Name">
-
-<label for="middleName">Middle Name</label>
-<input id="middleName" type="text" placeholder="Enter Middle Name">
-
-<label for="suffix">Suffix</label>
-<input id="suffix" type="text" placeholder="Suffix  (optional)">
-
-<label for="birthday">Birthday</label>
-<input id="birthday" type="date">
-
-<label for="contactNumber">Contact Number</label>
-<input id="contactNumber" type="text" min="1" max="100" placeholder="Enter contact number">
-
-<label for="email">Email</label>
-<input id="email" type="email" placeholder="Enter email">
-
-<!-- ADDRESS SECTION -->
-
-<h4 style="text-align: center;">Address Information</h4>
-
-<label for="houseNumber">House Number</label>
-<input id="houseNumber" type="text" placeholder="House number">
-
-<label for="streetName">Street Name</label>
-<input id="streetName" type="text" placeholder="Street name"> 
-
-<label for="city">City / Municipality</label>
-<input id="city" type="text" placeholder=" City ">
-
-<label for="province">Province</label>
-<input id="province" type="text" placeholder="Province">
-
-<label for="zipCode">Zip Code</label>
-<input id="zipCode" type="text" placeholder="Zip code">
-
-<label for="country">Country</label>
-<input id="country" type="text" placeholder="Country">
-
-<button class="save-btn">Save</button>
-
-</form>
-
-
-</section>
-
-<footer>
-    <p>© 2026 Home Care Service (HCS). All Rights Reserved.</p>
-</footer>
-
-
-</div>
+    </div>
 
     <script src="../js/script.js"></script>
+    <script>
+        if (typeof initializeProfileTabs === 'function') {
+            initializeProfileTabs();
+        }
+    </script>
 </body>
 </html>
