@@ -139,6 +139,13 @@ html, body {
     position: relative;
 }
 
+.form-container .form-tabs span {
+    display: flex;
+    justify-content: center;
+    align-self: center;
+    color: var(--white);
+}
+
 .tab-btn {
     flex: 1;
     padding: 12px 20px;
