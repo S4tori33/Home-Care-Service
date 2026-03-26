@@ -118,12 +118,11 @@ body {
     gap: 24px;
     margin-left: auto;
     position: relative;
-    left: 630px;
+    left: 600px;
 }
 .navbar-links a {
     display: flex;
     position: relative;
-    left: 70px;
     color: rgba(255,255,255,0.85);
     text-decoration: none;
     font-size: 14px;
@@ -321,6 +320,11 @@ p {
     font-size: 1.1rem;
     margin-bottom: 20px;
     text-align: center;
+}
+
+#profile{
+    display: flex;
+    min-width: (700px, auto);
 }
 
 #profile h3 {
