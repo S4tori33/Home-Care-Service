@@ -291,3 +291,24 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeToggles();
     initializeFormHandling();
 });
+
+const serviceOptions = document.querySelectorAll('.service-option');
+        const nextButton = document.getElementById('nextStep');
+        let selectedService = null;
+
+        if (serviceOptions.length && nextButton) {
+            serviceOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    serviceOptions.forEach(o => o.classList.remove('selected'));
+                    option.classList.add('selected');
+                    selectedService = option.querySelector('.service-title')?.textContent.trim();
+                    nextButton.disabled = false;
+                });
+            });
+
+            nextButton.addEventListener('click', () => {
+                if (!selectedService) return;
+                alert(`Selected service: ${selectedService}\n\nProceeding to the next step...`);
+                // TODO: Add real step navigation logic here.
+            });
+        }

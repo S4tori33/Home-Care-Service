@@ -31,7 +31,6 @@
             <a href="about.html">About</a>
             <a href="../home.html#management">Careers</a>
             <a href="../home.html#contact">Contact</a>
-            <a href="adminLogin.html">Admin</a>
         </div>
 
         <div class="navbar-spacer"></div>
@@ -196,22 +195,30 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="firstName">First Name *</label>
-                            <input type="text" id="firstName" name="firstName" required>
+                            <input type="text" id="firstName" name="firstName" required placeholder="First Name">
                         </div>
                         <div class="form-group">
                             <label for="lastName">Last Name *</label>
-                            <input type="text" id="lastName" name="lastName" required>
+                            <input type="text" id="lastName" name="lastName" required placeholder="Last Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Middle Name *</label>
+                            <input type="text" id="middlename" name="middleName" required placeholder="Middle Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Suffix </label>
+                            <input type="text" id="suffix" name="suffix" placeholder="Suffix (optional)">
                         </div>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
                             <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" required>
+                            <input type="email" id="email" name="email" required placeholder="Email Address">
                         </div>
                         <div class="form-group">
                             <label for="phone">Phone Number *</label>
-                            <input type="tel" id="phone" name="phone" required>
+                            <input type="tel" id="phone" name="phone" required placeholder="09XX XXX XXXX" maxlength="11">
                         </div>
                     </div>
 

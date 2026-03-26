@@ -121,6 +121,7 @@ body {
     font-size: 14px;
     font-weight: 500;
     transition: color 0.2s;
+    left: 150px;
 }
 .navbar-links a:hover, .navbar-links a.active {
     color: var(--white);
@@ -610,6 +611,11 @@ p {
 
 .booking-actions {
     margin-top: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+.booking-actions a {
     display: flex;
     justify-content: center;
 }
