@@ -200,7 +200,7 @@
                 </div>
 
                 <div class="service-grid">
-                    <button class="service-option">
+                    <button class="service-option" data-service="houseCleaning">
                         <div class="service-icon">
                             <span>★</span>
                         </div>
@@ -210,7 +210,7 @@
                         </div>
                     </button>
 
-                    <button class="service-option">
+                    <button class="service-option" data-service="gardenMaintenance">
                         <div class="service-icon">
                             <span>🍃</span>
                         </div>
@@ -220,7 +220,7 @@
                         </div>
                     </button>
 
-                    <button class="service-option">
+                    <button class="service-option" data-service="petCare">
                         <div class="service-icon">
                             <span>🐾</span>
                         </div>
@@ -230,7 +230,7 @@
                         </div>
                     </button>
 
-                    <button class="service-option">
+                    <button class="service-option" data-service="elderlyCare">
                         <div class="service-icon">
                             <span>❤️</span>
                         </div>
@@ -248,10 +248,184 @@
         </section>
     </div>
 
+    <!-- Service Selection Modals -->
+    <div class="service-modal-backdrop" id="houseCleaningModal">
+        <div class="service-modal">
+            <div class="service-modal-header">
+                <h3>House Cleaning Services</h3>
+                <button class="service-modal-close" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="service-modal-body">
+                <p>Select the cleaning services you need:</p>
+                <form class="service-selection-form">
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="houseCleaning" value="deepCleaning">
+                        <span class="checkmark"></span>
+                        Deep Cleaning (bathrooms, kitchen, floors)
+                    </label>
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="houseCleaning" value="regularCleaning">
+                        <span class="checkmark"></span>
+                        Regular Cleaning (dusting, vacuuming, surfaces)
+                    </label>
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="houseCleaning" value="moveCleaning">
+                        <span class="checkmark"></span>
+                        Move-in/Move-out Cleaning
+                    </label>
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="houseCleaning" value="windowCleaning">
+                        <span class="checkmark"></span>
+                        Window Cleaning
+                    </label>
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="houseCleaning" value="carpetCleaning">
+                        <span class="checkmark"></span>
+                        Carpet Cleaning
+                    </label>
+                </form>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeServiceModal('houseCleaningModal')">Proceed</button>
+                    <button class="btn btn-primary" onclick="selectService('houseCleaningModal', 'House Cleaning')">Select & Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="service-modal-backdrop" id="gardenMaintenanceModal">
+        <div class="service-modal">
+            <div class="service-modal-header">
+                <h3>Garden Maintenance Services</h3>
+                <button class="service-modal-close" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="service-modal-body">
+                <p>Select the garden services you need:</p>
+                <form class="service-selection-form">
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="gardenMaintenance" value="lawnMowing">
+                        <span class="checkmark"></span>
+                        Lawn Mowing & Trimming
+                    </label>
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="gardenMaintenance" value="weedControl">
+                        <span class="checkmark"></span>
+                        Weed Control & Removal
+                    </label>
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="gardenMaintenance" value="plantCare">
+                        <span class="checkmark"></span>
+                        Plant Care & Watering
+                    </label>
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="gardenMaintenance" value="pruning">
+                        <span class="checkmark"></span>
+                        Tree & Shrub Pruning
+                    </label>
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="gardenMaintenance" value="fertilizing">
+                        <span class="checkmark"></span>
+                        Fertilizing & Pest Control
+                    </label>
+                </form>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeServiceModal('gardenMaintenanceModal')">Proceed</button>
+                    <button class="btn btn-primary" onclick="selectService('gardenMaintenanceModal', 'Garden Maintenance')">Select & Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="service-modal-backdrop" id="petCareModal">
+        <div class="service-modal">
+            <div class="service-modal-header">
+                <h3>Pet Care Services</h3>
+                <button class="service-modal-close" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="service-modal-body">
+                <p>Select the pet care services you need:</p>
+                <form class="service-selection-form">
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="petCare" value="dogWalking">
+                        <span class="checkmark"></span>
+                        Dog Walking
+                    </label>
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="petCare" value="petSitting">
+                        <span class="checkmark"></span>
+                        Pet Sitting (in-home)
+                    </label>
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="petCare" value="grooming">
+                        <span class="checkmark"></span>
+                        Pet Grooming
+                    </label>
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="petCare" value="feeding">
+                        <span class="checkmark"></span>
+                        Feeding & Medication
+                    </label>
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="petCare" value="training">
+                        <span class="checkmark"></span>
+                        Basic Training Sessions
+                    </label>
+                </form>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeServiceModal('petCareModal')">Proceed</button>
+                    <button class="btn btn-primary" onclick="selectService('petCareModal', 'Pet Care')">Select & Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="service-modal-backdrop" id="elderlyCareModal">
+        <div class="service-modal">
+            <div class="service-modal-header">
+                <h3>Elderly Care & Support Services</h3>
+                <button class="service-modal-close" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="service-modal-body">
+                <p>Select the elderly care services you need:</p>
+                <form class="service-selection-form">
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="elderlyCare" value="companionship">
+                        <span class="checkmark"></span>
+                        Companionship & Social Activities
+                    </label>
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="elderlyCare" value="personalCare">
+                        <span class="checkmark"></span>
+                        Personal Care (bathing, dressing)
+                    </label>
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="elderlyCare" value="medication">
+                        <span class="checkmark"></span>
+                        Medication Management
+                    </label>
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="elderlyCare" value="mealPrep">
+                        <span class="checkmark"></span>
+                        Meal Preparation & Light Housekeeping
+                    </label>
+                    <label class="service-checkbox">
+                        <input type="checkbox" name="elderlyCare" value="transportation">
+                        <span class="checkmark"></span>
+                        Transportation & Errands
+                    </label>
+                </form>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary" onclick="closeServiceModal('elderlyCareModal')">Proceed</button>
+                    <button class="btn btn-primary" onclick="selectService('elderlyCareModal', 'Elderly Care and Support')">Select & Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <p>© 2026 Home Care Service (HCS). All Rights Reserved.</p>
     </footer>
 
     <script src="../js/script.js"></script>
+    <script src="../js/booking.js"></script>
 </body>
 </html>

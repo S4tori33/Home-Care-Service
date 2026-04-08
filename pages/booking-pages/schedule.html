@@ -3,10 +3,452 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking</title>
+    <title>Schedule Service - Home Care Service</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../styles/booking.css">
+    <style>
+        .schedule-form {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #1f4eff;
+            box-shadow: 0 0 0 2px rgba(31, 78, 255, 0.1);
+        }
+
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .radio-option input[type="radio"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .conditional-fields {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #1f4eff;
+        }
+
+        .days-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .day-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .day-checkbox input[type="checkbox"] {
+            width: auto;
+            margin: 0;
+        }
+
+        .hours-input {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .hours-input input {
+            width: 80px;
+            flex-shrink: 0;
+        }
+
+        .schedule-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #666;
+            border: 1px solid #ddd;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary:hover {
+            background: #e9e9e9;
+            color: #333;
+        }
+
+        .btn-primary {
+            background: #1f4eff;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #1a45d1;
+            transform: translateY(-1px);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-    <h1> This is the scheduling page </h1>
-    <a href="./contact.html"> Next </a>
+    <!-- ── NAVBAR ───────────────────────────────────── -->
+    <nav class="navbar">
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+            <span></span><span></span><span></span>
+        </button>
+
+        <a href="../../home.html" class="navbar-brand">
+            <div class="navbar-logo">HCS</div>
+            <div class="navbar-brand-text">
+                <h1>Home Care Service</h1>
+                <p>Quality Care, Quality Life</p>
+            </div>
+        </a>
+
+        <div class="navbar-links">
+            <a href="../../home.html">Home</a>
+            <a href="#services">Services</a>
+            <a href="../about.html">About</a>
+            <a href="../jobSeekerApplication.html">Careers</a>
+            <a href="#contact">Contact</a>
+        </div>
+
+        <div class="navbar-spacer"></div>
+
+        <a href="../userLogin.html" class="btn-nav-login">Log In / Sign Up</a>
+    </nav>
+
+    <!-- ── SIDEBAR OVERLAY ──────────────────────────── -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ── LEFT SIDEBAR ─────────────────────────────── -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-profile">
+            <div class="avatar-wrap">
+                <div class="avatar" id="avatarEl" title="Change profile picture">Avatar Here</div>
+                <div class="avatar-badge"></div>
+            </div>
+            <div class="sidebar-user-name" id="userName">Guest User</div>
+            <div class="sidebar-user-role" id="userRole">Not logged in</div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="sidebar-section-label">Main</div>
+
+            <!-- 0. Home -->
+            <a href="../../home.html" class="sidebar-item" data-page="home">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9L12 2l9 7v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-5H9v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/>
+                </svg>
+                Home
+            </a>
+
+            <!-- 1. Dashboard -->
+            <a href="../dashboard.html" class="sidebar-item" data-page="dashboard">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7"/>
+                    <rect x="14" y="3" width="7" height="7"/>
+                    <rect x="14" y="14" width="7" height="7"/>
+                    <rect x="3" y="14" width="7" height="7"/>
+                </svg>
+                Dashboard
+            </a>
+
+            <!-- 2. My Bookings -->
+            <a href="#" class="sidebar-item active" data-page="bookings">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                My Bookings
+            </a>
+
+            <!-- 3. Services -->
+            <a href="../../home.html#services" class="sidebar-item" data-page="services">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                </svg>
+                Services
+            </a>
+
+            <!-- 4. Messages -->
+            <a href="#" class="sidebar-item" data-page="messages">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                Messages
+            </a>
+
+            <!-- 5. Payments -->
+            <a href="#" class="sidebar-item" data-page="payments">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+                </svg>
+                Payments
+            </a>
+
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-label">Account</div>
+
+            <!-- 6. My Profile -->
+            <a href="../profile.html" class="sidebar-item" data-page="profile">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                My Profile
+            </a>
+
+            <!-- 7. Dashboard -->
+            <a href="../dashboard.html" class="sidebar-item" data-page="dashboard">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 13h8V3H3v10z"/>
+                    <path d="M13 21h8V11h-8v10z"/>
+                    <path d="M3 21h8v-6H3v6z"/>
+                </svg>
+                Dashboard
+            </a>
+
+            <!-- 7. Notifications -->
+            <a href="#" class="sidebar-item" data-page="notifications">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                Notifications
+            </a>
+
+            <div class="sidebar-divider"></div>
+
+            <!-- 9. Help & Support -->
+            <a href="#" class="sidebar-item" data-page="help">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" y="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                Help & Support
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="../userLogin.html" class="sidebar-item logout" style="margin-bottom:0;">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                Log Out
+            </a>
+        </div>
+    </aside>
+
+    <!-- ── MAIN CONTENT ──────────────────────────────── -->
+    <div class="main-wrap">
+        <section class="booking">
+            <div class="booking-header">
+                <h1>Schedule Your Service</h1>
+                <p>Choose your preferred schedule and starting date.</p>
+            </div>
+
+            <div class="booking-steps">
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <span class="step-label">Service</span>
+                </div>
+                <div class="step active">
+                    <span class="step-number">2</span>
+                    <span class="step-label">Schedule</span>
+                </div>
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <span class="step-label">Contact</span>
+                </div>
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <span class="step-label">Location</span>
+                </div>
+            </div>
+
+            <div class="booking-card">
+                <div class="booking-card-header">
+                    <h2>Select Schedule Type</h2>
+                    <span>Step 2 of 4</span>
+                </div>
+
+                <form class="schedule-form" id="scheduleForm">
+                    <!-- Schedule Type -->
+                    <div class="form-group">
+                        <label>Schedule Type</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="scheduleType" value="hourly" required>
+                                <span>Hourly</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="scheduleType" value="daily" required>
+                                <span>Daily</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="scheduleType" value="biweekly" required>
+                                <span>Bi-weekly / Twice a week</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="scheduleType" value="monthly" required>
+                                <span>Monthly</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Conditional Fields for Hourly -->
+                    <div class="conditional-fields hidden" id="hourlyFields">
+                        <label>How many hours do you need?</label>
+                        <div class="hours-input">
+                            <input type="number" name="hourlyHours" min="1" max="24" placeholder="e.g. 2">
+                            <span>hours</span>
+                        </div>
+                    </div>
+
+                    <!-- Conditional Fields for Daily -->
+                    <div class="conditional-fields hidden" id="dailyFields">
+                        <label>How many hours each day?</label>
+                        <div class="hours-input">
+                            <input type="number" name="dailyHours" min="1" max="24" placeholder="e.g. 4">
+                            <span>hours per day</span>
+                        </div>
+                    </div>
+
+                    <!-- Conditional Fields for Bi-weekly -->
+                    <div class="conditional-fields hidden" id="biweeklyFields">
+                        <label>Which days of the week?</label>
+                        <div class="days-selection">
+                            <label class="day-checkbox">
+                                <input type="checkbox" name="biweeklyDays" value="monday">
+                                <span>Monday</span>
+                            </label>
+                            <label class="day-checkbox">
+                                <input type="checkbox" name="biweeklyDays" value="tuesday">
+                                <span>Tuesday</span>
+                            </label>
+                            <label class="day-checkbox">
+                                <input type="checkbox" name="biweeklyDays" value="wednesday">
+                                <span>Wednesday</span>
+                            </label>
+                            <label class="day-checkbox">
+                                <input type="checkbox" name="biweeklyDays" value="thursday">
+                                <span>Thursday</span>
+                            </label>
+                            <label class="day-checkbox">
+                                <input type="checkbox" name="biweeklyDays" value="friday">
+                                <span>Friday</span>
+                            </label>
+                            <label class="day-checkbox">
+                                <input type="checkbox" name="biweeklyDays" value="saturday">
+                                <span>Saturday</span>
+                            </label>
+                            <label class="day-checkbox">
+                                <input type="checkbox" name="biweeklyDays" value="sunday">
+                                <span>Sunday</span>
+                            </label>
+                        </div>
+                        <label style="margin-top: 15px; display: block;">How many hours each selected day?</label>
+                        <div class="hours-input">
+                            <input type="number" name="biweeklyHours" min="1" max="24" placeholder="e.g. 3">
+                            <span>hours per day</span>
+                        </div>
+                    </div>
+
+                    <!-- Conditional Fields for Monthly -->
+                    <div class="conditional-fields hidden" id="monthlyFields">
+                        <label>Frequency</label>
+                        <div class="radio-group" style="margin-bottom: 15px;">
+                            <label class="radio-option">
+                                <input type="radio" name="monthlyFrequency" value="once">
+                                <span>Once a month</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="monthlyFrequency" value="twice">
+                                <span>Twice a month</span>
+                            </label>
+                        </div>
+                        <label>How many hours each visit?</label>
+                        <div class="hours-input">
+                            <input type="number" name="monthlyHours" min="1" max="24" placeholder="e.g. 6">
+                            <span>hours per visit</span>
+                        </div>
+                    </div>
+
+                    <!-- Starting Date -->
+                    <div class="form-group">
+                        <label for="startDate">Starting Date</label>
+                        <input type="date" id="startDate" name="startDate" required>
+                    </div>
+
+                    <div class="schedule-actions">
+                        <a href="../booking.html" class="btn-secondary">Back</a>
+                        <a href="./contact.html" class="btn-primary" id="nextButton">Next: Contact Info</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2026 Home Care Service (HCS). All Rights Reserved.</p>
+    </footer>
+
+    <script src="../../js/script.js"></script>
+    <script src="../../js/schedule.js"></script>
 </body>
 </html>
