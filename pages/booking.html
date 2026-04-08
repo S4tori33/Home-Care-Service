@@ -30,9 +30,7 @@
             <a href="#services">Services</a>
             <a href="about.html">About</a>
             <a href="jobSeekerApplication.html">Careers</a>
-            <a href="profile.html">Profile</a>
             <a href="#contact">Contact</a>
-            <a href="adminLogin.html">Admin</a>
         </div>
 
         <div class="navbar-spacer"></div>
@@ -244,7 +242,7 @@
                 </div>
 
                 <div class="booking-actions">
-                    <button id="nextStep" class="btn btn-primary btn-primary--blue" disabled>Next</button>
+                    <a href="./booking-pages/schedule.html" id="nextStep" class="btn btn-primary btn-primary--blue">Next</a>
                 </div>
             </div>
         </section>
@@ -255,27 +253,5 @@
     </footer>
 
     <script src="../js/script.js"></script>
-    <script>
-        const serviceOptions = document.querySelectorAll('.service-option');
-        const nextButton = document.getElementById('nextStep');
-        let selectedService = null;
-
-        if (serviceOptions.length && nextButton) {
-            serviceOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    serviceOptions.forEach(o => o.classList.remove('selected'));
-                    option.classList.add('selected');
-                    selectedService = option.querySelector('.service-title')?.textContent.trim();
-                    nextButton.disabled = false;
-                });
-            });
-
-            nextButton.addEventListener('click', () => {
-                if (!selectedService) return;
-                alert(`Selected service: ${selectedService}\n\nProceeding to the next step...`);
-                // TODO: Add real step navigation logic here.
-            });
-        }
-    </script>
 </body>
 </html>
