@@ -628,6 +628,98 @@ body {
     background: rgba(244, 91, 146, 0.92);
 }
 
+.service-details {
+    display: none;
+}
+
+.service-modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(10, 18, 38, 0.72);
+    backdrop-filter: blur(8px);
+    z-index: 1100;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.service-modal-backdrop.open {
+    display: flex;
+}
+
+.service-modal {
+    width: min(560px, 100%);
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 30px 28px;
+    box-shadow: 0 28px 80px rgba(10, 18, 38, 0.24);
+    color: rgba(20, 25, 38, 0.95);
+    position: relative;
+}
+
+.service-modal h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 24px;
+    margin: 0 0 16px;
+    color: #1f3a78;
+}
+
+.service-modal p {
+    font-size: 15px;
+    line-height: 1.8;
+    margin: 0;
+    color: rgba(20, 25, 38, 0.8);
+}
+
+.service-modal-close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    background: rgba(29, 105, 255, 0.12);
+    border-radius: 50%;
+    color: #1d5fdd;
+    font-size: 22px;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+}
+
+.service-modal-close:hover {
+    background: rgba(29, 105, 255, 0.18);
+}
+
+.service-modal-header {
+    margin-bottom: 18px;
+}
+
+.service-modal-header p {
+    margin: 0;
+    color: rgba(20, 25, 38, 0.7);
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+.service-modal-body h4 {
+    margin: 22px 0 10px;
+    font-size: 15px;
+    color: #1f3a78;
+}
+
+.service-modal-body ul {
+    margin: 0 0 0 18px;
+    padding: 0;
+    list-style: disc;
+    color: rgba(20, 25, 38, 0.75);
+}
+
+.service-modal-body ul li {
+    margin-bottom: 8px;
+}
+
 .btn-primary--blue {
     background: rgba(18, 88, 242, 0.95);
     color: #fff;
