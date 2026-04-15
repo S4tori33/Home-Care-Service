@@ -63,61 +63,26 @@ function showAlert() {
     alert('📞 Thank you for reaching out! HCS will contact you shortly.');
 }
 
-const serviceModalBackdrop = document.getElementById('serviceModalBackdrop');
-const serviceModalClose = document.getElementById('serviceModalClose');
-const serviceModalTitle = document.getElementById('serviceModalTitle');
-const serviceModalSubtitle = document.getElementById('serviceModalSubtitle');
-const serviceModalPricing = document.getElementById('serviceModalPricing');
-const serviceModalIncludes = document.getElementById('serviceModalIncludes');
-const serviceModalDescription = document.getElementById('serviceModalDescription');
+const serviceOptions = document.querySelectorAll('.service-option');
+        const nextButton = document.getElementById('nextStep');
+        let selectedService = null;
 
-function openServiceModal(title, subtitle, pricing, includes, description) {
-    if (!serviceModalBackdrop) return;
-    serviceModalTitle.textContent = title;
-    serviceModalSubtitle.textContent = subtitle;
-    serviceModalPricing.textContent = pricing;
-    serviceModalDescription.textContent = description;
-    serviceModalIncludes.innerHTML = '';
+        if (serviceOptions.length && nextButton) {
+            serviceOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    serviceOptions.forEach(o => o.classList.remove('selected'));
+                    option.classList.add('selected');
+                    selectedService = option.querySelector('.service-title')?.textContent.trim();
+                    nextButton.disabled = false;
+                });
+            });
 
-    includes.forEach(item => {
-        const li = document.createElement('li');
-        li.textContent = item;
-        serviceModalIncludes.appendChild(li);
-    });
-
-    serviceModalBackdrop.classList.add('open');
-    serviceModalBackdrop.setAttribute('aria-hidden', 'false');
-}
-
-function closeServiceModal() {
-    if (!serviceModalBackdrop) return;
-    serviceModalBackdrop.classList.remove('open');
-    serviceModalBackdrop.setAttribute('aria-hidden', 'true');
-}
-
-document.querySelectorAll('#services .service-card').forEach(card => {
-    card.style.cursor = 'pointer';
-    card.addEventListener('click', () => {
-        const title = card.querySelector('h3')?.textContent.trim() || '';
-        const subtitle = card.querySelector('p')?.textContent.trim() || '';
-        const details = card.querySelector('.service-details');
-        const pricing = details?.querySelector('h4:nth-of-type(1) + p')?.textContent.trim() || '';
-        const description = details?.querySelector('h4:last-of-type + p')?.textContent.trim() || '';
-        const includes = Array.from(details?.querySelectorAll('ul li') || []).map(li => li.textContent.trim());
-        openServiceModal(title, subtitle, pricing, includes, description);
-    });
-});
-
-serviceModalClose?.addEventListener('click', closeServiceModal);
-serviceModalBackdrop?.addEventListener('click', (event) => {
-    if (event.target === serviceModalBackdrop) closeServiceModal();
-});
-
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeServiceModal();
-});
-
-// ── PROFILE PAGE FUNCTIONALITY ───────────────────────────────────────
+            nextButton.addEventListener('click', () => {
+                if (!selectedService) return;
+                alert(`Selected service: ${selectedService}\n\nProceeding to the next step...`);
+                // TODO: Add real step navigation logic here.
+            });
+        }
 
 // Tab switching functionality
 function initializeProfileTabs() {
@@ -343,73 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeAvatarUpload();
     initializeToggles();
     initializeFormHandling();
-    initializeServiceModal();
 });
-
-function initializeServiceModal() {
-    const backdrop = document.getElementById('serviceModalBackdrop');
-    const closeBtn = document.getElementById('serviceModalClose');
-    const titleEl = document.getElementById('serviceModalTitle');
-    const subtitleEl = document.getElementById('serviceModalSubtitle');
-    const pricingEl = document.getElementById('serviceModalPricing');
-    const includesEl = document.getElementById('serviceModalIncludes');
-    const descriptionEl = document.getElementById('serviceModalDescription');
-
-    if (!backdrop || !closeBtn || !titleEl || !subtitleEl || !pricingEl || !includesEl || !descriptionEl) return;
-
-    const openModal = (card) => {
-        const title = card.querySelector('summary h3')?.textContent.trim() || '';
-        const subtitle = card.querySelector('summary p')?.textContent.trim() || '';
-        const pricing = card.querySelector('.service-details h4:nth-of-type(1) + p')?.textContent.trim() || '';
-        const descriptionHeading = Array.from(card.querySelectorAll('.service-details h4'))
-            .find(h => h.textContent.trim().toLowerCase().includes('service details'));
-        const description = descriptionHeading?.nextElementSibling?.textContent.trim() || '';
-        const includesHeading = Array.from(card.querySelectorAll('.service-details h4'))
-            .find(h => h.textContent.trim().toLowerCase().includes("what's included") || h.textContent.trim().toLowerCase().includes('what’s included'));
-        const includesList = includesHeading?.nextElementSibling;
-
-        titleEl.textContent = title;
-        subtitleEl.textContent = subtitle;
-        pricingEl.textContent = pricing;
-        descriptionEl.textContent = description;
-        includesEl.innerHTML = '';
-
-        if (includesList && includesList.tagName === 'UL') {
-            includesList.querySelectorAll('li').forEach(li => {
-                const item = document.createElement('li');
-                item.textContent = li.textContent;
-                includesEl.appendChild(item);
-            });
-        }
-
-        backdrop.classList.add('open');
-        backdrop.setAttribute('aria-hidden', 'false');
-    };
-
-    const closeModal = () => {
-        backdrop.classList.remove('open');
-        backdrop.setAttribute('aria-hidden', 'true');
-    };
-
-    document.querySelectorAll('.service-card summary').forEach(summary => {
-        summary.addEventListener('click', event => {
-            event.preventDefault();
-            event.stopPropagation();
-            const card = summary.closest('.service-card');
-            if (card) {
-                openModal(card);
-            }
-        });
-    });
-
-    closeBtn.addEventListener('click', closeModal);
-    backdrop.addEventListener('click', event => {
-        if (event.target === backdrop) closeModal();
-    });
-    document.addEventListener('keydown', event => {
-        if (event.key === 'Escape' && backdrop.classList.contains('open')) closeModal();
-    });
-}
 
 
 const serviceOptions = document.querySelectorAll('.service-option');

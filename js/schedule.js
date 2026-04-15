@@ -6,6 +6,9 @@ let scheduleData = {
     details: {}
 };
 
+// Modal elements
+let bookingModal, bookingModalClose, editBookingBtn, finalizeBookingBtn;
+
 // Initialize schedule functionality
 document.addEventListener('DOMContentLoaded', function() {
     // Get form elements
@@ -16,6 +19,12 @@ document.addEventListener('DOMContentLoaded', function() {
         biweekly: document.getElementById('biweeklyFields'),
         monthly: document.getElementById('monthlyFields')
     };
+
+    // Get modal elements
+    bookingModal = document.getElementById('bookingModal');
+    bookingModalClose = document.getElementById('bookingModalClose');
+    editBookingBtn = document.getElementById('editBooking');
+    finalizeBookingBtn = document.getElementById('finalizeBooking');
 
     // Add event listeners to schedule type radios
     scheduleTypeRadios.forEach(radio => {
@@ -37,10 +46,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Handle form submission
-    const nextButton = document.getElementById('nextButton');
-    if (nextButton) {
-        nextButton.addEventListener('click', function(e) {
+    // Handle confirm button click
+    const confirmButton = document.getElementById('confirmButton');
+    if (confirmButton) {
+        confirmButton.addEventListener('click', function(e) {
             e.preventDefault();
 
             // Validate form
@@ -51,11 +60,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Collect form data
             collectScheduleData();
 
-            // Store in sessionStorage for next page
-            sessionStorage.setItem('scheduleData', JSON.stringify(scheduleData));
-
-            // Navigate to next page
-            window.location.href = './contact.html';
+            // Navigate to location page
+            window.location.href = './location.html';
         });
     }
 
@@ -146,24 +152,25 @@ function collectScheduleData() {
 
     switch (scheduleData.scheduleType) {
         case 'hourly':
-            scheduleData.details.hours = parseInt(formData.get('hourlyHours'));
+            scheduleData.details.hourlyHours = parseInt(formData.get('hourlyHours'));
             break;
 
         case 'daily':
-            scheduleData.details.hoursPerDay = parseInt(formData.get('dailyHours'));
+            scheduleData.details.dailyHours = parseInt(formData.get('dailyHours'));
             break;
 
         case 'biweekly':
             const selectedDays = Array.from(formData.getAll('biweeklyDays'));
-            scheduleData.details.days = selectedDays;
-            scheduleData.details.hoursPerDay = parseInt(formData.get('biweeklyHours'));
+            scheduleData.details.biweeklyDays = selectedDays;
+            scheduleData.details.biweeklyHours = parseInt(formData.get('biweeklyHours'));
             break;
 
         case 'monthly':
-            scheduleData.details.frequency = formData.get('monthlyFrequency');
-            scheduleData.details.hoursPerVisit = parseInt(formData.get('monthlyHours'));
+            scheduleData.details.monthlyFrequency = formData.get('monthlyFrequency');
+            scheduleData.details.monthlyHours = parseInt(formData.get('monthlyHours'));
             break;
     }
 
-    console.log('Collected schedule data:', scheduleData);
+    // Store in localStorage for the booking flow
+    localStorage.setItem('scheduleData', JSON.stringify(scheduleData));
 }

@@ -29,12 +29,21 @@ function selectService(modalId, mainServiceName) {
     const modal = document.getElementById(modalId);
     const checkboxes = modal.querySelectorAll('input[type="checkbox"]:checked');
 
-    // Store selected services (can be empty)
+    // Store selected services (can be 1 or more)
     selectedServices.mainService = mainServiceName;
     selectedServices.subServices = Array.from(checkboxes).map(cb => ({
         value: cb.value,
         label: cb.parentElement.textContent.trim()
     }));
+
+    // Store service data in localStorage for booking flow
+    const serviceData = {
+        serviceName: mainServiceName,
+        subServices: selectedServices.subServices,
+        description: getServiceDescription(mainServiceName),
+        pricing: getServicePricing(mainServiceName)
+    };
+    localStorage.setItem('serviceData', JSON.stringify(serviceData));
 
     // Update UI to show selected service
     updateSelectedService(mainServiceName);
@@ -99,8 +108,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Next button will work as a regular link to the next page
-    // No additional validation or logic needed
+    // Handle Next button click
+    const nextButton = document.getElementById('nextStep');
+    if (nextButton) {
+        nextButton.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            // Check if a service has been selected
+            if (!selectedServices.mainService || selectedServices.mainService === '') {
+                alert('Please select a service before proceeding.');
+                return;
+            }
+
+            // If a service is selected, proceed to contact page
+            window.location.href = './booking-pages/contact.html';
+        });
+    }
 });
 
 // Handle escape key
@@ -111,3 +134,25 @@ document.addEventListener('keydown', (event) => {
         });
     }
 });
+
+// Helper function to get service description
+function getServiceDescription(serviceName) {
+    const descriptions = {
+        'House Cleaning': 'Professional cleaning services for your home',
+        'Garden Maintenance': 'Expert care for your outdoor space',
+        'Pet Care': 'Loving care for your pets',
+        'Elderly Care': 'Compassionate support for seniors'
+    };
+    return descriptions[serviceName] || 'Professional service';
+}
+
+// Helper function to get service pricing
+function getServicePricing(serviceName) {
+    const pricing = {
+        'House Cleaning': '₱500/hour',
+        'Garden Maintenance': '₱550/hour',
+        'Pet Care': '₱350/hour',
+        'Elderly Care': '₱600/hour'
+    };
+    return pricing[serviceName] || 'Contact for pricing';
+}
