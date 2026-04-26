@@ -112,8 +112,8 @@ body {
 .navbar-links a {
     display: flex;
     position: relative;
-    left: 620px;
-    font-family: 'Outfit', sans-serif;
+    left: 690px;
+    font-family: 'Outfit', sans-serif;  
     font-size: 13.5px;
     font-weight: 500;
     color: rgba(255,255,255,0.7);

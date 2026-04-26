@@ -15,34 +15,45 @@ function toggleMenu() {
 */
 
 // Sidebar toggle — works on ALL screen sizes
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('sidebarOverlay');
-const toggle  = document.getElementById('sidebarToggle');
+function initializeSidebarToggle() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const toggle  = document.getElementById('sidebarToggle');
 
-function openSidebar() {
-    sidebar.classList.add('open');
-    overlay.classList.add('show');
-    toggle.classList.add('open');
-}
-function closeSidebar() {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('show');
-    toggle.classList.remove('open');
-}
-toggle.addEventListener('click', () => {
-    sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
-});
-overlay.addEventListener('click', closeSidebar);
+    if (!sidebar || !overlay || !toggle) return;
 
-// Active sidebar item + close on click
-document.querySelectorAll('.sidebar-item[data-page]').forEach(item => {
-    item.addEventListener('click', function(e) {
-        if (!this.getAttribute('href') || this.getAttribute('href') === '#') e.preventDefault();
-        document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-        this.classList.add('active');
-        closeSidebar();
+    function openSidebar() {
+        sidebar.classList.add('open');
+        overlay.classList.add('show');
+        toggle.classList.add('open');
+    }
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+        toggle.classList.remove('open');
+    }
+
+    toggle.addEventListener('click', () => {
+        sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
     });
-});
+    overlay.addEventListener('click', closeSidebar);
+
+    document.querySelectorAll('.sidebar-item[data-page]').forEach(item => {
+        item.addEventListener('click', function(e) {
+            if (!this.getAttribute('href') || this.getAttribute('href') === '#') e.preventDefault();
+            document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+            closeSidebar();
+        });
+    });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeSidebarToggle);
+} else {
+    initializeSidebarToggle();
+}
+
 
 // Navbar scroll highlight
 const sections = document.querySelectorAll('section[id]');
@@ -62,27 +73,6 @@ window.addEventListener('scroll', () => {
 function showAlert() {
     alert('📞 Thank you for reaching out! HCS will contact you shortly.');
 }
-
-const serviceOptions = document.querySelectorAll('.service-option');
-        const nextButton = document.getElementById('nextStep');
-        let selectedService = null;
-
-        if (serviceOptions.length && nextButton) {
-            serviceOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    serviceOptions.forEach(o => o.classList.remove('selected'));
-                    option.classList.add('selected');
-                    selectedService = option.querySelector('.service-title')?.textContent.trim();
-                    nextButton.disabled = false;
-                });
-            });
-
-            nextButton.addEventListener('click', () => {
-                if (!selectedService) return;
-                alert(`Selected service: ${selectedService}\n\nProceeding to the next step...`);
-                // TODO: Add real step navigation logic here.
-            });
-        }
 
 // Tab switching functionality
 function initializeProfileTabs() {
@@ -309,25 +299,3 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeToggles();
     initializeFormHandling();
 });
-
-
-const serviceOptions = document.querySelectorAll('.service-option');
-        const nextButton = document.getElementById('nextStep');
-        let selectedService = null;
-
-        if (serviceOptions.length && nextButton) {
-            serviceOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    serviceOptions.forEach(o => o.classList.remove('selected'));
-                    option.classList.add('selected');
-                    selectedService = option.querySelector('.service-title')?.textContent.trim();
-                    nextButton.disabled = false;
-                });
-            });
-
-            nextButton.addEventListener('click', () => {
-                if (!selectedService) return;
-                alert(`Selected service: ${selectedService}\n\nProceeding to the next step...`);
-                // TODO: Add real step navigation logic here.
-            });
-        }

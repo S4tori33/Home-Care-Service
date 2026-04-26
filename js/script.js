@@ -9,40 +9,84 @@ function toggleMenu() {
     nav.classList.toggle("show");
 }
 
+function recordSidebarToggle(action) {
+    if (!['open', 'close'].includes(action)) return;
+    const key = 'sidebarToggleUsage';
+
+    try {
+        const stored = localStorage.getItem(key);
+        const data = stored ? JSON.parse(stored) : {
+            openCount: 0,
+            closeCount: 0,
+            lastAction: '',
+            lastTimestamp: ''
+        };
+
+        if (action === 'open') data.openCount += 1;
+        if (action === 'close') data.closeCount += 1;
+        data.lastAction = action;
+        data.lastTimestamp = new Date().toISOString();
+
+        localStorage.setItem(key, JSON.stringify(data));
+    } catch (error) {
+        console.debug('Sidebar toggle tracking unavailable:', error);
+    }
+}
+
 /*function showAlert() {
     alert("Thank you for choosing HCS! Please email us at contactspeared@gmail.com.");
 }
 */
 
 // Sidebar toggle — works on ALL screen sizes
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('sidebarOverlay');
-const toggle  = document.getElementById('sidebarToggle');
+function initializeSidebarToggle() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const toggle  = document.getElementById('sidebarToggle');
 
-function openSidebar() {
-    sidebar.classList.add('open');
-    overlay.classList.add('show');
-    toggle.classList.add('open');
-}
-function closeSidebar() {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('show');
-    toggle.classList.remove('open');
-}
-toggle.addEventListener('click', () => {
-    sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
-});
-overlay.addEventListener('click', closeSidebar);
+    if (!sidebar || !overlay || !toggle) return;
 
-// Active sidebar item + close on click
-document.querySelectorAll('.sidebar-item[data-page]').forEach(item => {
-    item.addEventListener('click', function(e) {
-        if (!this.getAttribute('href') || this.getAttribute('href') === '#') e.preventDefault();
-        document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-        this.classList.add('active');
-        closeSidebar();
+    // Ensure toggle button does not submit a form if markup changes.
+    if (toggle.tagName.toLowerCase() === 'button') {
+        toggle.type = 'button';
+    }
+
+    function openSidebar() {
+        sidebar.classList.add('open');
+        overlay.classList.add('show');
+        toggle.classList.add('open');
+        recordSidebarToggle('open');
+    }
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+        toggle.classList.remove('open');
+        recordSidebarToggle('close');
+    }
+
+    toggle.addEventListener('click', (event) => {
+        event.preventDefault();
+        console.debug('Sidebar toggle clicked:', sidebar.classList.contains('open') ? 'closing' : 'opening');
+        sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
     });
-});
+    overlay.addEventListener('click', closeSidebar);
+
+    document.querySelectorAll('.sidebar-item[data-page]').forEach(item => {
+        item.addEventListener('click', function(e) {
+            if (!this.getAttribute('href') || this.getAttribute('href') === '#') e.preventDefault();
+            document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+            closeSidebar();
+        });
+    });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeSidebarToggle);
+} else {
+    initializeSidebarToggle();
+}
+
 
 // Navbar scroll highlight
 const sections = document.querySelectorAll('section[id]');
@@ -309,25 +353,3 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeToggles();
     initializeFormHandling();
 });
-
-
-const serviceOptions = document.querySelectorAll('.service-option');
-        const nextButton = document.getElementById('nextStep');
-        let selectedService = null;
-
-        if (serviceOptions.length && nextButton) {
-            serviceOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    serviceOptions.forEach(o => o.classList.remove('selected'));
-                    option.classList.add('selected');
-                    selectedService = option.querySelector('.service-title')?.textContent.trim();
-                    nextButton.disabled = false;
-                });
-            });
-
-            nextButton.addEventListener('click', () => {
-                if (!selectedService) return;
-                alert(`Selected service: ${selectedService}\n\nProceeding to the next step...`);
-                // TODO: Add real step navigation logic here.
-            });
-        }
