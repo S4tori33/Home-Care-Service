@@ -25,42 +25,44 @@ tabBtns.forEach(btn => {
     });
 });
 
-// Admin credentials
-const ADMIN_USERS = [
-    { email: 'admin@hcs.com', password: 'Admin123' }
-];
-
-// Check if user is admin
-function isAdminUser(email, password) {
-    return ADMIN_USERS.some(admin => 
-        admin.email.toLowerCase() === email.toLowerCase() && 
-        admin.password === password
-    );
-}
-
-// Form submission handlers
+// Login form submission handler
 document.getElementById('loginForm').addEventListener('submit', (e) => {
     e.preventDefault();
     
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value.trim();
     
-    // Check if it's an admin user
-    if (isAdminUser(email, password)) {
-        window.location.href = 'adminDashboard.html';
-    } else if (email && password) {
-        // Regular user login - temporary redirect to home
-        window.location.href = '../home.html';
-    } else {
+    if (!email || !password) {
         alert('Please enter your email and password.');
+        return;
+    }
+
+    // Use auth system to login
+    const result = auth.loginUser(email, password);
+    
+    if (result.success) {
+        const user = result.user;
+        
+        // Redirect based on role
+        if (user.role === 'admin') {
+            window.location.href = 'adminDashboard.html';
+        } else if (user.role === 'customer') {
+            window.location.href = 'dashboard.html?role=customer';
+        } else if (user.role === 'jobseeker') {
+            window.location.href = 'dashboard.html?role=jobseeker';
+        }
+    } else {
+        alert('Login failed: ' + result.message);
     }
 });
 
+// Signup form submission handler
 document.getElementById('signupForm').addEventListener('submit', (e) => {
     e.preventDefault();
     
     const password = document.getElementById('signupPassword').value;
     const confirmPassword = document.getElementById('signupConfirmPassword').value;
+    const role = document.getElementById('signupRole').value;
     
     // Validate passwords match
     if (password !== confirmPassword) {
@@ -68,13 +70,19 @@ document.getElementById('signupForm').addEventListener('submit', (e) => {
         return;
     }
     
-    // Validate password strength (basic check)
+    // Validate password strength
     if (password.length < 6) {
         alert('Password must be at least 6 characters long.');
         return;
     }
+
+    // Validate role selection
+    if (!role) {
+        alert('Please select an account type.');
+        return;
+    }
     
-    // All validations passed - collect form data
+    // Collect form data
     const formData = {
         lastName: document.getElementById('signupLastName').value,
         firstName: document.getElementById('signupFirstName').value,
@@ -82,16 +90,24 @@ document.getElementById('signupForm').addEventListener('submit', (e) => {
         email: document.getElementById('signupEmail').value,
         phone: document.getElementById('signupPhone').value,
         zipCode: document.getElementById('signupZipCode').value,
-        birthdate: document.getElementById('signupBirthdate').value
+        password: password,
+        birthdate: document.getElementById('signupBirthdate').value,
+        role: role
     };
     
-    // Display success message (in production, this would send to server)
-    alert('Sign up successful! You can now log in with your email and password.');
-    console.log('Sign up data:', formData);
+    // Register user through auth system
+    const result = auth.registerUser(formData);
     
-    // Reset form
-    document.getElementById('signupForm').reset();
-    
-    // Switch back to login tab
-    document.querySelector('[data-form="login"]').click();
+    if (result.success) {
+        alert('Sign up successful! You can now log in with your email and password.');
+        console.log('New user created:', result.user);
+        
+        // Reset form
+        document.getElementById('signupForm').reset();
+        
+        // Switch back to login tab
+        document.querySelector('[data-form="login"]').click();
+    } else {
+        alert('Sign up failed: ' + result.message);
+    }
 });

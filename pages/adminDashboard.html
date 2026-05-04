@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles/dashboard.css">
+  <link rel="stylesheet" href="../styles/adminAccountManagement.css">
+  <script src="../js/auth.js"></script>
 </head>
 <body>
 
@@ -224,7 +226,174 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/adminAccountManager.js"></script>
   <script src="../js/adminDashboard.js"></script>
+
+  <!-- Account Management Panel -->
+  <div class="accounts-management-panel" id="accountsManagementPanel">
+    <div class="accounts-panel-content">
+      <div class="accounts-panel-header">
+        <h2>Account Management</h2>
+        <button class="accounts-panel-close" onclick="document.getElementById('accountsManagementPanel').classList.remove('active')">✕</button>
+      </div>
+
+      <div class="accounts-panel-toolbar">
+        <div class="toolbar-filters">
+          <button class="filter-btn active" onclick="filterAccounts('all')">All Users</button>
+          <button class="filter-btn" onclick="filterAccounts('customer')">Customers</button>
+          <button class="filter-btn" onclick="filterAccounts('jobseeker')">Job Seekers</button>
+        </div>
+        <div class="toolbar-actions">
+          <button class="btn-add-user" id="addUserBtn">+ Add Account</button>
+          <button class="btn-export" onclick="adminManager.exportToCSV()">📊 Export</button>
+        </div>
+      </div>
+
+      <div class="accounts-stats">
+        <div class="stat-card">
+          <div class="stat-value" id="totalCount">0</div>
+          <div class="stat-label">Total Accounts</div>
+        </div>
+        <div class="stat-card customers">
+          <div class="stat-value" id="customerCount">0</div>
+          <div class="stat-label">Customers</div>
+        </div>
+        <div class="stat-card jobseekers">
+          <div class="stat-value" id="jobseekerCount">0</div>
+          <div class="stat-label">Job Seekers</div>
+        </div>
+      </div>
+
+      <div class="accounts-table-wrapper">
+        <table class="accounts-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Phone</th>
+              <th>Created</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="accountsTableBody">
+            <tr>
+              <td colspan="6" style="text-align: center; padding: 20px;">Loading accounts...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add User Modal -->
+  <div class="modal" id="addUserModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Create New Account</h3>
+        <button class="modal-close" onclick="document.getElementById('addUserModal').classList.remove('active')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="addUserForm">
+          <div class="form-group two-col">
+            <div>
+              <label for="addFirstName">First Name *</label>
+              <input type="text" id="addFirstName" required>
+            </div>
+            <div>
+              <label for="addLastName">Last Name *</label>
+              <input type="text" id="addLastName" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="addEmail">Email *</label>
+            <input type="email" id="addEmail" required>
+          </div>
+          <div class="form-group">
+            <label for="addPassword">Password *</label>
+            <input type="password" id="addPassword" minlength="6" required>
+          </div>
+          <div class="form-group two-col">
+            <div>
+              <label for="addPhone">Phone</label>
+              <input type="tel" id="addPhone">
+            </div>
+            <div>
+              <label for="addZipCode">Zip Code</label>
+              <input type="text" id="addZipCode">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="addBirthdate">Birthdate</label>
+            <input type="date" id="addBirthdate">
+          </div>
+          <div class="form-group">
+            <label for="addRole">Account Type *</label>
+            <select id="addRole" required>
+              <option value="">Select account type...</option>
+              <option value="customer">Customer</option>
+              <option value="jobseeker">Job Seeker</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="document.getElementById('addUserModal').classList.remove('active')">Cancel</button>
+        <button class="btn-submit" onclick="document.getElementById('addUserForm').dispatchEvent(new Event('submit'))">Create Account</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit User Modal -->
+  <div class="modal" id="editUserModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Edit Account</h3>
+        <button class="modal-close" onclick="document.getElementById('editUserModal').classList.remove('active')">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="editUserForm">
+          <input type="hidden" id="editUserId">
+          <div class="form-group two-col">
+            <div>
+              <label for="editFirstName">First Name *</label>
+              <input type="text" id="editFirstName" required>
+            </div>
+            <div>
+              <label for="editLastName">Last Name *</label>
+              <input type="text" id="editLastName" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="editEmail">Email (Read-only)</label>
+            <input type="email" id="editEmail" readonly style="background: #f5f5f5;">
+          </div>
+          <div class="form-group two-col">
+            <div>
+              <label for="editPhone">Phone</label>
+              <input type="tel" id="editPhone">
+            </div>
+            <div>
+              <label for="editZipCode">Zip Code</label>
+              <input type="text" id="editZipCode">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="editRole">Account Type</label>
+            <select id="editRole" required>
+              <option value="customer">Customer</option>
+              <option value="jobseeker">Job Seeker</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="document.getElementById('editUserModal').classList.remove('active')">Cancel</button>
+        <button class="btn-submit" onclick="document.getElementById('editUserForm').dispatchEvent(new Event('submit'))">Save Changes</button>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>

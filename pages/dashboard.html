@@ -6,249 +6,1212 @@
   <title>Dashboard - Home Care Service</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles/dashboard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue: #3b5bdb;
+      --blue-dark: #1a2ecc;
+      --blue-light: #eef2ff;
+      --blue-mid: #4263eb;
+      --white: #ffffff;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-700: #374151;
+      --gray-900: #111827;
+      --green: #22c55e;
+      --green-bg: #dcfce7;
+      --yellow: #f59e0b;
+      --yellow-bg: #fef3c7;
+      --sidebar-w: 250px;
+      --nav-h: 64px;
+      --sidebar-bg: rgba(20, 35, 140, 0.72);
+      --nav-bg: rgba(22, 36, 150, 0.72);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: linear-gradient(135deg, #1a1a6e 0%, #2a3aad 30%, #3b5bdb 60%, #6480f5 85%, #7c5cbf 100%);
+      min-height: 100vh;
+    }
+
+    /* ── NAVBAR ── */
+    .navbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: var(--nav-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      z-index: 1000;
+      gap: 16px;
+    }
+
+    .sidebar-toggle {
+      display: flex;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 8px;
+      cursor: pointer;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      padding: 8px 9px;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .sidebar-toggle:hover { background: rgba(255,255,255,0.22); }
+    .sidebar-toggle span {
+      display: block; width: 20px; height: 2px;
+      background: #fff; border-radius: 2px;
+      transition: transform 0.25s, opacity 0.2s;
+    }
+    .sidebar-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .sidebar-toggle.open span:nth-child(2) { opacity: 0; }
+    .sidebar-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .navbar-brand {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; flex-shrink: 0;
+    }
+    .navbar-logo {
+      width: 38px; height: 38px;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 12px;
+      color: #fff; letter-spacing: 0.5px;
+    }
+    .navbar-brand-text h1 {
+      font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700;
+      color: #fff; line-height: 1.1;
+    }
+    .navbar-brand-text p { font-size: 11px; color: rgba(255,255,255,0.75); margin-top: 1px; }
+
+    .navbar-links {
+      display: flex; gap: 4px; margin-left: auto;
+    }
+    .navbar-links a {
+      color: rgba(255,255,255,0.82); text-decoration: none;
+      font-size: 13.5px; font-weight: 500;
+      padding: 6px 12px; border-radius: 7px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .navbar-links a:hover, .navbar-links a.active {
+      color: #fff; background: rgba(255,255,255,0.14);
+    }
+
+    /* ── SIDEBAR OVERLAY ── */
+    .sidebar-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,20,0.4); z-index: 850;
+    }
+    .sidebar-overlay.open { display: block; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      position: fixed;
+      top: var(--nav-h); left: 0;
+      width: var(--sidebar-w);
+      height: calc(100vh - var(--nav-h));
+      background: var(--sidebar-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-right: 1px solid rgba(255,255,255,0.18);
+      display: flex; flex-direction: column;
+      overflow-y: auto; z-index: 900;
+      transform: translateX(calc(-1 * var(--sidebar-w)));
+      transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+    }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+
+    .sidebar-profile {
+      padding: 20px 16px 15px;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .avatar-wrap { position: relative; display: inline-block; margin-bottom: 12px; }
+    .avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      border: 2.5px solid rgba(255,255,255,0.35);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Outfit', sans-serif; font-size: 22px; font-weight: 700;
+      color: #fff; cursor: pointer; overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .avatar:hover { border-color: rgba(255,255,255,0.7); transform: scale(1.04); }
+    .avatar-badge {
+      position: absolute; bottom: 3px; right: 3px;
+      width: 14px; height: 14px;
+      background: #4ade80;
+      border: 2px solid rgba(12,22,120,0.8); border-radius: 50%;
+    }
+    .sidebar-user-name {
+      font-family: 'Outfit', sans-serif; font-size: 14.5px; font-weight: 700;
+      color: #fff;
+    }
+    .sidebar-user-role {
+      font-size: 11px; color: rgba(255,255,255,0.55);
+      margin-top: 3px; letter-spacing: 0.4px;
+    }
+
+    .sidebar-nav { padding: 12px 10px; flex: 1; }
+    .sidebar-section-label {
+      font-size: 10px; font-weight: 600; letter-spacing: 1.4px;
+      color: rgba(255,255,255,0.55); text-transform: uppercase;
+      padding: 10px 10px 5px;
+    }
+    .sidebar-item {
+      display: flex; align-items: center; gap: 11px;
+      padding: 10px 12px; border-radius: 10px; cursor: pointer;
+      text-decoration: none; color: rgba(255,255,255,0.82);
+      font-size: 13.5px; font-family: 'Outfit', sans-serif; font-weight: 500;
+      transition: background 0.18s, color 0.18s, transform 0.15s;
+      margin-bottom: 2px; position: relative;
+    }
+    .sidebar-item:hover {
+      background: rgba(255,255,255,0.15); color: #fff; transform: translateX(2px);
+    }
+    .sidebar-item.active {
+      background: rgba(255,255,255,0.22); color: #fff;
+    }
+    .sidebar-item.active::before {
+      content: ''; position: absolute; left: 0; top: 50%;
+      transform: translateY(-50%); width: 3px; height: 55%;
+      background: rgba(255,255,255,0.85); border-radius: 0 3px 3px 0;
+    }
+    .sidebar-icon { width: 18px; height: 18px; flex-shrink: 0; opacity: 0.7; }
+    .sidebar-item.active .sidebar-icon, .sidebar-item:hover .sidebar-icon { opacity: 1; }
+    .sidebar-divider { height: 1px; background: rgba(255,255,255,0.12); margin: 10px 0; }
+    .sidebar-footer {
+      padding: 12px 10px; border-top: 1px solid rgba(255,255,255,0.12);
+    }
+    .sidebar-footer .sidebar-item { margin-bottom: 0; color: rgba(255,255,255,0.7); }
+
+    /* ── MAIN WRAP ── */
+    .main-wrap {
+      margin-top: var(--nav-h);
+      min-height: calc(100vh - var(--nav-h));
+      padding: 28px 28px 40px;
+    }
+
+    /* ── INNER CARD SHELL ── */
+    .dashboard-shell {
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    }
+
+    /* ── TOP BAR ── */
+    .shell-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 28px;
+      border-bottom: 1px solid var(--gray-200);
+      background: #fff;
+    }
+    .shell-brand { display: flex; align-items: center; gap: 12px; }
+    .shell-logo {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Outfit', sans-serif; font-weight: 800; font-size: 13px;
+      color: #fff; letter-spacing: 0.5px;
+    }
+    .shell-brand-text { font-family: 'Outfit', sans-serif; }
+    .shell-brand-text h2 { font-size: 16px; font-weight: 700; color: var(--gray-900); }
+    .shell-brand-text p { font-size: 12px; color: var(--gray-500); margin-top: 1px; }
+
+    .shell-actions { display: flex; align-items: center; gap: 10px; }
+    .btn-new-booking {
+      display: flex; align-items: center; gap: 7px;
+      background: var(--gray-900); color: #fff;
+      border: none; border-radius: 9px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+      padding: 10px 18px;
+      transition: background 0.2s, transform 0.15s;
+      text-decoration: none;
+    }
+    .btn-new-booking:hover { background: #1f2937; transform: translateY(-1px); }
+
+    .btn-logout-icon {
+      width: 38px; height: 38px; border-radius: 9px;
+      background: var(--gray-100); border: 1px solid var(--gray-200);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.2s;
+      text-decoration: none;
+    }
+    .btn-logout-icon:hover { background: var(--gray-200); }
+    .btn-logout-icon svg { width: 18px; height: 18px; color: var(--gray-500); }
+
+    /* ── HEADER ── */
+    .dashboard-header {
+      padding: 28px 32px 0;
+      background: #fff;
+    }
+    .dashboard-header h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 30px; font-weight: 700;
+      color: var(--gray-900); margin-bottom: 4px;
+    }
+    .dashboard-subtitle { font-size: 14px; color: var(--gray-500); }
+
+    /* ── TABS ── */
+    .dashboard-tabs {
+      display: flex; gap: 0;
+      padding: 20px 32px 0;
+      background: #fff;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    .tab-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 20px;
+      background: transparent; border: none;
+      color: var(--gray-500); font-family: 'DM Sans', sans-serif;
+      font-size: 14px; font-weight: 500; cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .tab-btn:hover { color: var(--gray-900); }
+    .tab-btn.active {
+      color: var(--blue); border-bottom-color: var(--blue); font-weight: 600;
+    }
+    .tab-btn svg { width: 16px; height: 16px; }
+
+    /* ── TAB CONTENT ── */
+    .tab-content { background: var(--gray-50); }
+    .tab-pane { display: none; padding: 28px 32px 36px; }
+    .tab-pane.active { display: block; }
+
+    /* ── STATS GRID ── */
+    .stats-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 18px; margin-bottom: 24px;
+    }
+    .stat-card {
+      background: #fff; border: 1px solid var(--gray-200);
+      border-radius: 16px; padding: 22px 24px;
+      display: flex; align-items: center; gap: 18px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .stat-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+    .stat-icon-wrap {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .stat-icon-wrap.blue { background: #eff6ff; }
+    .stat-icon-wrap.green { background: #f0fdf4; }
+    .stat-icon-wrap.purple { background: #f5f3ff; }
+    .stat-icon-wrap svg { width: 24px; height: 24px; }
+    .stat-icon-wrap.blue svg { color: #3b82f6; }
+    .stat-icon-wrap.green svg { color: #22c55e; }
+    .stat-icon-wrap.purple svg { color: #8b5cf6; }
+    .stat-label { font-size: 13px; color: var(--gray-500); margin-bottom: 4px; }
+    .stat-value {
+      font-family: 'Outfit', sans-serif; font-size: 28px; font-weight: 700;
+      color: var(--gray-900); line-height: 1;
+    }
+
+    /* ── BOOKINGS CARD ── */
+    .bookings-card {
+      background: #fff; border: 1px solid var(--gray-200);
+      border-radius: 16px; padding: 22px 24px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+      margin-bottom: 22px;
+    }
+    .bookings-card-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 18px;
+    }
+    .bookings-card-header h3 {
+      font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 700;
+      color: var(--gray-900);
+    }
+    .view-all-link {
+      font-size: 13.5px; color: var(--blue); font-weight: 600;
+      text-decoration: none; display: flex; align-items: center; gap: 4px;
+    }
+    .view-all-link:hover { text-decoration: underline; }
+
+    .booking-item {
+      display: grid; grid-template-columns: auto 1fr auto;
+      align-items: center; gap: 16px;
+      padding: 16px 18px; border-radius: 12px;
+      border: 1px solid var(--gray-200);
+      margin-bottom: 12px; background: #fff;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .booking-item:last-child { margin-bottom: 0; }
+    .booking-item:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); border-color: #d1d5db; }
+
+    .booking-icon-wrap {
+      width: 48px; height: 48px; border-radius: 14px;
+      background: var(--blue-light);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .booking-icon-wrap svg { width: 24px; height: 24px; color: var(--blue); }
+
+    .booking-body { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+    .booking-row { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .booking-title {
+      font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700;
+      color: var(--gray-900);
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px; border-radius: 999px;
+      font-size: 12px; font-weight: 600;
+    }
+    .badge-confirmed { background: var(--green-bg); color: #15803d; }
+    .badge-pending { background: var(--yellow-bg); color: #b45309; }
+    .badge svg { width: 11px; height: 11px; }
+
+    .booking-meta {
+      font-size: 13px; color: var(--gray-500);
+      display: flex; align-items: center; gap: 5px;
+    }
+    .booking-meta svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    .booking-right { text-align: right; }
+    .booking-amount {
+      font-family: 'Outfit', sans-serif; font-size: 17px; font-weight: 700;
+      color: var(--gray-900);
+    }
+    .booking-actions { display: flex; gap: 8px; margin-top: 6px; justify-content: flex-end; }
+    .action-btn {
+      width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--gray-200);
+      background: #fff; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: background 0.15s, border-color 0.15s;
+    }
+    .action-btn:hover { background: var(--gray-100); }
+    .action-btn svg { width: 15px; height: 15px; color: var(--gray-500); }
+    .action-btn.danger:hover { background: #fef2f2; border-color: #fca5a5; }
+    .action-btn.danger svg { color: #ef4444; }
+
+    /* ── CTA BANNER ── */
+    .dashboard-cta {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 20px; padding: 24px 28px;
+      background: linear-gradient(135deg, #3b5bdb 0%, #6c4fd4 100%);
+      border-radius: 16px;
+    }
+    .cta-content h3 {
+      font-family: 'Outfit', sans-serif; font-size: 19px; font-weight: 700;
+      color: #fff; margin-bottom: 4px;
+    }
+    .cta-content p { font-size: 14px; color: rgba(255,255,255,0.82); }
+    .btn-cta {
+      display: flex; align-items: center; gap: 7px;
+      background: #fff; color: var(--blue);
+      border: none; border-radius: 9px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 700;
+      padding: 11px 22px; white-space: nowrap;
+      transition: transform 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+    }
+    .btn-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+
+    /* ── MY BOOKINGS TAB ── */
+    .all-bookings-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 22px;
+    }
+    .all-bookings-header h2 {
+      font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 700;
+      color: var(--gray-900);
+    }
+    .btn-new-small {
+      display: flex; align-items: center; gap: 7px;
+      background: var(--gray-900); color: #fff;
+      border: none; border-radius: 9px; cursor: pointer;
+      font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 600;
+      padding: 9px 16px; text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-new-small:hover { background: #1f2937; }
+
+    .section-label {
+      font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600;
+      color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.7px;
+      margin-bottom: 12px; margin-top: 22px;
+    }
+    .section-label:first-child { margin-top: 0; }
+
+    .booking-item-full {
+      display: grid; grid-template-columns: auto 1fr auto;
+      align-items: start; gap: 16px;
+      padding: 18px 20px; border-radius: 12px;
+      border: 1px solid var(--gray-200);
+      margin-bottom: 12px; background: #fff;
+      transition: box-shadow 0.2s;
+    }
+    .booking-item-full:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.07); }
+
+    .booking-full-meta {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4px 24px; margin-top: 6px;
+    }
+    .booking-full-meta .booking-meta { font-size: 13px; }
+
+    .booking-full-right { text-align: right; }
+    .booking-full-amount {
+      font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 700;
+      color: var(--gray-900); margin-bottom: 10px;
+    }
+    .booking-full-actions { display: flex; gap: 8px; justify-content: flex-end; }
+    .btn-edit {
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 8px;
+      border: 1px solid var(--gray-200); background: #fff;
+      font-size: 13px; font-weight: 600; color: var(--gray-700);
+      cursor: pointer; transition: background 0.15s;
+    }
+    .btn-edit:hover { background: var(--gray-100); }
+    .btn-cancel {
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 8px;
+      border: none; background: transparent;
+      font-size: 13px; font-weight: 600; color: #ef4444;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .btn-cancel:hover { background: #fef2f2; }
+    .btn-book-again {
+      padding: 7px 14px; border-radius: 8px;
+      border: 1px solid var(--gray-200); background: #fff;
+      font-size: 13px; font-weight: 600; color: var(--gray-700);
+      cursor: pointer; transition: background 0.15s;
+    }
+    .btn-book-again:hover { background: var(--gray-100); }
+
+    /* ── PROFILE TAB ── */
+    .profile-layout {
+      display: grid; grid-template-columns: 240px 1fr; gap: 22px;
+    }
+    .profile-left-card {
+      background: #fff; border: 1px solid var(--gray-200);
+      border-radius: 16px; padding: 28px 20px;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; height: fit-content;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    }
+    .profile-avatar {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: var(--blue); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Outfit', sans-serif; font-size: 26px; font-weight: 700;
+      margin-bottom: 14px;
+    }
+    .profile-name {
+      font-family: 'Outfit', sans-serif; font-size: 18px; font-weight: 700;
+      color: var(--gray-900); margin-bottom: 4px;
+    }
+    .profile-member {
+      font-size: 13px; color: var(--gray-500); margin-bottom: 16px;
+    }
+    .btn-edit-profile {
+      width: 100%; padding: 9px; border-radius: 9px;
+      background: var(--gray-900); color: #fff; border: none;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px;
+      transition: background 0.2s;
+    }
+    .btn-edit-profile:hover { background: #1f2937; }
+
+    .profile-right-card {
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .info-card {
+      background: #fff; border: 1px solid var(--gray-200);
+      border-radius: 16px; padding: 22px 24px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.04);
+    }
+    .info-card-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 18px;
+    }
+    .info-card h3 {
+      font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700;
+      color: var(--gray-900);
+    }
+    .btn-edit-small {
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 14px; border-radius: 8px;
+      border: 1px solid var(--gray-200); background: #fff;
+      font-size: 13px; font-weight: 600; color: var(--gray-700);
+      cursor: pointer; transition: background 0.15s; font-family: 'DM Sans', sans-serif;
+    }
+    .btn-edit-small:hover { background: var(--gray-100); }
+
+    .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .info-field label {
+      display: block; font-size: 12px; font-weight: 500; color: var(--gray-500);
+      margin-bottom: 6px; text-transform: capitalize;
+    }
+    .info-field .field-val {
+      display: flex; align-items: center; gap: 8px;
+      padding: 10px 13px; border: 1px solid var(--gray-200);
+      border-radius: 8px; font-size: 14px; color: var(--gray-700);
+      background: var(--gray-50);
+    }
+    .info-field .field-val svg { width: 15px; height: 15px; color: var(--gray-400); flex-shrink: 0; }
+
+    .settings-list { display: flex; flex-direction: column; }
+    .settings-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px 0; border-bottom: 1px solid var(--gray-100);
+      cursor: pointer; transition: background 0.15s; border-radius: 6px;
+    }
+    .settings-item:last-child { border-bottom: none; }
+    .settings-item:hover { background: var(--gray-50); padding-left: 6px; }
+    .settings-icon { width: 20px; height: 20px; color: var(--gray-400); flex-shrink: 0; }
+    .settings-label { font-size: 14px; font-weight: 500; color: var(--gray-700); }
+    .settings-label.danger { color: #ef4444; }
+    .settings-item .settings-icon.danger { color: #ef4444; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .profile-layout { grid-template-columns: 1fr; }
+      .booking-full-meta { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 620px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .booking-item { grid-template-columns: 1fr; }
+      .main-wrap { padding: 16px; }
+      .tab-pane { padding: 20px 16px; }
+      .shell-topbar { padding: 14px 16px; }
+      .dashboard-header { padding: 18px 16px 0; }
+      .dashboard-tabs { padding: 14px 16px 0; }
+    }
+  </style>
 </head>
 <body>
 
- <!-- ── NAVBAR ───────────────────────────────────── -->
-    <nav class="navbar">
-        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
-            <span></span><span></span><span></span>
-        </button>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="#" class="navbar-brand">
+      <div class="navbar-logo">HCS</div>
+      <div class="navbar-brand-text">
+        <h1>Home Care Service</h1>
+        <p>Quality Care, Quality Life</p>
+      </div>
+    </a>
+    <div class="navbar-links">
+      <a href="#">Home</a>
+      <a href="#">Services</a>
+      <a href="#">About</a>
+      <a href="#">Careers</a>
+      <a href="#">Contact</a>
+      <a href="#" class="active">Logout</a>
+    </div>
+  </nav>
 
-        <a href="#" class="navbar-brand">
-            <div class="navbar-logo">HCS</div>
-            <div class="navbar-brand-text">
-                <h1>Home Care Service</h1>
-                <p>Quality Care, Quality Life</p>
-            </div>
-        </a>
+  <!-- SIDEBAR OVERLAY -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-        <div class="navbar-links">
-            <a href="../home.html">Home</a>
-            <a href="../home.html#services">Services</a>
-            <a href="about.html">About</a>
-            <a href="jobSeekerApplication.html">Careers</a>
-            <a href="../home.html#contact">Contact</a>
-        </div>
-
-        <div class="navbar-spacer"></div>
-
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-profile">
+      <div class="avatar-wrap">
+        <div class="avatar" id="avatarEl">GU</div>
+        <div class="avatar-badge"></div>
+      </div>
+      <div class="sidebar-user-name" id="userName">Guest User</div>
+      <div class="sidebar-user-role" id="userRole">Not logged in</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Main</div>
+      <a href="#" class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9L12 2l9 7v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-5H9v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/></svg>
+        Home
+      </a>
+      <a href="#" class="sidebar-item active">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="#" class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        My Bookings
+      </a>
+      <a href="#" class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        Services
+      </a>
+      <a href="#" class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Messages
+      </a>
+      <a href="#" class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Payments
+      </a>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-label">Account</div>
+      <a href="#" class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        My Profile
+      </a>
+      <a href="#" class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        Notifications
+      </a>
+      <div class="sidebar-divider"></div>
+      <a href="#" class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Help & Support
+      </a>
     </nav>
+    <div class="sidebar-footer">
+      <a href="#" class="sidebar-item logout" style="margin-bottom:0;" id="logoutBtn">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Log Out
+      </a>
+    </div>
+  </aside>
 
-    <!-- ── SIDEBAR OVERLAY ──────────────────────────── -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-    <!-- ── LEFT SIDEBAR ─────────────────────────────── -->
-    <aside class="sidebar" id="sidebar">
-
-        <div class="sidebar-profile">
-            <div class="avatar-wrap">
-                <div class="avatar" id="avatarEl" title="Change profile picture">Avatar Here</div>
-                <div class="avatar-badge"></div>
-            </div>
-            <div class="sidebar-user-name" id="userName">Guest User</div>
-            <div class="sidebar-user-role" id="userRole">Not logged in</div>
-        </div>
-
-        <nav class="sidebar-nav">
-
-            <div class="sidebar-section-label">Main</div>
-
-            <!-- 0. Home -->
-            <a href="../home.html" class="sidebar-item" data-page="home">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 9L12 2l9 7v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-5H9v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/>
-                </svg>
-                Home
-            </a>
-
-            <!-- 1. Dashboard -->
-            <a href="#" class="sidebar-item active" data-page="dashboard">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="7" height="7"/>
-                    <rect x="14" y="3" width="7" height="7"/>
-                    <rect x="14" y="14" width="7" height="7"/>
-                    <rect x="3" y="14" width="7" height="7"/>
-                </svg>
-                Dashboard
-            </a>
-
-            <!-- 2. My Bookings -->
-            <a href="booking.html" class="sidebar-item" data-page="bookings">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-                </svg>
-                My Bookings
-            </a>
-
-            <!-- 3. Services -->
-            <a href="../home.html#services" class="sidebar-item" data-page="services">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                </svg>
-                Services
-            </a>
-
-            <!-- 4. Messages -->
-            <a href="#" class="sidebar-item" data-page="messages">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                </svg>
-                Messages
-            </a>
-
-            <!-- 5. Payments -->
-            <a href="#" class="sidebar-item" data-page="payments">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
-                </svg>
-                Payments
-            </a>
-
-            <div class="sidebar-divider"></div>
-            <div class="sidebar-section-label">Account</div>
-
-            <!-- 6. My Profile -->
-            <a href="profile.html" class="sidebar-item" data-page="profile">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                </svg>
-                My Profile
-            </a>
-
-
-            <!-- 7. Notifications -->
-            <a href="#" class="sidebar-item" data-page="notifications">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-                </svg>
-                Notifications
-            </a>
-
-
-
-            <div class="sidebar-divider"></div>
-
-            <!-- 9. Help & Support -->
-            <a href="#" class="sidebar-item" data-page="help">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-                </svg>
-                Help & Support
-            </a>
-
-        </nav>
-
-        <div class="sidebar-footer">
-            <a href="pages/userLogin.html" class="sidebar-item logout" style="margin-bottom:0;">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                    <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
-                </svg>
-                Log Out
-            </a>
-        </div>
-    </aside>
-
+  <!-- MAIN -->
   <div class="main-wrap">
+    <div class="dashboard-shell">
 
-      <header class="dashboard-header">
-          <div>
-              <h1>Welcome back, User <span class="wave"></span></h1>
-              <p class="dashboard-subtitle">Manage your bookings and profile information</p>
+      <!-- TOP BAR -->
+      <div class="shell-topbar">
+        <div class="shell-brand">
+          <div class="shell-logo">HCS</div>
+          <div class="shell-brand-text">
+            <h2>Home Care Service</h2>
+            <p>User Dashboard</p>
           </div>
-          <div class="dashboard-actions">
-              <a href="booking.html" class="btn btn-primary">+ New Booking</a>
-          </div>
-      </header>
-
-      <div class="dashboard-tabs">
-          <button class="tab-btn active" data-tab="overview">Overview</button>
-          <button class="tab-btn" data-tab="bookings">My Bookings</button>
+        </div>
+        <div class="shell-actions">
+          <a href="#" class="btn-new-booking">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Booking
+          </a>
+          <a href="#" class="btn-logout-icon" title="Logout">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          </a>
+        </div>
       </div>
 
+      <!-- HEADER -->
+      <div class="dashboard-header">
+        <h1>Welcome back, <span id="headerName">John</span>! 👋</h1>
+        <p class="dashboard-subtitle">Manage your bookings and profile information</p>
+      </div>
+
+      <!-- TABS -->
+      <div class="dashboard-tabs">
+        <button class="tab-btn active" data-tab="overview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Overview
+        </button>
+        <button class="tab-btn" data-tab="bookings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          My Bookings
+        </button>
+        <button class="tab-btn" data-tab="profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Profile
+        </button>
+      </div>
+
+      <!-- TAB CONTENT -->
       <div class="tab-content">
-          <div class="tab-pane active" id="overview">
-              <div class="stats-grid">
-                  <div class="stat-card">
-                      <div class="stat-icon"></div>
-                      <div>
-                          <div class="stat-label">Upcoming</div>
-                          <div class="stat-value">2</div>
-                      </div>
+
+        <!-- OVERVIEW TAB -->
+        <div class="tab-pane active" id="overview">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon-wrap blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </div>
+              <div>
+                <div class="stat-label">Upcoming</div>
+                <div class="stat-value">2</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrap green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div>
+                <div class="stat-label">Completed</div>
+                <div class="stat-value">3</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrap purple">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              </div>
+              <div>
+                <div class="stat-label">Total Bookings</div>
+                <div class="stat-value">12</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bookings-card">
+            <div class="bookings-card-header">
+              <h3>Upcoming Bookings</h3>
+              <a href="#" class="view-all-link" onclick="switchTab('bookings');return false;">View All →</a>
+            </div>
+
+            <!-- Booking 1 -->
+            <div class="booking-item">
+              <div class="booking-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              </div>
+              <div class="booking-body">
+                <div class="booking-row">
+                  <div class="booking-title">House Cleaning</div>
+                  <span class="badge badge-confirmed">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    Confirmed
+                  </span>
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  Friday, March 20, 2026
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:6px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  10:00 AM - 12:00 PM
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Mendy Drive, Sta. Maria - Zamboanga City
+                </div>
+              </div>
+              <div class="booking-right">
+                <div class="booking-amount">$120</div>
+                <div class="booking-actions">
+                  <button class="action-btn" title="Edit">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  </button>
+                  <button class="action-btn danger" title="Cancel">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Booking 2 -->
+            <div class="booking-item">
+              <div class="booking-icon-wrap" style="background:#fef3c7;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div class="booking-body">
+                <div class="booking-row">
+                  <div class="booking-title">Garden Maintenance</div>
+                  <span class="badge badge-pending">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    Pending
+                  </span>
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  Sunday, March 22, 2026
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:6px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  2:00 PM - 4:00 PM
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Regional Street, San Roque - Zamboanga City
+                </div>
+              </div>
+              <div class="booking-right">
+                <div class="booking-amount">$150</div>
+                <div class="booking-actions">
+                  <button class="action-btn" title="Edit">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  </button>
+                  <button class="action-btn danger" title="Cancel">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA -->
+          <div class="dashboard-cta">
+            <div class="cta-content">
+              <h3>Need a service?</h3>
+              <p>Book your next appointment in just a few clicks.</p>
+            </div>
+            <a href="#" class="btn-cta">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Book Now
+            </a>
+          </div>
+        </div>
+
+        <!-- MY BOOKINGS TAB -->
+        <div class="tab-pane" id="bookings">
+          <div class="all-bookings-header">
+            <h2>All Bookings</h2>
+            <a href="#" class="btn-new-small">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              New Booking
+            </a>
+          </div>
+
+          <div class="section-label">Upcoming</div>
+
+          <div class="booking-item-full">
+            <div class="booking-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div class="booking-body">
+              <div class="booking-row">
+                <div class="booking-title">House Cleaning</div>
+                <span class="badge badge-confirmed">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  Confirmed
+                </span>
+              </div>
+              <div class="booking-full-meta">
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  Friday, March 20, 2026
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  10:00 AM - 12:00 PM
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Mendy Drive, Sta. Maria - Zamboanga City
+                </div>
+              </div>
+            </div>
+            <div class="booking-full-right">
+              <div class="booking-full-amount">$120</div>
+              <div class="booking-full-actions">
+                <button class="btn-edit">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  Edit
+                </button>
+                <button class="btn-cancel">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="booking-item-full">
+            <div class="booking-icon-wrap" style="background:#fef3c7;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="booking-body">
+              <div class="booking-row">
+                <div class="booking-title">Garden Maintenance</div>
+                <span class="badge badge-pending">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  Pending
+                </span>
+              </div>
+              <div class="booking-full-meta">
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  Sunday, March 22, 2026
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  2:00 PM - 4:00 PM
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Regional Street, San Roque - Zamboanga City
+                </div>
+              </div>
+            </div>
+            <div class="booking-full-right">
+              <div class="booking-full-amount">$150</div>
+              <div class="booking-full-actions">
+                <button class="btn-edit">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  Edit
+                </button>
+                <button class="btn-cancel">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-label">History</div>
+
+          <div class="booking-item-full">
+            <div class="booking-icon-wrap" style="background:#f0fdf4;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </div>
+            <div class="booking-body">
+              <div class="booking-row">
+                <div class="booking-title">Pet Care</div>
+                <span class="badge" style="background:#dcfce7;color:#15803d;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  Completed
+                </span>
+              </div>
+              <div class="booking-full-meta">
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  March 18, 2026
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  8:00 AM - 10:00 AM
+                </div>
+              </div>
+            </div>
+            <div class="booking-full-right">
+              <div class="booking-full-amount">$80</div>
+              <div class="booking-full-actions">
+                <button class="btn-book-again">Book Again</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="booking-item-full">
+            <div class="booking-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div class="booking-body">
+              <div class="booking-row">
+                <div class="booking-title">House Cleaning</div>
+                <span class="badge" style="background:#dcfce7;color:#15803d;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  Completed
+                </span>
+              </div>
+              <div class="booking-full-meta">
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  March 10, 2026
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  10:00 AM - 12:00 PM
+                </div>
+              </div>
+            </div>
+            <div class="booking-full-right">
+              <div class="booking-full-amount">$120</div>
+              <div class="booking-full-actions">
+                <button class="btn-book-again">Book Again</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="booking-item-full">
+            <div class="booking-icon-wrap" style="background:#fce7f3;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </div>
+            <div class="booking-body">
+              <div class="booking-row">
+                <div class="booking-title">Elderly Care</div>
+                <span class="badge" style="background:#dcfce7;color:#15803d;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  Completed
+                </span>
+              </div>
+              <div class="booking-full-meta">
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  March 5, 2026
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  12:00 PM - 2:00 PM
+                </div>
+              </div>
+            </div>
+            <div class="booking-full-right">
+              <div class="booking-full-amount">$200</div>
+              <div class="booking-full-actions">
+                <button class="btn-book-again">Book Again</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFILE TAB -->
+        <div class="tab-pane" id="profile">
+          <div class="profile-layout">
+            <div class="profile-left-card">
+              <div class="profile-avatar" id="profileAvatar">JD</div>
+              <div class="profile-name" id="profileName">John Doe</div>
+              <div class="profile-member">Member since January 2024</div>
+              <button class="btn-edit-profile">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Edit
+              </button>
+            </div>
+
+            <div class="profile-right-card">
+              <div class="info-card">
+                <div class="info-card-header">
+                  <h3>Contact Information</h3>
+                  <button class="btn-edit-small">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Edit Profile
+                  </button>
+                </div>
+                <div class="info-grid">
+                  <div class="info-field">
+                    <label>First Name</label>
+                    <div class="field-val">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                      John
+                    </div>
                   </div>
-                  <div class="stat-card">
-                      <div class="stat-icon"></div>
-                      <div>
-                          <div class="stat-label">Completed</div>
-                          <div class="stat-value">3</div>
-                      </div>
+                  <div class="info-field">
+                    <label>Last Name</label>
+                    <div class="field-val">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                      Doe
+                    </div>
                   </div>
-                  <div class="stat-card">
-                      <div class="stat-icon"></div>
-                      <div>
-                          <div class="stat-label">Total Bookings</div>
-                          <div class="stat-value">12</div>
-                      </div>
+                  <div class="info-field" style="grid-column:1/-1">
+                    <label>Email Address</label>
+                    <div class="field-val">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                      john.doe@example.com
+                    </div>
                   </div>
+                  <div class="info-field" style="grid-column:1/-1">
+                    <label>Phone Number</label>
+                    <div class="field-val">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.72 12 19.79 19.79 0 0 1 1.62 3.37 2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.29 6.29l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                      (555) 123-4567
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <section class="bookings-card">
-                  <div class="bookings-header">
-                      <h3>Upcoming Bookings</h3>
-                      <a href="booking.html" class="link-link">View All →</a>
+              <div class="info-card">
+                <h3 style="margin-bottom:16px;">Default Service Address</h3>
+                <div class="info-grid">
+                  <div class="info-field" style="grid-column:1/-1">
+                    <label>Street Address</label>
+                    <div class="field-val">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                      123 Main Street, Apt 4B
+                    </div>
                   </div>
+                  <div class="info-field">
+                    <label>City</label>
+                    <div class="field-val">New York</div>
+                  </div>
+                  <div class="info-field">
+                    <label>ZIP Code</label>
+                    <div class="field-val">10001</div>
+                  </div>
+                </div>
+              </div>
 
-                  <div class="booking-item">
-                      <img src="../assets/icons/house-cleaning.png" alt="House Cleaning" class="booking-icon">
-                      <div class="booking-body">
-                          <div class="booking-row">
-                              <div class="booking-title">House Cleaning</div>
-                              <span class="booking-badge confirmed">Confirmed</span>
-                          </div>
-                          <div class="booking-meta">Friday, March 20, 2026 • 10:00 AM - 12:00 PM</div>
-                          <div class="booking-meta">Mendy Drive, Sta. Maria - Zamboanga City</div>
-                      </div>
-                      <div class="booking-amount">$120</div>
+              <div class="info-card">
+                <h3 style="margin-bottom:4px;">Account Settings</h3>
+                <div class="settings-list">
+                  <div class="settings-item">
+                    <svg class="settings-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span class="settings-label">Change Password</span>
                   </div>
-
-                  <div class="booking-item">
-                      <img src="../assets/icons/garden.png" alt="Garden Maintenance" class="booking-icon">
-                      <div class="booking-body">
-                          <div class="booking-row">
-                              <div class="booking-title">Garden Maintenance</div>
-                              <span class="booking-badge pending">Pending</span>
-                          </div>
-                          <div class="booking-meta">Sunday, March 22, 2026 • 2:00 PM - 4:00 PM</div>
-                          <div class="booking-meta">Regional Street, San Roque - Zamboanga City</div>
-                      </div>
-                      <div class="booking-amount">0</div>
+                  <div class="settings-item">
+                    <svg class="settings-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    <span class="settings-label">Email Preferences</span>
                   </div>
-              </section>
-
-              <section class="dashboard-cta">
-                  <div class="cta-content">
-                      <h3>Need a service?</h3>
-                      <p>Book your next appointment in just a few clicks.</p>
+                  <div class="settings-item">
+                    <svg class="settings-icon danger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                    <span class="settings-label danger">Delete Account</span>
                   </div>
-                  <a href="booking.html" class="btn btn-primary">Book Now</a>
-              </section>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
 
-          <div class="tab-pane" id="bookings">
-              <p class="dashboard-info">Your booking list will show here once you make reservations.</p>
-          </div>
-          
-      </div>
-  </div>
+      </div><!-- end tab-content -->
+    </div><!-- end dashboard-shell -->
+  </div><!-- end main-wrap -->
 
-  <script src="../js/script.js"></script>
+  <script>
+    // Tab switching
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      const btn = document.querySelector(`.tab-btn[data-tab="${tabName}"]`);
+      const pane = document.getElementById(tabName);
+      if (btn) btn.classList.add('active');
+      if (pane) pane.classList.add('active');
+    }
+
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+    });
+
+    // Sidebar toggle
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('sidebar');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+    sidebarToggle.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      sidebarToggle.classList.toggle('open');
+      sidebarOverlay.classList.toggle('open');
+    });
+    sidebarOverlay.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+      sidebarToggle.classList.remove('open');
+      sidebarOverlay.classList.remove('open');
+    });
+
+    // Auth integration
+    document.addEventListener('DOMContentLoaded', () => {
+      if (typeof auth !== 'undefined' && auth.isLoggedIn()) {
+        const user = auth.getCurrentUser();
+        document.getElementById('userName').textContent = `${user.firstName} ${user.lastName}`;
+        document.getElementById('userRole').textContent = user.role === 'customer' ? 'Customer' : user.role === 'jobseeker' ? 'Job Seeker' : 'User';
+        const initials = (user.firstName[0] + (user.lastName[0] || '')).toUpperCase();
+        document.getElementById('avatarEl').textContent = initials;
+        document.getElementById('headerName').textContent = user.firstName;
+        document.getElementById('profileName').textContent = `${user.firstName} ${user.lastName}`;
+        document.getElementById('profileAvatar').textContent = initials;
+      }
+
+      document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (typeof auth !== 'undefined') {
+          auth.logout();
+          window.location.href = 'userLogin.html';
+        }
+      });
+    });
+  </script>
 </body>
 </html>
-"

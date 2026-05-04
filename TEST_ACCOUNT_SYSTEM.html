@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account System Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            max-width: 600px;
+            margin: 20px auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .test-case {
+            background: #f9f9f9;
+            padding: 15px;
+            margin: 10px 0;
+            border-left: 4px solid #3b5bdb;
+            border-radius: 4px;
+        }
+        .test-case.pass {
+            border-left-color: #22c55e;
+            background: #f0fdf4;
+        }
+        .test-case.fail {
+            border-left-color: #ef4444;
+            background: #fef2f2;
+        }
+        .output {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        button {
+            background: #3b5bdb;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #2d47a8;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>HCS Account System Test Suite</h1>
+        <p>Testing authentication and role-based account system</p>
+        
+        <button onclick="runAllTests()">Run All Tests</button>
+        <button onclick="clearResults()">Clear Results</button>
+        
+        <div id="results"></div>
+    </div>
+
+    <script src="../js/auth.js"></script>
+    <script>
+        function runAllTests() {
+            const results = document.getElementById('results');
+            results.innerHTML = '<h2>Test Results:</h2>';
+
+            // Test 1: System initialization
+            testSystemInit(results);
+
+            // Test 2: User registration - Customer
+            testRegisterCustomer(results);
+
+            // Test 3: User registration - Job Seeker
+            testRegisterJobSeeker(results);
+
+            // Test 4: Login - Customer
+            testLoginCustomer(results);
+
+            // Test 5: Login - Job Seeker
+            testLoginJobSeeker(results);
+
+            // Test 6: Admin login
+            testLoginAdmin(results);
+
+            // Test 7: Invalid credentials
+            testInvalidCredentials(results);
+
+            // Test 8: User role checking
+            testRoleChecking(results);
+
+            // Test 9: Logout
+            testLogout(results);
+
+            // Test 10: Display user info
+            testDisplayInfo(results);
+        }
+
+        function addTest(results, name, passed, output) {
+            const testDiv = document.createElement('div');
+            testDiv.className = 'test-case ' + (passed ? 'pass' : 'fail');
+            testDiv.innerHTML = `
+                <strong>${passed ? '✓' : '✗'} ${name}</strong>
+                ${output ? '<div class="output">' + output + '</div>' : ''}
+            `;
+            results.appendChild(testDiv);
+        }
+
+        function testSystemInit(results) {
+            try {
+                const users = auth.getAllUsers();
+                const hasAdmin = users.some(u => u.email === 'admin@hcs.com');
+                addTest(results, 'System Initialization', hasAdmin, 
+                    `Found ${users.length} users. Admin present: ${hasAdmin}`);
+            } catch(e) {
+                addTest(results, 'System Initialization', false, e.message);
+            }
+        }
+
+        function testRegisterCustomer(results) {
+            try {
+                auth.logout(); // Clear any session
+                const result = auth.registerUser({
+                    firstName: 'John',
+                    lastName: 'Customer',
+                    middleInitial: 'C',
+                    email: 'john@test.com',
+                    phone: '555-1234',
+                    zipCode: '12345',
+                    password: 'Test123',
+                    birthdate: '1990-01-01',
+                    role: 'customer'
+                });
+                addTest(results, 'Register Customer Account', result.success, 
+                    `Email: ${result.user?.email}, Role: ${result.user?.role}`);
+            } catch(e) {
+                addTest(results, 'Register Customer Account', false, e.message);
+            }
+        }
+
+        function testRegisterJobSeeker(results) {
+            try {
+                const result = auth.registerUser({
+                    firstName: 'Jane',
+                    lastName: 'Seeker',
+                    middleInitial: 'S',
+                    email: 'jane@test.com',
+                    phone: '555-5678',
+                    zipCode: '54321',
+                    password: 'Test456',
+                    birthdate: '1995-05-15',
+                    role: 'jobseeker'
+                });
+                addTest(results, 'Register Job Seeker Account', result.success, 
+                    `Email: ${result.user?.email}, Role: ${result.user?.role}`);
+            } catch(e) {
+                addTest(results, 'Register Job Seeker Account', false, e.message);
+            }
+        }
+
+        function testLoginCustomer(results) {
+            try {
+                auth.logout();
+                const result = auth.loginUser('john@test.com', 'Test123');
+                const user = auth.getCurrentUser();
+                addTest(results, 'Login Customer', result.success && user.role === 'customer', 
+                    `Logged in as: ${user.firstName} (${user.role})`);
+            } catch(e) {
+                addTest(results, 'Login Customer', false, e.message);
+            }
+        }
+
+        function testLoginJobSeeker(results) {
+            try {
+                auth.logout();
+                const result = auth.loginUser('jane@test.com', 'Test456');
+                const user = auth.getCurrentUser();
+                addTest(results, 'Login Job Seeker', result.success && user.role === 'jobseeker', 
+                    `Logged in as: ${user.firstName} (${user.role})`);
+            } catch(e) {
+                addTest(results, 'Login Job Seeker', false, e.message);
+            }
+        }
+
+        function testLoginAdmin(results) {
+            try {
+                auth.logout();
+                const result = auth.loginUser('admin@hcs.com', 'Admin123');
+                const user = auth.getCurrentUser();
+                addTest(results, 'Login Admin', result.success && user.role === 'admin', 
+                    `Logged in as: ${user.firstName} (${user.role})`);
+            } catch(e) {
+                addTest(results, 'Login Admin', false, e.message);
+            }
+        }
+
+        function testInvalidCredentials(results) {
+            try {
+                auth.logout();
+                const result = auth.loginUser('nonexistent@test.com', 'wrongpass');
+                addTest(results, 'Reject Invalid Credentials', !result.success, 
+                    `Error message: ${result.message}`);
+            } catch(e) {
+                addTest(results, 'Reject Invalid Credentials', false, e.message);
+            }
+        }
+
+        function testRoleChecking(results) {
+            try {
+                auth.logout();
+                auth.loginUser('john@test.com', 'Test123');
+                const isCustomer = auth.hasRole('customer');
+                const isJobSeeker = auth.hasRole('jobseeker');
+                addTest(results, 'Role Checking', isCustomer && !isJobSeeker, 
+                    `Customer: ${isCustomer}, JobSeeker: ${isJobSeeker}`);
+            } catch(e) {
+                addTest(results, 'Role Checking', false, e.message);
+            }
+        }
+
+        function testLogout(results) {
+            try {
+                auth.loginUser('john@test.com', 'Test123');
+                const beforeLogout = auth.isLoggedIn();
+                auth.logout();
+                const afterLogout = auth.isLoggedIn();
+                addTest(results, 'Logout', beforeLogout && !afterLogout, 
+                    `Before logout: ${beforeLogout}, After logout: ${afterLogout}`);
+            } catch(e) {
+                addTest(results, 'Logout', false, e.message);
+            }
+        }
+
+        function testDisplayInfo(results) {
+            try {
+                auth.logout();
+                auth.loginUser('jane@test.com', 'Test456');
+                const displayName = auth.getDisplayName();
+                const role = auth.getUserRole();
+                addTest(results, 'Display User Info', displayName !== 'Guest', 
+                    `Display name: ${displayName}, Role: ${role}`);
+            } catch(e) {
+                addTest(results, 'Display User Info', false, e.message);
+            }
+        }
+
+        function clearResults() {
+            document.getElementById('results').innerHTML = '';
+        }
+
+        // Run tests on page load
+        window.addEventListener('load', () => {
+            console.log('Account System Test Suite Ready');
+            console.log('Click "Run All Tests" to start');
+        });
+    </script>
+</body>
+</html>
