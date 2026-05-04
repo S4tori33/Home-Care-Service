@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Dashboard - Home Care Service</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/dashboard.css">
+  <link rel="stylesheet" href="../styles/home.css">
+  <style>
+    .quick-actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .action-card { background: white; border: 1px solid #e5e7eb; padding: 20px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s ease; }
+    .action-card:hover { border-color: #3b82f6; background: #f0f4ff; }
+    .action-icon { font-size: 32px; margin-bottom: 8px; }
+    .action-label { font-size: 14px; font-weight: 600; color: #1f2937; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <button class="sidebar-toggle" id="sidebarToggle"><span></span><span></span><span></span></button>
+    <a href="#" class="navbar-brand">
+      <div class="navbar-logo">HCS</div>
+      <div class="navbar-brand-text">
+        <h1>Home Care Service</h1>
+        <p>Your Personal Dashboard</p>
+      </div>
+    </a>
+    <div class="navbar-links">
+      <a href="../home.html">Home</a>
+      <a href="../pages/about.html">About</a>
+      <a href="#" id="logoutLink">Logout</a>
+    </div>
+  </nav>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-profile">
+      <div class="avatar-wrap">
+        <div class="avatar" id="avatarEl">CU</div>
+        <div class="avatar-badge"></div>
+      </div>
+      <div class="sidebar-user-name" id="userName">Customer</div>
+      <div class="sidebar-user-role" id="userRole">User</div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav"></nav>
+  </aside>
+
+  <div class="main-wrap">
+    <div class="dashboard-shell">
+      <div class="shell-topbar">
+        <div class="shell-brand">
+          <div class="shell-logo">HCS</div>
+          <div class="shell-brand-text">
+            <h2>Your Dashboard</h2>
+            <p>Manage bookings and connect with providers</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-header">
+        <h1>Welcome back, <span id="headerName">Customer</span>! 😊</h1>
+        <p class="dashboard-subtitle">Book services, track appointments, and communicate with providers</p>
+      </div>
+
+      <!-- QUICK ACTIONS -->
+      <div class="quick-actions">
+        <div class="action-card" onclick="bookService()">
+          <div class="action-icon">📅</div>
+          <div class="action-label">Book Service</div>
+        </div>
+        <div class="action-card" onclick="viewBookings()">
+          <div class="action-icon">📋</div>
+          <div class="action-label">My Bookings</div>
+        </div>
+        <div class="action-card" onclick="sendMessage()">
+          <div class="action-icon">💬</div>
+          <div class="action-label">Messages</div>
+        </div>
+        <div class="action-card" onclick="editProfile()">
+          <div class="action-icon">👤</div>
+          <div class="action-label">My Profile</div>
+        </div>
+      </div>
+
+      <!-- BOOKING OVERVIEW -->
+      <div class="dashboard-header" style="margin-top: 40px;">
+        <h2 style="font-size: 20px;">Booking Overview</h2>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 32px;">
+        <div style="background: white; border: 1px solid #e5e7eb; padding: 20px; border-radius: 12px;">
+          <div style="font-size: 14px; color: #6b7280; margin-bottom: 8px;">Upcoming</div>
+          <div style="font-size: 28px; font-weight: 700; color: #3b82f6;" id="upcomingCount">0</div>
+          <p style="font-size: 12px; color: #9ca3af;">Confirmed appointments</p>
+        </div>
+
+        <div style="background: white; border: 1px solid #e5e7eb; padding: 20px; border-radius: 12px;">
+          <div style="font-size: 14px; color: #6b7280; margin-bottom: 8px;">Completed</div>
+          <div style="font-size: 28px; font-weight: 700; color: #10b981;" id="completedCount">0</div>
+          <p style="font-size: 12px; color: #9ca3af;">Successfully finished</p>
+        </div>
+
+        <div style="background: white; border: 1px solid #e5e7eb; padding: 20px; border-radius: 12px;">
+          <div style="font-size: 14px; color: #6b7280; margin-bottom: 8px;">Messages</div>
+          <div style="font-size: 28px; font-weight: 700; color: #f59e0b;" id="unreadMessages">0</div>
+          <p style="font-size: 12px; color: #9ca3af;">Unread conversations</p>
+        </div>
+      </div>
+
+      <!-- RECENT BOOKINGS -->
+      <div class="dashboard-header" style="margin-bottom: 20px;">
+        <h2 style="font-size: 20px;">Recent Bookings</h2>
+      </div>
+      <div id="recentBookingsList">
+        <p style="color: #9ca3af; text-align: center; padding: 20px;">No bookings yet. Start by booking a service!</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script>
+    const userRole = auth.getUserRole();
+    if (!userRole || userRole.id !== 'customer') {
+      window.location.href = '../pages/userLogin.html';
+    }
+    dashboard.initializeDashboard();
+
+    const user = auth.getCurrentUser();
+    const stats = dashboard.getUserStatistics();
+
+    document.getElementById('upcomingCount').textContent = stats.upcomingBookings || 0;
+    document.getElementById('completedCount').textContent = stats.completedBookings || 0;
+    document.getElementById('unreadMessages').textContent = stats.unreadMessages || 0;
+
+    const bookings = auth.getUserBookings(user.id, 'customer');
+    const recentBookings = bookings.slice(-3).reverse();
+
+    function renderRecentBookings() {
+      if (recentBookings.length === 0) {
+        document.getElementById('recentBookingsList').innerHTML = '<p style="color: #9ca3af; text-align: center; padding: 20px;">No bookings yet. Start by booking a service!</p>';
+        return;
+      }
+
+      document.getElementById('recentBookingsList').innerHTML = recentBookings.map(b => `
+        <div style="background: white; border: 1px solid #e5e7eb; padding: 20px; border-radius: 12px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: start;">
+          <div>
+            <div style="font-size: 16px; font-weight: 600; color: #1f2937;">${b.serviceType || 'Service'}</div>
+            <div style="font-size: 13px; color: #6b7280; margin-top: 4px;">📅 ${new Date(b.date || '').toLocaleDateString()}</div>
+            <div style="font-size: 13px; color: #6b7280;">📍 ${b.location || 'Not specified'}</div>
+          </div>
+          <button onclick="viewBookingDetails('${b.id}')" style="padding: 10px 16px; background: #3b82f6; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600;">View Details</button>
+        </div>
+      `).join('');
+    }
+
+    function bookService() {
+      window.location.href = '../pages/booking.html';
+    }
+
+    function viewBookings() {
+      alert('Opening your bookings...');
+    }
+
+    function sendMessage() {
+      alert('Opening messages...');
+    }
+
+    function editProfile() {
+      alert('Opening profile editor...');
+    }
+
+    function viewBookingDetails(bookingId) {
+      alert(`Viewing details for booking ${bookingId}`);
+    }
+
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      dashboard.logout();
+    });
+
+    renderRecentBookings();
+  </script>
+</body>
+</html>

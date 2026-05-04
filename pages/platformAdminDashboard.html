@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Platform Admin Dashboard - Home Care Service</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/dashboard.css">
+  <link rel="stylesheet" href="../styles/adminDashboard.css">
+  <style>
+    .admin-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    .admin-card {
+      background: white;
+      border: 1px solid #e5e7eb;
+      padding: 24px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+    .admin-card:hover {
+      border-color: #1e40af;
+      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.1);
+    }
+    .admin-card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 16px;
+    }
+    .admin-card .stat {
+      font-size: 28px;
+      font-weight: 700;
+      color: #1e40af;
+      margin-bottom: 8px;
+    }
+    .admin-card p {
+      font-size: 13px;
+      color: #6b7280;
+    }
+    .admin-btn {
+      padding: 10px 16px;
+      border: 1px solid #1e40af;
+      background: white;
+      color: #1e40af;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 16px;
+    }
+    .admin-btn:hover {
+      background: #1e40af;
+      color: white;
+    }
+    .admin-btn.primary {
+      background: #1e40af;
+      color: white;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="#" class="navbar-brand">
+      <div class="navbar-logo">HCS</div>
+      <div class="navbar-brand-text">
+        <h1>Home Care Service</h1>
+        <p>Platform Administration</p>
+      </div>
+    </a>
+    <div class="navbar-links">
+      <a href="../home.html">Home</a>
+      <a href="#" id="logoutLink">Logout</a>
+    </div>
+  </nav>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-profile">
+      <div class="avatar-wrap">
+        <div class="avatar" id="avatarEl">PA</div>
+        <div class="avatar-badge"></div>
+      </div>
+      <div class="sidebar-user-name" id="userName">Platform Admin</div>
+      <div class="sidebar-user-role" id="userRole">Administrator</div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav"></nav>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-wrap">
+    <div class="dashboard-shell">
+      <div class="shell-topbar">
+        <div class="shell-brand">
+          <div class="shell-logo">HCS</div>
+          <div class="shell-brand-text">
+            <h2>Platform Admin Dashboard</h2>
+            <p>User Management & Analytics</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-header">
+        <h1>Welcome, <span id="headerName">Admin</span>! 👤</h1>
+        <p class="dashboard-subtitle">Manage users and monitor platform activity</p>
+      </div>
+
+      <!-- USER STATISTICS -->
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h3>👥 Total Users</h3>
+          <div class="stat" id="totalUsers">0</div>
+          <p>All active users</p>
+          <button class="admin-btn primary" onclick="viewUsers()">View All</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>🆕 New This Month</h3>
+          <div class="stat" id="newUsers">0</div>
+          <p>Recently registered</p>
+          <button class="admin-btn" onclick="viewNewUsers()">View</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>⏸️ Inactive</h3>
+          <div class="stat" id="inactiveUsers">0</div>
+          <p>Not active in 30 days</p>
+          <button class="admin-btn" onclick="viewInactive()">View</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>🚫 Banned</h3>
+          <div class="stat" id="bannedUsers">0</div>
+          <p>Suspended accounts</p>
+          <button class="admin-btn" onclick="viewBanned()">View</button>
+        </div>
+      </div>
+
+      <!-- USER TYPE BREAKDOWN -->
+      <div class="section-title">👥 User Type Distribution</div>
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h3>Customers</h3>
+          <div class="stat" id="countCustomers">0</div>
+          <p>Service booking users</p>
+          <button class="admin-btn" onclick="viewUserType('customer')">Manage</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>Service Providers</h3>
+          <div class="stat" id="countProviders">0</div>
+          <p>Service delivery professionals</p>
+          <button class="admin-btn" onclick="viewUserType('providers')">Manage</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>Support Staff</h3>
+          <div class="stat" id="countSupport">0</div>
+          <p>Support & moderation team</p>
+          <button class="admin-btn" onclick="viewUserType('support')">Manage</button>
+        </div>
+      </div>
+
+      <!-- ACTIONS -->
+      <div class="section-title">Actions</div>
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h3>➕ Create User</h3>
+          <p style="margin-bottom: 16px;">Add new user account to system</p>
+          <button class="admin-btn primary" onclick="openUserForm()">Create</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>📊 Analytics</h3>
+          <p style="margin-bottom: 16px;">View detailed platform analytics</p>
+          <button class="admin-btn primary" onclick="viewAnalytics()">View</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>📋 Reports</h3>
+          <p style="margin-bottom: 16px;">Generate user and activity reports</p>
+          <button class="admin-btn primary" onclick="generateReport()">Generate</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script>
+    if (!dashboard.checkAccess('platform_admin')) {
+      window.location.href = '../pages/userLogin.html';
+    }
+    dashboard.initializeDashboard();
+
+    function updateStats() {
+      const users = auth.getAllUsers();
+      document.getElementById('totalUsers').textContent = users.filter(u => u.status !== 'banned').length;
+      document.getElementById('newUsers').textContent = users.filter(u => {
+        const created = new Date(u.createdAt);
+        const now = new Date();
+        return (now - created) < 30 * 24 * 60 * 60 * 1000;
+      }).length;
+      document.getElementById('inactiveUsers').textContent = users.filter(u => !u.lastLogin || (new Date() - new Date(u.lastLogin)) > 30 * 24 * 60 * 60 * 1000).length;
+      document.getElementById('bannedUsers').textContent = users.filter(u => u.status === 'banned').length;
+      document.getElementById('countCustomers').textContent = users.filter(u => u.role === 'customer').length;
+      document.getElementById('countProviders').textContent = users.filter(u => ['caregiver', 'pet_care', 'garden_maintenance', 'house_cleaning'].includes(u.role)).length;
+      document.getElementById('countSupport').textContent = users.filter(u => ['customer_support', 'moderator'].includes(u.role)).length;
+    }
+
+    function viewUsers() { alert('Opening user management...'); }
+    function viewNewUsers() { alert('Showing new users...'); }
+    function viewInactive() { alert('Showing inactive users...'); }
+    function viewBanned() { alert('Showing banned users...'); }
+    function viewUserType(type) { alert(`Showing ${type} users...`); }
+    function openUserForm() { alert('Opening user creation form...'); }
+    function viewAnalytics() { alert('Opening analytics...'); }
+    function generateReport() { alert('Generating report...'); }
+
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      dashboard.logout();
+    });
+
+    updateStats();
+    setInterval(updateStats, 10000);
+  </script>
+</body>
+</html>
