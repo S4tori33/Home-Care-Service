@@ -891,9 +891,10 @@ body {
 
 .contact-cta {
     display: flex;
-    gap: 16px;
+    padding: 10px;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: center;
 }
 
 .btn-outline {

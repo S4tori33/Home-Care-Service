@@ -11,381 +11,199 @@
 </head>
 <body>
 
-    <!-- ── NAVBAR ───────────────────────────────────── -->
-    <nav class="navbar">
-        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
-            <span></span><span></span><span></span>
-        </button>
-
-        <a href="../home.html" class="navbar-brand">
-            <div class="navbar-logo">HCS</div>
-            <div class="navbar-brand-text">
-                <h1>Home Care Service</h1>
-                <p>Quality Care, Quality Life</p>
+    <!-- ── HEADER ───────────────────────────────────── -->
+    <header class="about-header">
+        <div class="header-container">
+            <div class="header-brand">
+                <div class="brand-icon">HCS</div>
+                <div class="brand-text">
+                    <h1>Home Care Service</h1>
+                    <p>About Us</p>
+                </div>
             </div>
-        </a>
-
-        <div class="navbar-links">
-            <a href="../home.html">Home</a>
-            <a href="#services">Services</a>
-            <a href="#" class="active">About</a>
-            <a href="../home.html#management">Careers</a>
-            <a href="#contact">Contact</a>
+            <a href="../home.html" class="back-link">← Back to Home</a>
         </div>
+    </header>
 
-        <div class="navbar-spacer"></div>
-
-    </nav>
-
-    <!-- ── SIDEBAR OVERLAY ──────────────────────────── -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-    <!-- ── LEFT SIDEBAR ─────────────────────────────── -->
-    <aside class="sidebar" id="sidebar">
-
-        <div class="sidebar-profile">
-            <div class="avatar-wrap">
-                <div class="avatar" id="avatarEl" title="Change profile picture">Avatar Here</div>
-                <div class="avatar-badge"></div>
+    <!-- ── HERO SECTION ───────────────────────────────────── -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Transforming Lives Through Service</h1>
+            <p>We're more than a home care service – we're a bridge connecting quality care with meaningful employment opportunities</p>
+            <div class="hero-buttons">
+                <a href="booking.html" class="btn btn-white">Book a Service</a>
+                <a href="../home.html#services" class="btn btn-outline">Explore Services</a>
             </div>
-            <div class="sidebar-user-name" id="userName">Guest User</div>
-            <div class="sidebar-user-role" id="userRole">Not logged in</div>
         </div>
-
-        <nav class="sidebar-nav">
-
-            <div class="sidebar-section-label">Main</div>
-
-            <!-- 0. Home -->
-            <a href="../home.html" class="sidebar-item" data-page="home">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 9L12 2l9 7v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-5H9v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/>
-                </svg>
-                Home
-            </a>
-
-            <!-- 1. Dashboard -->
-            <a href="dashboard.html" class="sidebar-item" data-page="dashboard">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="7" height="7"/>
-                    <rect x="14" y="3" width="7" height="7"/>
-                    <rect x="14" y="14" width="7" height="7"/>
-                    <rect x="3" y="14" width="7" height="7"/>
-                </svg>
-                Dashboard
-            </a>
-
-            <!-- 2. My Bookings -->
-            <a href="booking.html" class="sidebar-item" data-page="bookings">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-                </svg>
-                My Bookings
-            </a>
-
-            <!-- 3. Services -->
-            <a href="#services" class="sidebar-item" data-page="services">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                </svg>
-                Services
-            </a>
-
-            <!-- 4. Messages -->
-            <a href="#" class="sidebar-item" data-page="messages">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                </svg>
-                Messages
-            </a>
-
-            <!-- 5. Payments -->
-            <a href="#" class="sidebar-item" data-page="payments">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
-                </svg>
-                Payments
-            </a>
-
-            <div class="sidebar-divider"></div>
-            <div class="sidebar-section-label">Account</div>
-
-            <!-- 6. My Profile -->
-            <a href="profile.html" class="sidebar-item" data-page="profile">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                </svg>
-                My Profile
-            </a>
-
-            <!-- 7. Notifications -->
-            <a href="#" class="sidebar-item" data-page="notifications">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-                </svg>
-                Notifications
-            </a>
-
-
-
-            <div class="sidebar-divider"></div>
-
-            <!-- 9. Help & Support -->
-            <a href="#" class="sidebar-item" data-page="help">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-                </svg>
-                Help & Support
-            </a>
-
-        </nav>
-
-        <div class="sidebar-footer">
-            <a href="userLogin.html" class="sidebar-item logout" style="margin-bottom:0;">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                    <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
-                </svg>
-                Log Out
-            </a>
-        </div>
-    </aside>
-
-    <!-- ── MAIN CONTENT ──────────────────────────────── -->
-    <div class="main-wrap">
-    <section class="hero">
-            <h2>Reliable Care,<br><span class="line-2">Trusted Support.</span></h2>
-            <p class="hero-sub">
-                Home Care Service (HCS) provides comprehensive assistance with
-                household management, personal care, and home security support.
-            </p>
-            <div class="hero-cta">
-                <a href="#services" class="btn btn-primary">Explore Services →</a>
-            </div>
     </section>
-    <section id="values" class="section core-values">
+
+    <!-- ── STATISTICS SECTION ───────────────────────────────────── -->
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-value">500+</div>
+                <div class="stat-label">Happy Customers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👤</div>
+                <div class="stat-value">100+</div>
+                <div class="stat-label">Trained Professionals</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">✓</div>
+                <div class="stat-value">10,000+</div>
+                <div class="stat-label">Services Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">★</div>
+                <div class="stat-value">4.9/5</div>
+                <div class="stat-label">Average Rating</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── OUR STORY SECTION ───────────────────────────────────── -->
+    <section class="story-section">
+        <h2>Our Story</h2>
+        <div class="story-content">
+            <p>Home Care Service was founded in 2024 with a simple yet powerful vision: to create a service that not only provides exceptional home care but also serves as a pathway to employment for job seekers in our community.</p>
+            <p>We recognized a dual need in our society – families struggling to find reliable, trustworthy help for their homes, and talented individuals seeking meaningful work opportunities with flexible schedules. HCS bridges this gap by connecting these two groups in a mutually beneficial relationship.</p>
+        </div>
+    </section>
+
+    <!-- ── OUR MISSION SECTION ───────────────────────────────────── -->
+    <section class="mission-section">
+        <div class="mission-container">
+            <div class="mission-icon">🎯</div>
+            <h2>Our Mission</h2>
+            <p>To deliver exceptional home care services while creating sustainable employment opportunities, fostering dignity, growth, and community connection for both our customers and service providers.</p>
+        </div>
+    </section>
+
+    <!-- ── OUR CORE VALUES SECTION ───────────────────────────────────── -->
+    <section class="values-section">
         <h2>Our Core Values</h2>
         <p class="section-subtitle">The principles that guide everything we do</p>
-
         <div class="values-grid">
             <div class="value-card">
-                <div class="value-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 21s-6-4.35-6-10.5S8.1 4 12 7.5 18 3.5 18 10.5 12 21 12 21z" fill="currentColor"/>
-                        <path d="M9 10h6v2H9v-2zm0 4h6v2H9v-2z" fill="white" opacity="0.9"/>
-                    </svg>
-                </div>
+                <div class="value-icon">❤️</div>
                 <h3>Care & Compassion</h3>
                 <p>Every service we provide is delivered with genuine care and respect for our clients and their homes.</p>
             </div>
-
             <div class="value-card">
-                <div class="value-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2a7 7 0 0 0-7 7c0 5 7 13 7 13s7-8 7-13a7 7 0 0 0-7-7z" fill="currentColor"/>
-                        <path d="M12 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" fill="white" opacity="0.9"/>
-                    </svg>
-                </div>
+                <div class="value-icon">🛡️</div>
                 <h3>Trust & Safety</h3>
                 <p>All our professionals are thoroughly vetted, background-checked, and insured for your peace of mind.</p>
             </div>
-
             <div class="value-card">
-                <div class="value-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M17 3H7a2 2 0 0 0-2 2v14l7-3 7 3V5a2 2 0 0 0-2-2z" fill="currentColor"/>
-                        <path d="M7 7h10" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M7 11h10" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                </div>
+                <div class="value-icon">🎖️</div>
                 <h3>Quality Excellence</h3>
                 <p>We maintain the highest standards of service quality through continuous training and feedback.</p>
             </div>
-
             <div class="value-card">
-                <div class="value-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20z" fill="currentColor"/>
-                        <path d="M8 12h8" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                        <path d="M12 8v8" stroke="white" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                </div>
+                <div class="value-icon">👥</div>
                 <h3>Community Impact</h3>
                 <p>We create meaningful employment opportunities while serving our community's needs.</p>
             </div>
         </div>
     </section>
 
-    <section id="services" class="section services">
-            <h2>Comprehensive Care Solutions</h2>
-            <p class="section-subtitle">From everyday tasks to specialized care, we're here to help</p>
-
-            <div class="services-grid">
-                <details class="service-card service-card--blue">
-                    <summary>
-                        <div class="service-icon" aria-hidden="true">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2l2.89 5.85 6.46.94-4.67 4.55 1.1 6.43L12 17.77l-5.78 3.04 1.1-6.43L2.65 8.79l6.46-.94L12 2z" fill="currentColor"/>
-                            </svg>
-                        </div>
-                        <h3>House Cleaning</h3>
-                        <p>Professional cleaning for a spotless home</p>
-                    </summary>
-                    <div class="service-details">
-                        <h4>Pricing</h4>
-                        <p>₱200-300 per hour | ₱1,000-2,500 per session</p>
-                        
-                        <h4>✓ What's Included</h4>
-                        <ul>
-                            <li>Dusting & vacuuming</li>
-                            <li>Kitchen & bathroom cleaning</li>
-                            <li>Floor sweeping & mopping</li>
-                            <li>Laundry assistance</li>
-                            <li>Trash removal</li>
-                            <li>Organizing & decluttering</li>
-                        </ul>
-                        
-                        <h4>Service Details</h4>
-                        <p>Our professional house cleaning service ensures your home is spotless and fresh. We use eco-friendly cleaning products and pay attention to every detail. Services can be customized based on your specific needs.</p>
-                        
-                        <div class="service-actions">
-                            <a href="booking.html" class="btn btn-primary">Book Now</a>
-                            <a href="mailto:contactspeared@gmail.com" class="btn btn-secondary">Contact Us</a>
-                        </div>
-                    </div>
-                </details>
-
-                <details class="service-card service-card--green">
-                    <summary>
-                        <div class="service-icon" aria-hidden="true">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 2C8 6 4 10 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8c0-4-4-8-8-12z" fill="currentColor"/>
-                                <path d="M12 22c-4.42 0-8-3.58-8-8 0-2.78 2.17-6.13 5.5-9.58C10.56 8.63 12.23 11 12 14c0 4.42 3.58 8 8 8-2.38 0-4.53-1-6-2.57C13.83 21.37 12.94 22 12 22z" fill="currentColor" opacity="0.3"/>
-                            </svg>
-                        </div>
-                        <h3>Garden Care</h3>
-                        <p>Expert maintenance for beautiful outdoor spaces</p>
-                    </summary>
-                    <div class="service-details">
-                        <h4>Pricing</h4>
-                        <p>₱100-200 per hour | ₱700-850 per session</p>
-                        
-                        <h4>✓ What's Included</h4>
-                        <ul>
-                            <li>Lawn mowing & trimming</li>
-                            <li>Weeding & garden maintenance</li>
-                            <li>Plant watering & care</li>
-                            <li>Leaf raking & cleanup</li>
-                            <li>Garden design consultation</li>
-                        </ul>
-                        
-                        <h4>📋 Service Details</h4>
-                        <p>Transform your outdoor space into a beautiful oasis. Our experienced gardeners provide comprehensive garden maintenance services with a focus on plant health and aesthetic appeal.</p>
-                        
-                        <div class="service-actions">
-                            <a href="booking.html" class="btn btn-primary">Book Now</a>
-                            <a href="mailto:contactspeared@gmail.com" class="btn btn-secondary">Contact Us</a>
-                        </div>
-                    </div>
-                </details>
-
-                <details class="service-card service-card--yellow">
-                    <summary>
-                        <div class="service-icon" aria-hidden="true">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 21s-6-4.35-6-10.5S8.1 4 12 7.5 18 3.5 18 10.5 12 21 12 21z" fill="currentColor"/>
-                                <path d="M6 13c0 3.31 2.69 6 6 6s6-2.69 6-6c0-2.12-1-3-3-3s-1.66 1.15-3 1.15S9 8.88 9 10c0 1.1.9 2 2 2s2 .9 2 2-1.79 1.5-2 1.5-3-1.5-3-4z" fill="currentColor" opacity="0.6"/>
-                            </svg>
-                        </div>
-                        <h3>Pet Care</h3>
-                        <p>Loving care for your furry companions</p>
-                    </summary>
-                    <div class="service-details">
-                        <h4>Pricing</h4>
-                        <p>₱100-120 per hour | ₱300-450 per session</p>
-                        
-                        <h4>✓ What's Included</h4>
-                        <ul>
-                            <li>Pet feeding</li>
-                            <li>Dog walking</li>
-                            <li>Grooming assistance</li>
-                            <li>Playtime & exercise</li>
-                            <li>Medication administration</li>
-                        </ul>
-                        
-                        <h4>Service Details</h4>
-                        <p>Your furry friends deserve the best care. We provide compassionate pet services including feeding, walking, grooming help, and playtime. Perfect for busy schedules or when you're away.</p>
-                        
-                        <div class="service-actions">
-                            <a href="booking.html" class="btn btn-primary">Book Now</a>
-                            <a href="mailto:contactspeared@gmail.com" class="btn btn-secondary">Contact Us</a>
-                        </div>
-                    </div>
-                </details>
-
-                <details class="service-card service-card--pink">
-                    <summary>
-                        <div class="service-icon" aria-hidden="true">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 21s-6-4.35-6-10.5S8.1 4 12 7.5 18 3.5 18 10.5 12 21 12 21z" fill="currentColor"/>
-                                <path d="M12 14.5c-1.38-1.17-2.5-2.5-2.5-4 0-1.38 1.12-2.5 2.5-2.5s2.5 1.12 2.5 2.5c0 1.5-1.12 2.83-2.5 4z" fill="white" opacity="0.9"/>
-                            </svg>
-                        </div>
-                        <h3>Elderly Care</h3>
-                        <p>Compassionate support for seniors</p>
-                    </summary>
-                    <div class="service-details">
-                        <h4>Pricing</h4>
-                        <p>₱380-480 per hour | ₱2,000-2,800 per session</p>
-                        
-                        <h4>✓ What's Included</h4>
-                        <ul>
-                            <li>Personal care assistance</li>
-                            <li>Medication reminders</li>
-                            <li>Meal preparation</li>
-                            <li>Companionship & conversation</li>
-                            <li>Mobility assistance</li>
-                            <li>Household tasks</li>
-                        </ul>
-                        
-                        <h4>📋 Service Details</h4>
-                        <p>Provide your aging loved ones with compassionate and professional care. Our trained caregivers offer personal assistance, emotional support, and help with daily living activities in a respectful manner.</p>
-                        
-                        <div class="service-actions">
-                            <a href="booking.html" class="btn btn-primary">Book Now</a>
-                            <a href="mailto:contactspeared@gmail.com" class="btn btn-secondary">Contact Us</a>
-                        </div>
-                    </div>
-                </details>
-
+    <!-- ── WHAT WE OFFER SECTION ───────────────────────────────────── -->
+    <section class="services-section">
+        <h2>What We Offer</h2>
+        <p class="section-subtitle">Comprehensive care solutions for your home and family</p>
+        <div class="services-grid">
+            <div class="service-box service-box--blue">
+                <div class="service-box-icon">✨</div>
+                <h3>House Cleaning</h3>
+                <p>Professional cleaning services to keep your home spotless</p>
             </div>
-
-            <div class="service-modal-backdrop" id="serviceModalBackdrop" aria-hidden="true">
-                <div class="service-modal" role="dialog" aria-modal="true" aria-labelledby="serviceModalTitle">
-                    <button type="button" class="service-modal-close" id="serviceModalClose" aria-label="Close details">×</button>
-                    <div class="service-modal-header">
-                        <h3 id="serviceModalTitle"></h3>
-                        <p id="serviceModalSubtitle"></p>
-                    </div>
-                    <div class="service-modal-body">
-                        <h4>Pricing</h4>
-                        <p id="serviceModalPricing"></p>
-                        <h4>✓ What's Included</h4>
-                        <ul id="serviceModalIncludes"></ul>
-                        <h4>Service Details</h4>
-                        <p id="serviceModalDescription"></p>
-                    </div>
-                </div>
+            <div class="service-box service-box--green">
+                <div class="service-box-icon">🌿</div>
+                <h3>Garden Maintenance</h3>
+                <p>Expert care for beautiful, healthy outdoor spaces</p>
             </div>
+            <div class="service-box service-box--orange">
+                <div class="service-box-icon">🐾</div>
+                <h3>Pet Care</h3>
+                <p>Loving, attentive care for your furry family members</p>
+            </div>
+            <div class="service-box service-box--pink">
+                <div class="service-box-icon">💖</div>
+                <h3>Elderly Care</h3>
+                <p>Compassionate support and companionship for seniors</p>
+            </div>
+        </div>
     </section>
-    </div>
-    <footer>
+
+    <!-- ── MEET OUR TEAM SECTION ───────────────────────────────────── -->
+    <section class="team-section">
+        <h2>Meet Our Leadership Team</h2>
+        <p class="section-subtitle">Dedicated professionals committed to our mission</p>
+        <div class="team-grid">
+            <div class="team-card">
+                <div class="team-avatar">SJ</div>
+                <h3>Davijean Saavedra</h3>
+                <p class="team-role">Founder & CEO</p>
+                <p class="team-bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">MC</div>
+                <h3>Landis Angelo Tarro</h3>
+                <p class="team-role">Operations Director</p>
+                <p class="team-bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">ER</div>
+                <h3>Al-Qasawi Maalum</h3>
+                <p class="team-role">Training Manager</p>
+                <p class="team-bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+            <div class="team-card">
+                <div class="team-avatar">DT</div>
+                <h3>Mavrick Gadayan</h3>
+                <p class="team-role">Customer Relations</p>
+                <p class="team-bio">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── TESTIMONIALS SECTION ───────────────────────────────────── -->
+    <section class="testimonials-section">
+        <h2>What People Say</h2>
+        <p class="section-subtitle">Hear from our satisfied customers and service providers</p>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-quote">"</div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"HCS has been a lifesaver! The house cleaning service is impeccable, and I love knowing I'm also supporting local job seekers."</p>
+                <p class="testimonial-author">Jennifer Martinez</p>
+                <p class="testimonial-role">Customer</p>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-quote">"</div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"Finding work through HCS changed my life. The flexible hours and supportive team made all the difference."</p>
+                <p class="testimonial-author">Robert Williams</p>
+                <p class="testimonial-role">Service Provider</p>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-quote">"</div>
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"The elderly care service for my mother has been wonderful. Professional, caring, and reliable every single time."</p>
+                <p class="testimonial-author">Lisa Anderson</p>
+                <p class="testimonial-role">Customer</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ── FOOTER ───────────────────────────────────── -->
+    <footer class="about-footer">
         <p>© 2026 Home Care Service (HCS). All Rights Reserved.</p>
     </footer>
+    
+    <script src="../js/about.js"></script>
     
     <script src="../js/about.js"></script>
 </body>
