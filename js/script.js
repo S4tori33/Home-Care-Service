@@ -10,5 +10,429 @@ function toggleMenu() {
 }
 
 function showAlert() {
+<<<<<<< Updated upstream
     alert("Thank you for choosing HCS! Please email us at contactspeared@gmail.com.");
 }
+=======
+    alert('📞 Thank you for reaching out! HCS will contact you shortly.');
+}
+
+const serviceModalBackdrop = document.getElementById('serviceModalBackdrop');
+const serviceModalClose = document.getElementById('serviceModalClose');
+const serviceModalTitle = document.getElementById('serviceModalTitle');
+const serviceModalSubtitle = document.getElementById('serviceModalSubtitle');
+const serviceModalPricing = document.getElementById('serviceModalPricing');
+const serviceModalIncludes = document.getElementById('serviceModalIncludes');
+const serviceModalDescription = document.getElementById('serviceModalDescription');
+
+function openServiceModal(title, subtitle, pricing, includes, description) {
+    if (!serviceModalBackdrop) return;
+    serviceModalTitle.textContent = title;
+    serviceModalSubtitle.textContent = subtitle;
+    serviceModalPricing.textContent = pricing;
+    serviceModalDescription.textContent = description;
+    serviceModalIncludes.innerHTML = '';
+
+    includes.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        serviceModalIncludes.appendChild(li);
+    });
+
+    serviceModalBackdrop.classList.add('open');
+    serviceModalBackdrop.setAttribute('aria-hidden', 'false');
+}
+
+function closeServiceModal() {
+    if (!serviceModalBackdrop) return;
+    serviceModalBackdrop.classList.remove('open');
+    serviceModalBackdrop.setAttribute('aria-hidden', 'true');
+}
+
+document.querySelectorAll('#services .service-card').forEach(card => {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => {
+        const title = card.querySelector('h3')?.textContent.trim() || '';
+        const subtitle = card.querySelector('p')?.textContent.trim() || '';
+        const details = card.querySelector('.service-details');
+        const pricing = details?.querySelector('h4:nth-of-type(1) + p')?.textContent.trim() || '';
+        const description = details?.querySelector('h4:last-of-type + p')?.textContent.trim() || '';
+        const includes = Array.from(details?.querySelectorAll('ul li') || []).map(li => li.textContent.trim());
+        openServiceModal(title, subtitle, pricing, includes, description);
+    });
+});
+
+serviceModalClose?.addEventListener('click', closeServiceModal);
+serviceModalBackdrop?.addEventListener('click', (event) => {
+    if (event.target === serviceModalBackdrop) closeServiceModal();
+});
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeServiceModal();
+});
+
+// ── PROFILE PAGE FUNCTIONALITY ───────────────────────────────────────
+
+// Tab switching functionality
+function initializeProfileTabs() {
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active class from all tabs
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabPanes.forEach(p => p.classList.remove('active'));
+
+            // Add active class to clicked tab
+            btn.classList.add('active');
+            const targetTab = btn.getAttribute('data-tab');
+            document.getElementById(targetTab).classList.add('active');
+        });
+    });
+}
+
+// Avatar upload functionality
+function initializeAvatarUpload() {
+    const avatarInput = document.getElementById('avatarUpload');
+    const profileAvatar = document.getElementById('profileAvatar');
+    const editBtn = document.querySelector('.avatar-edit-btn');
+
+    if (!avatarInput || !profileAvatar || !editBtn) return;
+
+    editBtn.addEventListener('click', () => {
+        avatarInput.click();
+    });
+
+    avatarInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                profileAvatar.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+// Toggle switches functionality
+function initializeToggles() {
+    const toggles = document.querySelectorAll('.toggle-switch');
+
+    toggles.forEach(toggle => {
+        toggle.addEventListener('click', () => {
+            toggle.classList.toggle('active');
+        });
+    });
+}
+
+// Form validation and saving
+function initializeFormHandling() {
+    const forms = document.querySelectorAll('.profile-form');
+
+    forms.forEach(form => {
+        const saveBtn = form.querySelector('.btn-success');
+        const cancelBtn = form.querySelector('.btn-secondary');
+
+        if (saveBtn) {
+            saveBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (validateForm(form)) {
+                    showSuccessMessage('Profile updated successfully!');
+                }
+            });
+        }
+
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                resetForm(form);
+                showInfoMessage('Changes cancelled.');
+            });
+        }
+    });
+}
+
+// Form validation
+function validateForm(form) {
+    const requiredFields = form.querySelectorAll('input[required], select[required], textarea[required]');
+    let isValid = true;
+
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            showFieldError(field, 'This field is required');
+            isValid = false;
+        } else {
+            clearFieldError(field);
+        }
+    });
+
+    // Email validation
+    const emailFields = form.querySelectorAll('input[type="email"]');
+    emailFields.forEach(field => {
+        if (field.value && !isValidEmail(field.value)) {
+            showFieldError(field, 'Please enter a valid email address');
+            isValid = false;
+        }
+    });
+
+    // Phone validation
+    const phoneFields = form.querySelectorAll('input[type="tel"]');
+    phoneFields.forEach(field => {
+        if (field.value && !isValidPhone(field.value)) {
+            showFieldError(field, 'Please enter a valid phone number');
+            isValid = false;
+        }
+    });
+
+    return isValid;
+}
+
+// Email validation helper
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+// Phone validation helper
+function isValidPhone(phone) {
+    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+    return phoneRegex.test(phone.replace(/[\s\-\(\)]/g, ''));
+}
+
+// Field error handling
+function showFieldError(field, message) {
+    clearFieldError(field);
+    field.style.borderColor = '#e74c3c';
+    field.style.boxShadow = '0 0 0 3px rgba(231, 76, 60, 0.2)';
+
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'field-error';
+    errorDiv.textContent = message;
+    errorDiv.style.color = '#e74c3c';
+    errorDiv.style.fontSize = '0.85rem';
+    errorDiv.style.marginTop = '4px';
+
+    field.parentNode.appendChild(errorDiv);
+}
+
+function clearFieldError(field) {
+    field.style.borderColor = '';
+    field.style.boxShadow = '';
+    const errorDiv = field.parentNode.querySelector('.field-error');
+    if (errorDiv) {
+        errorDiv.remove();
+    }
+}
+
+// Reset form to original values
+function resetForm(form) {
+    form.reset();
+    // Clear any error states
+    form.querySelectorAll('input, select, textarea').forEach(field => {
+        clearFieldError(field);
+    });
+}
+
+// Message display functions
+function showSuccessMessage(message) {
+    showMessage(message, 'success');
+}
+
+function showInfoMessage(message) {
+    showMessage(message, 'info');
+}
+
+function showMessage(message, type) {
+    // Remove existing messages
+    const existingMsg = document.querySelector('.profile-message');
+    if (existingMsg) existingMsg.remove();
+
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `profile-message ${type}`;
+    messageDiv.textContent = message;
+    messageDiv.style.cssText = `
+        position: fixed;
+        top: 100px;
+        right: 24px;
+        padding: 16px 24px;
+        border-radius: 8px;
+        color: white;
+        font-family: 'DM Sans', sans-serif;
+        font-weight: 500;
+        z-index: 1000;
+        animation: slideIn 0.3s ease-out;
+        ${type === 'success' ? 'background: linear-gradient(135deg, #27ae60, #2ecc71);' : 'background: rgba(255,255,255,0.9); color: #333;'}
+    `;
+
+    document.body.appendChild(messageDiv);
+
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+        messageDiv.style.animation = 'slideOut 0.3s ease-in';
+        setTimeout(() => messageDiv.remove(), 300);
+    }, 3000);
+}
+
+// Add message animations to CSS if not already present
+if (!document.querySelector('#profile-message-styles')) {
+    const style = document.createElement('style');
+    style.id = 'profile-message-styles';
+    style.textContent = `
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initializeProfileTabs();
+    initializeAvatarUpload();
+    initializeToggles();
+    initializeFormHandling();
+    initializeServiceModal();
+});
+
+function initializeServiceModal() {
+    const backdrop = document.getElementById('serviceModalBackdrop');
+    const closeBtn = document.getElementById('serviceModalClose');
+    const titleEl = document.getElementById('serviceModalTitle');
+    const subtitleEl = document.getElementById('serviceModalSubtitle');
+    const pricingEl = document.getElementById('serviceModalPricing');
+    const includesEl = document.getElementById('serviceModalIncludes');
+    const descriptionEl = document.getElementById('serviceModalDescription');
+
+    if (!backdrop || !closeBtn || !titleEl || !subtitleEl || !pricingEl || !includesEl || !descriptionEl) return;
+
+    const openModal = (card) => {
+        const title = card.querySelector('summary h3')?.textContent.trim() || '';
+        const subtitle = card.querySelector('summary p')?.textContent.trim() || '';
+        const pricing = card.querySelector('.service-details h4:nth-of-type(1) + p')?.textContent.trim() || '';
+        const descriptionHeading = Array.from(card.querySelectorAll('.service-details h4'))
+            .find(h => h.textContent.trim().toLowerCase().includes('service details'));
+        const description = descriptionHeading?.nextElementSibling?.textContent.trim() || '';
+        const includesHeading = Array.from(card.querySelectorAll('.service-details h4'))
+            .find(h => h.textContent.trim().toLowerCase().includes("what's included") || h.textContent.trim().toLowerCase().includes('what’s included'));
+        const includesList = includesHeading?.nextElementSibling;
+
+        titleEl.textContent = title;
+        subtitleEl.textContent = subtitle;
+        pricingEl.textContent = pricing;
+        descriptionEl.textContent = description;
+        includesEl.innerHTML = '';
+
+        if (includesList && includesList.tagName === 'UL') {
+            includesList.querySelectorAll('li').forEach(li => {
+                const item = document.createElement('li');
+                item.textContent = li.textContent;
+                includesEl.appendChild(item);
+            });
+        }
+
+        backdrop.classList.add('open');
+        backdrop.setAttribute('aria-hidden', 'false');
+    };
+
+    const closeModal = () => {
+        backdrop.classList.remove('open');
+        backdrop.setAttribute('aria-hidden', 'true');
+    };
+
+    document.querySelectorAll('.service-card summary').forEach(summary => {
+        summary.addEventListener('click', event => {
+            event.preventDefault();
+            event.stopPropagation();
+            const card = summary.closest('.service-card');
+            if (card) {
+                openModal(card);
+            }
+        });
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', event => {
+        if (event.target === backdrop) closeModal();
+    });
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && backdrop.classList.contains('open')) closeModal();
+    });
+}
+
+
+const serviceOptions = document.querySelectorAll('.service-option');
+        const nextButton = document.getElementById('nextStep');
+        let selectedService = null;
+
+        if (serviceOptions.length && nextButton) {
+            serviceOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    serviceOptions.forEach(o => o.classList.remove('selected'));
+                    option.classList.add('selected');
+                    selectedService = option.querySelector('.service-title')?.textContent.trim();
+                    nextButton.disabled = false;
+                });
+            });
+
+            nextButton.addEventListener('click', () => {
+                if (!selectedService) return;
+                alert(`Selected service: ${selectedService}\n\nProceeding to the next step...`);
+                // TODO: Add real step navigation logic here.
+            });
+        }
+
+        
+        document.addEventListener('DOMContentLoaded', () => {
+    const canvas = document.getElementById('revenueChart');
+
+    // Prevent errors if canvas doesn't exist on other pages
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            datasets: [{
+                label: 'Revenue (₱)',
+                data: [12000, 19000, 15000, 22000, 18000, 25000],
+                borderColor: '#ffffff',
+                backgroundColor: 'rgba(255,255,255,0.1)',
+                fill: true,
+                tension: 0.4,
+                pointRadius: 4,
+                pointBackgroundColor: '#fff'
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#ffffff'
+                    },
+                    onClick: () => {}
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#ffffff' },
+                    grid: { color: 'rgba(255,255,255,0.1)' }
+                },
+                y: {
+                    ticks: { color: '#ffffff' },
+                    grid: { color: 'rgba(255,255,255,0.1)' }
+                }
+            }
+        }
+    });
+});
+
+>>>>>>> Stashed changes

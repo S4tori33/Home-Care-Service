@@ -1,0 +1,95 @@
+body {
+    margin: 0;
+    background: linear-gradient(135deg, #1e3a8a, #581c87);
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: ;
+}
+
+.return {
+  text-align:; /* center it (optional) */
+  margin-top: 50px;
+}
+
+.btn-link {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255,255,255,0.12);
+    border: 1.5px solid rgba(255,255,255,0.5);
+    border-radius: 8px;
+    color: var(--white);
+    text-decoration: none;
+    font-size: 1.2rem;
+    position: fixed;
+}
+
+.container {
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+}
+
+
+/* ===== CARD ===== */
+.card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 40px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* ===== TEXT ===== */
+h1 { 
+    font-size: 2.5rem; 
+    margin: 0; 
+}
+
+.subtitle { 
+    color: rgba(255, 255, 255, 0.6); 
+    margin-bottom: 40px; 
+}
+
+/* ===== STAT SECTION ===== */
+.stat-box {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.stat {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 15px;
+    flex: 1;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat p {
+    margin: 0;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 13px;
+}
+
+.stat h2 {
+    margin: 10px 0 0 0;
+    font-size: 2.5rem;
+}
+

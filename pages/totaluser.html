@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Total Users</title>
+<link rel="stylesheet" href="../styles/totaluser.css">
+</head>
+
+<body>
+
+<div class="return">
+  <a href="adminDashboard.html" class="btn-link">
+    ←
+  </a>
+</div>
+
+<div class="container">
+    <div class="card">
+        <h1>Total Users</h1>
+        <p class="subtitle">Overview of all users in the system</p>
+
+        <div class="stat-box">
+            <div class="stat">
+                <p>Total</p>
+                <h2>128</h2>
+            </div>
+
+            <div class="stat">
+                <p>Workers</p>
+                <h2>28</h2>
+            </div>
+
+            <div class="stat">
+                <p>Customers</p>
+                <h2>100</h2>
+            </div>
+        </div>
+    </div>
+
+ <div class="card">
+    <h1 style="text-align: center;">WORKERS LIST</h1>
+
+<input type="text" id="workerSearch" placeholder="Search workers..." class="search-bar" onclick="event.stopPropagation()">
+
+<ul class="user-list" id="workerList">
+    <li onclick="toggleUser(event, this)">Maalum Al-qasawi</li>
+    <li>Taro Landis</li>
+    <li>Saavedra Davijean</li>
+
+    <div id="userDetails" class="card" style="display:none; margin-top:20px;">
+    <h2 style="text-align: center;">User Information</h2>
+    
+    <p><strong>Name:</strong> Maalum Al-qasawi</p>
+    <p><strong>Contact: </strong>09123456789</p>
+    <p><strong>Email: </strong><a href="Maalum@gmail.com">Maalum@gmail.com</a></p>
+    <p><strong>Specialty:</strong> Elder Care</p>
+    <p><strong>Status:</strong> <span id="status">Active</span></p>
+    <p><strong>Total Income:</strong> ₱12,500</p>
+    
+    <p><button style="color: white; background-color: rgb(47, 12, 150);">Suspend</button>
+         <button style=" color: white; background-color: rgb(47, 12, 150);">Contact</button></p>
+
+</div>
+</ul>
+</div>
+
+<div class="card">
+    <h1 style="text-align: center;">CUSTOMERS LIST</h1>
+
+<input type="text" id="customerSearch" placeholder="Search customers..." class="search-bar" onclick="event.stopPropagation()">
+
+    <ul class="user-list" id="customerList">
+        <li>Maalum Al-qasawi</li>
+        <li>Taro Landis</li>
+        <li>Saavedra Davijean</li>
+        <li>Malinis Lower</li>
+    </ul>
+</div>
+</div>
+
+<script src="../js/totaluser.js"></script>
+</body>
+</html>
