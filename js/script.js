@@ -353,3 +353,165 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeToggles();
     initializeFormHandling();
 });
+
+
+/* SUPER ADMIN */
+
+// Tab switching
+    function switchTab(name, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + name).classList.add('active');
+ 
+      if (name === 'analytics') {
+        setTimeout(initCharts, 50);
+      }
+    }
+ 
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      if (confirm('Are you sure you want to logout?')) {
+        window.location.href = '../home.html';
+      }
+    });
+ 
+    // Charts
+    let chartsInitialized = false;
+ 
+    function initCharts() {
+      if (chartsInitialized) return;
+      chartsInitialized = true;
+ 
+      const months = ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'];
+ 
+      // User Growth Chart
+      const ugCtx = document.getElementById('userGrowthChart').getContext('2d');
+      drawLineChart(ugCtx, months, [
+        { label: 'Users', data: [950, 1000, 1060, 1100, 1150, 1200, 1248], color: '#3b82f6' },
+        { label: 'Providers', data: [310, 318, 325, 330, 336, 340, 342], color: '#f97316' },
+        { label: 'Admins', data: [10, 10, 10, 11, 11, 12, 12], color: '#8b5cf6' }
+      ]);
+ 
+      // Revenue Chart
+      const rvCtx = document.getElementById('revenueChart').getContext('2d');
+      drawBarChart(rvCtx, months, [115000, 120000, 124000, 128000, 133000, 136000, 145000], '#10b981');
+    }
+ 
+    function drawLineChart(ctx, labels, datasets) {
+      const canvas = ctx.canvas;
+      const W = canvas.offsetWidth;
+      const H = canvas.offsetHeight;
+      canvas.width = W * devicePixelRatio;
+      canvas.height = H * devicePixelRatio;
+      ctx.scale(devicePixelRatio, devicePixelRatio);
+ 
+      const pad = { top: 20, right: 20, bottom: 30, left: 55 };
+      const chartW = W - pad.left - pad.right;
+      const chartH = H - pad.top - pad.bottom;
+ 
+      // Find min/max across all datasets
+      let allVals = datasets.flatMap(d => d.data);
+      let minVal = Math.min(...allVals) * 0.95;
+      let maxVal = Math.max(...allVals) * 1.05;
+ 
+      function xPos(i) { return pad.left + (i / (labels.length - 1)) * chartW; }
+      function yPos(v) { return pad.top + chartH - ((v - minVal) / (maxVal - minVal)) * chartH; }
+ 
+      ctx.clearRect(0, 0, W, H);
+ 
+      // Grid lines
+      ctx.strokeStyle = '#f3f4f6';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = pad.top + (i / 4) * chartH;
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(W - pad.right, y); ctx.stroke();
+        const val = Math.round(maxVal - (i / 4) * (maxVal - minVal));
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = '11px DM Sans';
+        ctx.textAlign = 'right';
+        ctx.fillText(val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val, pad.left - 6, y + 4);
+      }
+ 
+      // X labels
+      ctx.fillStyle = '#9ca3af';
+      ctx.font = '11px DM Sans';
+      ctx.textAlign = 'center';
+      labels.forEach((l, i) => {
+        ctx.fillText(l, xPos(i), H - pad.bottom + 16);
+      });
+ 
+      // Draw lines
+      datasets.forEach(ds => {
+        ctx.strokeStyle = ds.color;
+        ctx.lineWidth = 2;
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        ds.data.forEach((v, i) => {
+          i === 0 ? ctx.moveTo(xPos(i), yPos(v)) : ctx.lineTo(xPos(i), yPos(v));
+        });
+        ctx.stroke();
+ 
+        // Dots
+        ds.data.forEach((v, i) => {
+          ctx.fillStyle = '#fff';
+          ctx.beginPath();
+          ctx.arc(xPos(i), yPos(v), 4, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = ds.color;
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        });
+      });
+    }
+ 
+    function drawBarChart(ctx, labels, data, color) {
+      const canvas = ctx.canvas;
+      const W = canvas.offsetWidth;
+      const H = canvas.offsetHeight;
+      canvas.width = W * devicePixelRatio;
+      canvas.height = H * devicePixelRatio;
+      ctx.scale(devicePixelRatio, devicePixelRatio);
+ 
+      const pad = { top: 20, right: 20, bottom: 30, left: 70 };
+      const chartW = W - pad.left - pad.right;
+      const chartH = H - pad.top - pad.bottom;
+      const maxVal = Math.max(...data) * 1.1;
+      const barW = (chartW / labels.length) * 0.6;
+ 
+      ctx.clearRect(0, 0, W, H);
+ 
+      // Grid
+      ctx.strokeStyle = '#f3f4f6';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = pad.top + (i / 4) * chartH;
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(W - pad.right, y); ctx.stroke();
+        const val = Math.round(maxVal - (i / 4) * maxVal);
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = '11px DM Sans';
+        ctx.textAlign = 'right';
+        ctx.fillText(val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val, pad.left - 6, y + 4);
+      }
+ 
+      // X labels
+      ctx.fillStyle = '#9ca3af';
+      ctx.font = '11px DM Sans';
+      ctx.textAlign = 'center';
+ 
+      // Bars
+      const slotW = chartW / labels.length;
+      data.forEach((v, i) => {
+        const barH = (v / maxVal) * chartH;
+        const x = pad.left + i * slotW + (slotW - barW) / 2;
+        const y = pad.top + chartH - barH;
+ 
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.roundRect(x, y, barW, barH, [4, 4, 0, 0]);
+        ctx.fill();
+ 
+        ctx.fillStyle = '#9ca3af';
+        ctx.fillText(labels[i], x + barW / 2, H - pad.bottom + 16);
+      });
+    }
