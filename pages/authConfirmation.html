@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login Successful - Home Care Service</title>
+  <title>Login Confirmation - Home Care Service</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
@@ -74,18 +74,6 @@
       fill: none;
       stroke-linecap: round;
       stroke-linejoin: round;
-      animation: checkmark 0.6s ease-out 0.3s both;
-    }
-
-    @keyframes checkmark {
-      0% {
-        stroke-dasharray: 50;
-        stroke-dashoffset: 50;
-      }
-      100% {
-        stroke-dasharray: 50;
-        stroke-dashoffset: 0;
-      }
     }
 
     h1 {
@@ -141,13 +129,6 @@
       display: inline-block;
     }
 
-    .role-description {
-      font-size: 13px;
-      color: #6b7280;
-      margin-top: 8px;
-      line-height: 1.5;
-    }
-
     .cta-section {
       display: flex;
       flex-direction: column;
@@ -172,46 +153,6 @@
       box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
     }
 
-    .btn-next:active {
-      transform: translateY(0);
-    }
-
-    .loading-indicator {
-      display: none;
-      gap: 6px;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .loading-indicator.active {
-      display: flex;
-    }
-
-    .dot {
-      width: 8px;
-      height: 8px;
-      background: white;
-      border-radius: 50%;
-      animation: bounce 1.4s infinite;
-    }
-
-    .dot:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-
-    .dot:nth-child(3) {
-      animation-delay: 0.4s;
-    }
-
-    @keyframes bounce {
-      0%, 80%, 100% {
-        opacity: 0.3;
-      }
-      40% {
-        opacity: 1;
-      }
-    }
-
     .btn-back {
       padding: 12px 32px;
       background: white;
@@ -229,317 +170,57 @@
       background: #f9fafb;
     }
 
-    .demo-badge {
-      display: inline-block;
-      background: #fef3c7;
-      color: #92400e;
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 600;
-      margin-top: 12px;
-    }
-
-    .feature-highlights {
-      text-align: left;
+    .loading {
+      display: none;
+      text-align: center;
       margin-top: 20px;
-      padding-top: 20px;
-      border-top: 1px solid #e5e7eb;
     }
 
-    .feature-list {
-      list-style: none;
-      font-size: 14px;
-      color: #6b7280;
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #667eea;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 10px;
     }
 
-    .feature-list li {
-      padding: 8px 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .feature-list svg {
-      width: 16px;
-      height: 16px;
-      stroke: #667eea;
-      flex-shrink: 0;
-    }
-
-    .redirect-message {
-      font-size: 12px;
-      color: #9ca3af;
-      margin-top: 16px;
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
 <body>
   <div class="confirmation-container">
-    <!-- Success Icon -->
     <div class="success-icon">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
         <polyline points="20 6 9 17 4 12"></polyline>
       </svg>
     </div>
 
-    <!-- Title -->
     <h1>Login Successful!</h1>
+    <p class="subtitle">Welcome to Home Care Service Platform</p>
 
-    <!-- Subtitle -->
-    <p class="subtitle">Welcome back to Home Care Service. Your authentication was successful.</p>
-
-    <!-- User Info Card -->
     <div class="user-info">
       <div class="user-avatar" id="confirmAvatar">JD</div>
       <div class="user-name" id="confirmName">John Doe</div>
-      <span class="user-role" id="confirmRole">Customer</span>
-      <p class="role-description" id="roleDescription">Access booking and messaging features</p>
-      <span class="demo-badge" id="demoBadge" style="display: none;">DEMO ACCOUNT</span>
+      <span class="user-role" id="confirmRole">Administrator</span>
     </div>
 
-    <!-- Feature Highlights -->
-    <div class="feature-highlights">
-      <ul class="feature-list" id="featureList">
-        <!-- Features will be inserted based on role -->
-      </ul>
-    </div>
-
-    <!-- CTA Section -->
     <div class="cta-section">
-      <button class="btn-next" id="nextBtn" onclick="confirmAndProceed()">
-        <span id="btnText">Next</span>
-        <div class="loading-indicator" id="loadingIndicator">
-          <div class="dot"></div>
-          <div class="dot"></div>
-          <div class="dot"></div>
-        </div>
-      </button>
+      <button class="btn-next" id="nextBtn" onclick="redirectToDashboard()">Next →</button>
       <button class="btn-back" onclick="goBackToLogin()">Back to Login</button>
     </div>
 
-    <!-- Auto-redirect message -->
-    <div class="redirect-message">
-      <span id="redirectText">Redirecting in <span id="countdown">5</span> seconds...</span>
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Redirecting to dashboard...</p>
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="../js/auth.js"></script>
-  <script>
-    // Initialize confirmation page
-    function initializeConfirmation() {
-      if (!auth.isLoggedIn()) {
-        window.location.href = 'userLogin.html';
-        return;
-      }
-
-      const user = auth.getCurrentUser();
-      const role = auth.getUserRole();
-
-      // Check if this is a demo account
-      const isDemoAccount = user.email.includes('@test.com');
-
-      // Update user info
-      document.getElementById('confirmAvatar').textContent = `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase();
-      document.getElementById('confirmAvatar').style.background = role.color;
-      document.getElementById('confirmName').textContent = `${user.firstName} ${user.lastName}`;
-      document.getElementById('confirmRole').textContent = role.displayName;
-      document.getElementById('confirmRole').style.background = role.color + '20';
-      document.getElementById('confirmRole').style.color = role.color;
-      document.getElementById('roleDescription').textContent = getDescriptionForRole(role.id);
-
-      if (isDemoAccount) {
-        document.getElementById('demoBadge').style.display = 'inline-block';
-      }
-
-      // Populate features
-      populateFeatures(role);
-
-      // Start auto-redirect countdown
-      startAutoRedirect();
-    }
-
-    /**
-     * Get role description
-     */
-    function getDescriptionForRole(roleId) {
-      const descriptions = {
-        super_admin: 'Full access to all system features and administration tools',
-        platform_admin: 'Manage users and view system analytics',
-        hr_admin: 'Approve job seeker applications and verify service providers',
-        operations_admin: 'Manage bookings and assign service providers',
-        caregiver: 'Accept bookings and manage client care sessions',
-        pet_care: 'Accept pet care bookings and provide services',
-        garden_maintenance: 'Accept garden work bookings and provide services',
-        house_cleaning: 'Accept cleaning bookings and provide services',
-        customer: 'Book services and communicate with providers',
-        customer_support: 'Handle user concerns and support tickets',
-        moderator: 'Review reports and moderate platform content'
-      };
-      return descriptions[roleId] || 'Access assigned features and tools';
-    }
-
-    /**
-     * Populate feature list based on role
-     */
-    function populateFeatures(role) {
-      const features = {
-        super_admin: [
-          'Full system access and administration',
-          'Manage all users and roles',
-          'View comprehensive analytics'
-        ],
-        platform_admin: [
-          'View and manage all users',
-          'System analytics dashboard',
-          'Generate reports'
-        ],
-        hr_admin: [
-          'Review job seeker applications',
-          'Verify service provider credentials',
-          'Approve new providers'
-        ],
-        operations_admin: [
-          'View and manage all bookings',
-          'Assign providers to jobs',
-          'Track service completion'
-        ],
-        caregiver: [
-          'Accept and manage bookings',
-          'Communicate with clients',
-          'Track earnings'
-        ],
-        pet_care: [
-          'Accept and manage pet care bookings',
-          'Communicate with clients',
-          'Build your profile'
-        ],
-        garden_maintenance: [
-          'Accept garden work bookings',
-          'Communicate with clients',
-          'Manage your schedule'
-        ],
-        house_cleaning: [
-          'Accept cleaning bookings',
-          'Communicate with clients',
-          'Track completed jobs'
-        ],
-        customer: [
-          'Book services easily',
-          'Communicate with providers',
-          'Leave reviews and feedback'
-        ],
-        customer_support: [
-          'View and manage support tickets',
-          'Communicate with users',
-          'Resolve issues'
-        ],
-        moderator: [
-          'Review user reports',
-          'Moderate platform content',
-          'Manage user accounts'
-        ]
-      };
-
-      const featureList = features[role.id] || features.customer;
-      const featureHtml = featureList
-        .map(f => `
-          <li>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-            <span>${f}</span>
-          </li>
-        `).join('');
-
-      document.getElementById('featureList').innerHTML = featureHtml;
-    }
-
-    /**
-     * Auto-redirect countdown
-     */
-    function startAutoRedirect() {
-      let seconds = 5;
-      const countdown = setInterval(() => {
-        seconds--;
-        document.getElementById('countdown').textContent = seconds;
-
-        if (seconds <= 0) {
-          clearInterval(countdown);
-          proceedToDashboard();
-        }
-      }, 1000);
-    }
-
-    /**
-     * Confirm and proceed to dashboard
-     */
-    function confirmAndProceed() {
-      const btn = document.getElementById('nextBtn');
-      btn.disabled = true;
-      document.getElementById('btnText').style.display = 'none';
-      document.getElementById('loadingIndicator').classList.add('active');
-      document.getElementById('redirectText').textContent = 'Preparing your dashboard...';
-
-      // Simulate some processing
-      setTimeout(proceedToDashboard, 1000);
-    }
-
-    /**
-     * Proceed to dashboard
-     */
-    function proceedToDashboard() {
-      const user = auth.getCurrentUser();
-      if (!user) {
-        window.location.href = 'userLogin.html';
-        return;
-      }
-      const base = '../dashboard/';
-      switch (user.role) {
-        case 'super_admin':
-          window.location.href = base + 'superadmin.html';
-          break;
-        case 'platform_admin':
-          window.location.href = base + 'platform.html';
-          break;
-        case 'hr_admin':
-          window.location.href = base + 'hr.html';
-          break;
-        case 'operations_admin':
-          window.location.href = base + 'operations.html';
-          break;
-        case 'caregiver':
-        case 'pet_care':
-        case 'garden_maintenance':
-        case 'house_cleaning':
-          window.location.href = base + 'provider.html';
-          break;
-        case 'regular_user':
-        case 'customer':
-          window.location.href = base + 'user.html';
-          break;
-        case 'customer_support':
-          window.location.href = base + 'support.html';
-          break;
-        case 'moderator':
-          window.location.href = base + 'moderator.html';
-          break;
-        default:
-          window.location.href = base + 'user.html';
-      }
-    }
-
-    /**
-     * Go back to login
-     */
-    function goBackToLogin() {
-      auth.logout();
-      window.location.href = 'userLogin.html';
-    }
-
-    // Initialize when page loads
-    document.addEventListener('DOMContentLoaded', initializeConfirmation);
-  </script>
+  <script src="../js/appData.js"></script>
+  <script src="../js/confirmationLogic.js"></script>
 </body>
 </html>
