@@ -490,34 +490,43 @@
      * Proceed to dashboard
      */
     function proceedToDashboard() {
-      // Redirect to appropriate dashboard based on role
-      const path = auth.getDashboardPath();
-      
-      if (path === '/dashboard/superadmin') {
-        window.location.href = 'superadminDashboard.html';
-      } else if (path === '/dashboard/platform') {
-        window.location.href = 'platformAdminDashboard.html';
-      } else if (path === '/dashboard/hr') {
-        window.location.href = 'hrAdminDashboard.html';
-      } else if (path === '/dashboard/operations') {
-        window.location.href = 'operationsAdminDashboard.html';
-      } else if (path === '/dashboard/caregiver') {
-        window.location.href = 'caregiverDashboard.html';
-      } else if (path === '/dashboard/pet-care') {
-        window.location.href = 'petCareDashboard.html';
-      } else if (path === '/dashboard/garden') {
-        window.location.href = 'gardenDashboard.html';
-      } else if (path === '/dashboard/cleaning') {
-        window.location.href = 'cleaningDashboard.html';
-      } else if (path === '/dashboard/customer') {
-        window.location.href = 'customerDashboard.html';
-      } else if (path === '/dashboard/support') {
-        window.location.href = 'supportDashboard.html';
-      } else if (path === '/dashboard/moderator') {
-        window.location.href = 'moderatorDashboard.html';
-      } else {
-        // Fallback to existing dashboard
-        window.location.href = 'dashboard.html';
+      const user = auth.getCurrentUser();
+      if (!user) {
+        window.location.href = 'userLogin.html';
+        return;
+      }
+      const base = '../dashboard/';
+      switch (user.role) {
+        case 'super_admin':
+          window.location.href = base + 'superadmin.html';
+          break;
+        case 'platform_admin':
+          window.location.href = base + 'platform.html';
+          break;
+        case 'hr_admin':
+          window.location.href = base + 'hr.html';
+          break;
+        case 'operations_admin':
+          window.location.href = base + 'operations.html';
+          break;
+        case 'caregiver':
+        case 'pet_care':
+        case 'garden_maintenance':
+        case 'house_cleaning':
+          window.location.href = base + 'provider.html';
+          break;
+        case 'regular_user':
+        case 'customer':
+          window.location.href = base + 'user.html';
+          break;
+        case 'customer_support':
+          window.location.href = base + 'support.html';
+          break;
+        case 'moderator':
+          window.location.href = base + 'moderator.html';
+          break;
+        default:
+          window.location.href = base + 'user.html';
       }
     }
 

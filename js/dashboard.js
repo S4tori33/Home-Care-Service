@@ -10,6 +10,18 @@ class DashboardManager {
     this.auth = window.auth;
   }
 
+  /** Relative links work from /dashboard/*.html and /pages/*.html */
+  linkBase() {
+    const path = window.location.pathname || '';
+    const href = window.location.href || '';
+    const inDashboard =
+      path.includes('/dashboard/') || href.includes('/dashboard/');
+    return {
+      dash: inDashboard ? './' : '../dashboard/',
+      pages: inDashboard ? '../pages/' : ''
+    };
+  }
+
   /**
    * Initialize dashboard based on user role
    */
@@ -100,13 +112,7 @@ class DashboardManager {
     // Get menu items for this role
     const menuItems = this.getMenuForRole(role);
 
-    // Clear existing items (keep profile section)
-    const profileSection = sidebarNav.querySelector('.sidebar-profile');
     sidebarNav.innerHTML = '';
-    
-    if (profileSection) {
-      sidebarNav.appendChild(profileSection);
-    }
 
     // Add menu items
     menuItems.forEach(item => {
@@ -118,7 +124,8 @@ class DashboardManager {
         ${item.label}
       `;
 
-      if (window.location.pathname.includes(item.href)) {
+      const base = (item.href || '').split('/').pop();
+      if (base && window.location.pathname.endsWith(base)) {
         link.classList.add('active');
       }
 
@@ -155,68 +162,55 @@ class DashboardManager {
     const chartIcon = '<line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a1.5 1.5 0 0 0-1.5 1.5v12a1.5 1.5 0 0 0 1.5 1.5H17"/>';
     const usersIcon = '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>';
     const messageIcon = '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>';
-    const settingsIcon = '<circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6M4.22 4.22l4.24 4.24m5.08 5.08l4.24 4.24M1 12h6m6 0h6M4.22 19.78l4.24-4.24m5.08-5.08l4.24-4.24"/>';
     const checklistIcon = '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>';
+
+    const { dash, pages } = this.linkBase();
+
+    const providerMenu = [
+      { label: 'Dashboard', href: `${dash}provider.html`, icon: chartIcon },
+      { label: 'Messages', href: `${pages}messaging.html`, icon: messageIcon }
+    ];
 
     const menuMap = {
       super_admin: [
-        { label: 'Overview', href: '/dashboard/superadmin', icon: chartIcon },
-        { label: 'User Management', href: '/dashboard/superadmin/users', icon: usersIcon },
-        { label: 'Analytics', href: '/dashboard/superadmin/analytics', icon: chartIcon },
-        { label: 'System Settings', href: '/dashboard/superadmin/settings', icon: settingsIcon }
+        { label: 'Overview', href: `${dash}superadmin.html`, icon: chartIcon },
+        { label: 'Users', href: `${dash}superadmin.html`, icon: usersIcon }
       ],
       platform_admin: [
-        { label: 'Dashboard', href: '/dashboard/platform', icon: chartIcon },
-        { label: 'User Management', href: '/dashboard/platform/users', icon: usersIcon },
-        { label: 'Reports', href: '/dashboard/platform/reports', icon: chartIcon }
+        { label: 'Dashboard', href: `${dash}platform.html`, icon: chartIcon },
+        { label: 'Users', href: `${dash}platform.html`, icon: usersIcon }
       ],
       hr_admin: [
-        { label: 'Dashboard', href: '/dashboard/hr', icon: chartIcon },
-        { label: 'Applications', href: '/dashboard/hr/applications', icon: checklistIcon },
-        { label: 'Verify Providers', href: '/dashboard/hr/verify', icon: usersIcon }
+        { label: 'Dashboard', href: `${dash}hr.html`, icon: chartIcon },
+        { label: 'Applications', href: `${dash}hr.html`, icon: checklistIcon }
       ],
       operations_admin: [
-        { label: 'Dashboard', href: '/dashboard/operations', icon: chartIcon },
-        { label: 'Bookings', href: '/dashboard/operations/bookings', icon: bookingIcon },
-        { label: 'Service Assignment', href: '/dashboard/operations/assign', icon: usersIcon }
+        { label: 'Dashboard', href: `${dash}operations.html`, icon: chartIcon },
+        { label: 'Bookings', href: `${dash}operations.html`, icon: bookingIcon }
       ],
-      caregiver: [
-        { label: 'Dashboard', href: '/dashboard/caregiver', icon: chartIcon },
-        { label: 'My Jobs', href: '/dashboard/caregiver/jobs', icon: bookingIcon },
-        { label: 'Messages', href: '/pages/messaging.html', icon: messageIcon }
-      ],
-      pet_care: [
-        { label: 'Dashboard', href: '/dashboard/pet-care', icon: chartIcon },
-        { label: 'My Jobs', href: '/dashboard/pet-care/jobs', icon: bookingIcon },
-        { label: 'Messages', href: '/pages/messaging.html', icon: messageIcon }
-      ],
-      garden_maintenance: [
-        { label: 'Dashboard', href: '/dashboard/garden', icon: chartIcon },
-        { label: 'My Jobs', href: '/dashboard/garden/jobs', icon: bookingIcon },
-        { label: 'Messages', href: '/pages/messaging.html', icon: messageIcon }
-      ],
-      house_cleaning: [
-        { label: 'Dashboard', href: '/dashboard/cleaning', icon: chartIcon },
-        { label: 'My Jobs', href: '/dashboard/cleaning/jobs', icon: bookingIcon },
-        { label: 'Messages', href: '/pages/messaging.html', icon: messageIcon }
+      caregiver: providerMenu,
+      pet_care: providerMenu,
+      garden_maintenance: providerMenu,
+      house_cleaning: providerMenu,
+      regular_user: [
+        { label: 'Dashboard', href: `${dash}user.html`, icon: chartIcon },
+        { label: 'Book service', href: `${pages}booking.html`, icon: bookingIcon },
+        { label: 'Messages', href: `${pages}messaging.html`, icon: messageIcon }
       ],
       customer: [
-        { label: 'Dashboard', href: '/dashboard/customer', icon: chartIcon },
-        { label: 'Book Service', href: '/pages/booking.html', icon: bookingIcon },
-        { label: 'My Bookings', href: '/dashboard/customer/bookings', icon: bookingIcon },
-        { label: 'Messages', href: '/pages/messaging.html', icon: messageIcon }
+        { label: 'Dashboard', href: `${dash}user.html`, icon: chartIcon },
+        { label: 'Book service', href: `${pages}booking.html`, icon: bookingIcon },
+        { label: 'Messages', href: `${pages}messaging.html`, icon: messageIcon }
       ],
       customer_support: [
-        { label: 'Dashboard', href: '/dashboard/support', icon: chartIcon },
-        { label: 'Support Tickets', href: '/dashboard/support/tickets', icon: checklistIcon },
-        { label: 'Messages', href: '/pages/messaging.html', icon: messageIcon },
-        { label: 'Users', href: '/dashboard/support/users', icon: usersIcon }
+        { label: 'Dashboard', href: `${dash}support.html`, icon: chartIcon },
+        { label: 'Issues', href: `${dash}support.html`, icon: checklistIcon },
+        { label: 'Messages', href: `${pages}messaging.html`, icon: messageIcon }
       ],
       moderator: [
-        { label: 'Dashboard', href: '/dashboard/moderator', icon: chartIcon },
-        { label: 'Reports', href: '/dashboard/moderator/reports', icon: checklistIcon },
-        { label: 'Messages', href: '/pages/messaging.html', icon: messageIcon },
-        { label: 'Users', href: '/dashboard/moderator/users', icon: usersIcon }
+        { label: 'Dashboard', href: `${dash}moderator.html`, icon: chartIcon },
+        { label: 'Users', href: `${dash}moderator.html`, icon: usersIcon },
+        { label: 'Messages', href: `${pages}messaging.html`, icon: messageIcon }
       ]
     };
 
@@ -334,26 +328,36 @@ class DashboardManager {
     const user = this.auth.getCurrentUser();
     const role = this.auth.getUserRole();
 
-    if (role.id === 'customer') {
-      const bookings = this.auth.getUserBookings(user.id, 'customer');
+    if (role.id === 'regular_user' || role.id === 'customer') {
+      const bookings = this.auth.getUserBookings(user.id, 'regular_user');
       const conversations = this.auth.getUserConversations(user.id);
-      
+
       return {
         totalBookings: bookings.length,
-        upcomingBookings: bookings.filter(b => b.status === 'confirmed').length,
+        upcomingBookings: bookings.filter(b =>
+          ['pending', 'assigned', 'accepted'].includes(b.status)
+        ).length,
         completedBookings: bookings.filter(b => b.status === 'completed').length,
         conversations: conversations.length,
         unreadMessages: conversations.reduce((sum, c) => sum + c.unreadCount, 0)
       };
-    } else if (['caregiver', 'pet_care', 'garden_maintenance', 'house_cleaning'].includes(role.id)) {
+    }
+
+    if (
+      ['caregiver', 'pet_care', 'garden_maintenance', 'house_cleaning'].includes(
+        role.id
+      )
+    ) {
       const bookings = this.auth.getUserBookings(user.id, role.id);
-      const assignments = bookings.filter(b => b.providerId === user.id);
-      
+
       return {
-        availableJobs: assignments.filter(b => b.status === 'pending').length,
-        activeJobs: assignments.filter(b => b.status === 'confirmed').length,
-        completedJobs: assignments.filter(b => b.status === 'completed').length,
-        rating: (Math.random() * 1 + 4).toFixed(1)
+        availableJobs: bookings.filter(b => b.status === 'assigned').length,
+        activeJobs: bookings.filter(b => b.status === 'accepted').length,
+        completedJobs: bookings.filter(b => b.status === 'completed').length,
+        rating:
+          bookings.filter(b => b.status === 'completed').length >= 3
+            ? '4.8'
+            : 'New'
       };
     }
 

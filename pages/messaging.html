@@ -116,105 +116,149 @@
   <script src="../js/auth.js"></script>
   <script src="../js/dashboard.js"></script>
   <script>
-    let currentConversationId = null;
+    let selectedOtherId = null;
     const currentUser = auth.getCurrentUser();
 
     if (!currentUser) {
-      window.location.href = '../pages/userLogin.html';
+      window.location.href = 'userLogin.html';
     } else {
       dashboard.initializeDashboard();
-      loadConversations();
+      renderConversationPanel();
+      const params = new URLSearchParams(window.location.search);
+      const withId = params.get('with');
+      if (withId) {
+        selectPartner(withId);
+      }
     }
 
-    function loadConversations() {
-      const conversations = auth.getUserConversations(currentUser.id);
+    function displayName(u) {
+      if (!u) return 'Unknown';
+      const n = `${u.firstName || ''} ${u.lastName || ''}`.trim();
+      return n || u.email || 'User';
+    }
+
+    function initials(u) {
+      if (!u) return '?';
+      const a = (u.firstName || '').charAt(0);
+      const b = (u.lastName || '').charAt(0);
+      return (a + b).toUpperCase() || (u.email || '?').charAt(0).toUpperCase();
+    }
+
+    function conversationRows() {
+      const conv = auth.getUserConversations(currentUser.id);
+      const eligible = auth.getEligibleMessagePartners(currentUser.id);
+      const seen = new Set(conv.map(c => c.otherUserId));
+      const rows = conv.slice();
+
+      eligible.forEach(e => {
+        if (!seen.has(e.otherUserId)) {
+          rows.push({
+            otherUserId: e.otherUserId,
+            otherUser: e.otherUser,
+            lastMessage: {
+              content: 'No messages yet — say hello',
+              timestamp: new Date().toISOString()
+            },
+            unreadCount: 0
+          });
+          seen.add(e.otherUserId);
+        }
+      });
+
+      return rows.sort(
+        (a, b) =>
+          new Date(b.lastMessage.timestamp).getTime() -
+          new Date(a.lastMessage.timestamp).getTime()
+      );
+    }
+
+    function renderConversationPanel() {
       const conversationsList = document.getElementById('conversationsList');
-      
-      if (conversations.length === 0) {
-        conversationsList.innerHTML = '<div style="padding: 20px; text-align: center; color: #9ca3af;">No conversations yet</div>';
+      const rows = conversationRows();
+
+      if (!rows.length) {
+        conversationsList.innerHTML =
+          '<div style="padding: 20px; text-align: center; color: #9ca3af;">No eligible contacts yet. Complete booking assignment and acceptance first.</div>';
         return;
       }
 
-      conversationsList.innerHTML = conversations.map(conv => {
-        const otherUser = auth.getUserById(conv.otherUserId);
-        const unreadCount = conv.messages.filter(m => m.recipientId === currentUser.id && !m.read).length;
-        return `
-          <div class="conversation-item ${conv.id === currentConversationId ? 'active' : ''}" onclick="selectConversation('${conv.id}')">
-            <div class="conversation-avatar">${otherUser?.name?.charAt(0) || '?'}</div>
+      conversationsList.innerHTML = rows
+        .map(conv => {
+          const otherUser = conv.otherUser || auth.getUserById(conv.otherUserId);
+          const preview = (conv.lastMessage && conv.lastMessage.content) || '';
+          const active = conv.otherUserId === selectedOtherId ? 'active' : '';
+          return `
+          <div class="conversation-item ${active}" data-other="${conv.otherUserId}">
+            <div class="conversation-avatar">${initials(otherUser)}</div>
             <div class="conversation-info">
-              <div class="conversation-name">${otherUser?.name || 'Unknown'}</div>
-              <div class="conversation-preview">${conv.messages[conv.messages.length - 1]?.content?.substring(0, 30) || 'No messages'}</div>
+              <div class="conversation-name">${displayName(otherUser)}</div>
+              <div class="conversation-preview">${preview.substring(0, 40)}</div>
             </div>
-            ${unreadCount > 0 ? `<div class="conversation-badge">${unreadCount}</div>` : ''}
-          </div>
-        `;
-      }).join('');
+            ${conv.unreadCount > 0 ? `<div class="conversation-badge">${conv.unreadCount}</div>` : ''}
+          </div>`;
+        })
+        .join('');
+
+      conversationsList.querySelectorAll('.conversation-item').forEach(el => {
+        el.addEventListener('click', () => {
+          selectPartner(el.getAttribute('data-other'));
+        });
+      });
     }
 
-    function selectConversation(conversationId) {
-      currentConversationId = conversationId;
-      const conv = auth.getConversation(conversationId);
-      if (!conv) return;
+    function selectPartner(otherUserId) {
+      if (!otherUserId) return;
+      selectedOtherId = otherUserId;
 
-      const otherUser = auth.getUserById(conv.otherUserId);
-      document.getElementById('chatTitle').textContent = otherUser?.name || 'Unknown user';
-      document.getElementById('chatSubtitle').textContent = `${otherUser?.role?.name || 'User'} • Last message today`;
+      const otherUser = auth.getUserById(otherUserId);
+      document.getElementById('chatTitle').textContent = displayName(otherUser);
+      document.getElementById('chatSubtitle').textContent =
+        (otherUser && otherUser.email) || '';
       document.getElementById('chatInputArea').style.display = 'flex';
 
-      auth.markMessagesAsRead(conversationId, currentUser.id);
-      renderMessages(conv);
-      loadConversations();
-    }
+      auth.markMessagesAsRead(currentUser.id, otherUserId);
 
-    function renderMessages(conv) {
+      const msgs = auth.getMessages(currentUser.id, otherUserId);
       const chatContent = document.getElementById('chatContent');
-      chatContent.innerHTML = conv.messages.map(msg => `
+      chatContent.innerHTML = msgs
+        .map(
+          msg => `
         <div class="message ${msg.senderId === currentUser.id ? 'sent' : 'received'}">
           <div>
-            <div class="message-bubble">${msg.content}</div>
+            <div class="message-bubble">${msg.content.replace(/</g, '&lt;')}</div>
             <div class="message-timestamp">${new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
           </div>
-        </div>
-      `).join('');
+        </div>`
+        )
+        .join('');
       chatContent.scrollTop = chatContent.scrollHeight;
+
+      renderConversationPanel();
     }
 
     function sendMessage() {
-      if (!currentConversationId) return;
+      if (!selectedOtherId) return;
       const input = document.getElementById('messageInput');
       const content = input.value.trim();
       if (!content) return;
 
-      const conv = auth.getConversation(currentConversationId);
-      const message = {
-        id: auth.generateId(),
-        conversationId: currentConversationId,
-        senderId: currentUser.id,
-        recipientId: conv.otherUserId,
-        content: content,
-        timestamp: new Date().toISOString(),
-        read: false
-      };
-
-      const messages = JSON.parse(localStorage.getItem('hcs_messages') || '[]');
-      const convIndex = messages.findIndex(m => m.id === currentConversationId);
-      if (convIndex !== -1) {
-        messages[convIndex].messages.push(message);
-        localStorage.setItem('hcs_messages', JSON.stringify(messages));
+      try {
+        auth.sendMessage(currentUser.id, selectedOtherId, content);
+        input.value = '';
+        selectPartner(selectedOtherId);
+      } catch (err) {
+        alert(err.message || 'Could not send message');
       }
-
-      input.value = '';
-      selectConversation(currentConversationId);
     }
 
-    document.getElementById('messageInput').addEventListener('keypress', (e) => {
+    document.getElementById('messageInput').addEventListener('keypress', e => {
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         sendMessage();
       }
     });
 
-    document.getElementById('logoutLink').addEventListener('click', (e) => {
+    document.getElementById('logoutLink').addEventListener('click', e => {
       e.preventDefault();
       dashboard.logout();
     });

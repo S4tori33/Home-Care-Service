@@ -224,7 +224,7 @@
       }).length;
       document.getElementById('inactiveUsers').textContent = users.filter(u => !u.lastLogin || (new Date() - new Date(u.lastLogin)) > 30 * 24 * 60 * 60 * 1000).length;
       document.getElementById('bannedUsers').textContent = users.filter(u => u.status === 'banned').length;
-      document.getElementById('countCustomers').textContent = users.filter(u => u.role === 'customer').length;
+      document.getElementById('countCustomers').textContent = users.filter(u => u.role === 'customer' || u.role === 'regular_user').length;
       document.getElementById('countProviders').textContent = users.filter(u => ['caregiver', 'pet_care', 'garden_maintenance', 'house_cleaning'].includes(u.role)).length;
       document.getElementById('countSupport').textContent = users.filter(u => ['customer_support', 'moderator'].includes(u.role)).length;
     }

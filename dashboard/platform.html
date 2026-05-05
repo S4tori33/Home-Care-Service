@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Platform Admin - Home Care Service</title>
+  <link rel="stylesheet" href="../styles/dashboard.css">
+  <style>
+    table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; }
+    th, td { padding: 10px 12px; text-align: left; font-size: 13px; border-bottom: 1px solid #f3f4f6; }
+    th { background: #eff6ff; color: #1e40af; font-weight: 600; }
+    button { padding: 6px 10px; border-radius: 6px; border: none; cursor: pointer; font-size: 12px; font-weight: 600; }
+    .ban { background: #fee2e2; color: #b91c1c; }
+    .act { background: #d1fae5; color: #065f46; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <button class="sidebar-toggle" id="sidebarToggle"><span></span><span></span><span></span></button>
+    <a href="#" class="navbar-brand">
+      <div class="navbar-logo">HCS</div>
+      <div class="navbar-brand-text"><h1>Home Care Service</h1><p>Platform</p></div>
+    </a>
+    <div class="navbar-links">
+      <a href="../home.html">Home</a>
+      <a href="#" id="logoutLink">Logout</a>
+    </div>
+  </nav>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-profile">
+      <div class="avatar-wrap"><div class="avatar" id="avatarEl">PA</div></div>
+      <div class="sidebar-user-name" id="userName">Platform Admin</div>
+      <div class="sidebar-user-role" id="userRole">Admin</div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav"></nav>
+  </aside>
+
+  <div class="main-wrap">
+    <div class="dashboard-shell">
+      <div class="dashboard-header">
+        <h1>User moderation</h1>
+        <p class="dashboard-subtitle">Ban or restore accounts (excluding super admins).</p>
+      </div>
+      <table>
+        <thead><tr><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script>
+    if (!auth.getCurrentUser()) window.location.href = '../pages/userLogin.html';
+    if (auth.getUserRole().id !== 'platform_admin') window.location.href = '../pages/userLogin.html';
+
+    dashboard.initializeDashboard();
+
+    function render() {
+      document.getElementById('tbody').innerHTML = auth.getAllUsers().map(u => {
+        if (u.role === 'super_admin') {
+          return `<tr><td>${u.email}</td><td>${u.role}</td><td>${u.status}</td><td><em>protected</em></td></tr>`;
+        }
+        const isBanned = u.status === 'banned';
+        return `<tr>
+          <td>${u.email}</td>
+          <td>${u.role}</td>
+          <td>${u.status || 'active'}</td>
+          <td>
+            ${isBanned
+              ? `<button type="button" class="act" data-id="${u.id}">Activate</button>`
+              : `<button type="button" class="ban" data-id="${u.id}">Ban</button>`}
+          </td>
+        </tr>`;
+      }).join('');
+
+      document.querySelectorAll('.ban').forEach(btn => {
+        btn.addEventListener('click', () => {
+          auth.setUserStatus(btn.getAttribute('data-id'), 'banned');
+          render();
+        });
+      });
+      document.querySelectorAll('.act').forEach(btn => {
+        btn.addEventListener('click', () => {
+          auth.setUserStatus(btn.getAttribute('data-id'), 'active');
+          render();
+        });
+      });
+    }
+
+    document.getElementById('logoutLink').addEventListener('click', e => {
+      e.preventDefault();
+      dashboard.logout();
+    });
+
+    render();
+  </script>
+</body>
+</html>

@@ -333,7 +333,7 @@
         hrAdmins: users.filter(u => u.role === 'hr_admin').length,
         operationsAdmins: users.filter(u => u.role === 'operations_admin').length,
         providers: users.filter(u => ['caregiver', 'pet_care', 'garden_maintenance', 'house_cleaning'].includes(u.role)).length,
-        customers: users.filter(u => u.role === 'customer').length,
+        customers: users.filter(u => u.role === 'customer' || u.role === 'regular_user').length,
         support: users.filter(u => ['customer_support', 'moderator'].includes(u.role)).length
       };
 

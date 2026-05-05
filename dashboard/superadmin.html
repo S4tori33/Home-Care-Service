@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Super Admin - Home Care Service</title>
+  <link rel="stylesheet" href="../styles/dashboard.css">
+  <style>
+    table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; }
+    th, td { padding: 10px 12px; text-align: left; font-size: 13px; border-bottom: 1px solid #f3f4f6; vertical-align: middle; }
+    th { background: #fef2f2; color: #991b1b; font-weight: 600; }
+    select { padding: 6px; border-radius: 6px; border: 1px solid #e5e7eb; font-size: 12px; max-width: 140px; }
+    .danger { background: #dc2626; color: #fff; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); gap: 12px; margin-bottom: 24px; }
+    .stat-card { background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:16px;text-align:center; }
+    .stat-num { font-size: 28px; font-weight: 700; color: #991b1b; }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <button class="sidebar-toggle" id="sidebarToggle"><span></span><span></span><span></span></button>
+    <a href="#" class="navbar-brand">
+      <div class="navbar-logo">HCS</div>
+      <div class="navbar-brand-text"><h1>Home Care Service</h1><p>Super Admin</p></div>
+    </a>
+    <div class="navbar-links">
+      <a href="../home.html">Home</a>
+      <a href="#" id="logoutLink">Logout</a>
+    </div>
+  </nav>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-profile">
+      <div class="avatar-wrap"><div class="avatar" id="avatarEl">SA</div></div>
+      <div class="sidebar-user-name" id="userName">Super Admin</div>
+      <div class="sidebar-user-role" id="userRole">Administrator</div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav"></nav>
+  </aside>
+
+  <div class="main-wrap">
+    <div class="dashboard-shell">
+      <div class="dashboard-header">
+        <h1>System users</h1>
+        <p class="dashboard-subtitle">Change roles or remove accounts.</p>
+      </div>
+
+      <div class="stats">
+        <div class="stat-card"><div class="stat-num" id="nUsers">0</div><div>Users</div></div>
+        <div class="stat-card"><div class="stat-num" id="nBook">0</div><div>Bookings</div></div>
+        <div class="stat-card"><div class="stat-num" id="nMsg">0</div><div>Messages</div></div>
+      </div>
+
+      <div style="overflow:auto;">
+        <table>
+          <thead><tr><th>Email</th><th>Role</th><th>Status</th><th></th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script>
+    if (!auth.getCurrentUser()) window.location.href = '../pages/userLogin.html';
+    if (auth.getUserRole().id !== 'super_admin') window.location.href = '../pages/userLogin.html';
+
+    dashboard.initializeDashboard();
+
+    const ROLE_OPTIONS = [
+      'super_admin','platform_admin','hr_admin','operations_admin',
+      'caregiver','pet_care','garden_maintenance','house_cleaning',
+      'regular_user','customer_support','moderator'
+    ];
+
+    const me = auth.getCurrentUser();
+
+    function render() {
+      document.getElementById('nUsers').textContent = auth.getAllUsers().length;
+      document.getElementById('nBook').textContent = auth.getAllBookings().length;
+      document.getElementById('nMsg').textContent = auth.getAllMessages().length;
+
+      document.getElementById('tbody').innerHTML = auth.getAllUsers().map(u => {
+        const opts = ROLE_OPTIONS.map(r =>
+          `<option value="${r}" ${u.role === r ? 'selected' : ''}>${r}</option>`
+        ).join('');
+        return `<tr>
+          <td>${u.email}</td>
+          <td><select data-id="${u.id}" class="role-sel">${opts}</select></td>
+          <td>${u.status || 'active'}</td>
+          <td>
+            ${u.id !== me.id ? `<button type="button" class="danger del" data-id="${u.id}">Delete</button>` : '<em>you</em>'}
+          </td>
+        </tr>`;
+      }).join('');
+
+      document.querySelectorAll('.role-sel').forEach(sel => {
+        sel.addEventListener('change', () => {
+          const id = sel.getAttribute('data-id');
+          auth.updateUserProfile(id, { role: sel.value });
+          dashboard.showNotification('Role updated', 'success');
+          render();
+        });
+      });
+      document.querySelectorAll('.del').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (!confirm('Delete this user?')) return;
+          auth.deleteUser(btn.getAttribute('data-id'));
+          render();
+        });
+      });
+    }
+
+    document.getElementById('logoutLink').addEventListener('click', e => {
+      e.preventDefault();
+      dashboard.logout();
+    });
+
+    render();
+  </script>
+</body>
+</html>

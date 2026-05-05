@@ -124,8 +124,9 @@
   <script src="../js/dashboard.js"></script>
   <script>
     const userRole = auth.getUserRole();
-    if (!userRole || userRole.id !== 'customer') {
-      window.location.href = '../pages/userLogin.html';
+    const r = auth.getCurrentUser().role;
+    if (!userRole || (userRole.id !== 'regular_user' && r !== 'customer')) {
+      window.location.href = 'userLogin.html';
     }
     dashboard.initializeDashboard();
 
@@ -136,7 +137,7 @@
     document.getElementById('completedCount').textContent = stats.completedBookings || 0;
     document.getElementById('unreadMessages').textContent = stats.unreadMessages || 0;
 
-    const bookings = auth.getUserBookings(user.id, 'customer');
+    const bookings = auth.getUserBookings(user.id, 'regular_user');
     const recentBookings = bookings.slice(-3).reverse();
 
     function renderRecentBookings() {
