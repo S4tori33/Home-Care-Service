@@ -37,22 +37,20 @@ document.getElementById('loginForm').addEventListener('submit', (e) => {
         return;
     }
 
+    console.log(`[LoginForm] Attempting login for: ${email}`);
+    
     // Use auth system to login
     const result = auth.loginUser(email, password);
     
+    console.log(`[LoginForm] Login result:`, result);
+    
     if (result.success) {
-        const user = result.user;
-        
-        // Redirect based on role
-        if (user.role === 'admin') {
-            window.location.href = 'adminDashboard.html';
-        } else if (user.role === 'customer') {
-            window.location.href = 'dashboard.html?role=customer';
-        } else if (user.role === 'jobseeker') {
-            window.location.href = 'dashboard.html?role=jobseeker';
-        }
+        console.log(`[LoginForm] ✓ Login successful, redirecting to confirmation...`);
+        // Redirect to confirmation page (which will handle role-based dashboard routing)
+        window.location.href = 'authConfirmation.html';
     } else {
-        alert('Login failed: ' + result.message);
+        console.log(`[LoginForm] ❌ Login failed: ${result.message}`);
+        alert(result.message);
     }
 });
 
@@ -96,18 +94,28 @@ document.getElementById('signupForm').addEventListener('submit', (e) => {
     };
     
     // Register user through auth system
-    const result = auth.registerUser(formData);
+    const registerResult = auth.registerUser(formData);
     
-    if (result.success) {
-        alert('Sign up successful! You can now log in with your email and password.');
-        console.log('New user created:', result.user);
+    console.log(`[SignupForm] Register result:`, registerResult);
+    
+    if (registerResult && registerResult.success !== false) {
+        // Auto-login the newly registered user
+        const loginResult = auth.loginUser(formData.email, formData.password);
+        console.log(`[SignupForm] Auto-login result:`, loginResult);
         
-        // Reset form
-        document.getElementById('signupForm').reset();
-        
-        // Switch back to login tab
-        document.querySelector('[data-form="login"]').click();
+        if (loginResult.success) {
+            console.log(`[SignupForm] ✓ Auto-login successful, redirecting...`);
+            // Redirect to confirmation page
+            window.location.href = 'authConfirmation.html';
+        } else {
+            alert('Account created! Please log in with your email and password.');
+            // Reset form and switch to login
+            document.getElementById('signupForm').reset();
+            document.querySelector('[data-form="login"]').click();
+        }
     } else {
-        alert('Sign up failed: ' + result.message);
+        const errorMsg = registerResult?.message || 'An error occurred during sign up';
+        console.log(`[SignupForm] ❌ Registration failed: ${errorMsg}`);
+        alert('Sign up failed: ' + errorMsg);
     }
 });

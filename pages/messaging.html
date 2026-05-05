@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Messages - Home Care Service</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/dashboard.css">
+  <style>
+    .messaging-container { display: grid; grid-template-columns: 300px 1fr; gap: 0; height: calc(100vh - 200px); }
+    .conversations-list { border-right: 1px solid #e5e7eb; overflow-y: auto; }
+    .chat-window { display: flex; flex-direction: column; height: 100%; }
+    .conversation-item { padding: 16px; border-bottom: 1px solid #e5e7eb; cursor: pointer; transition: background 0.2s; display: flex; gap: 12px; }
+    .conversation-item:hover { background: #f9fafb; }
+    .conversation-item.active { background: #fef2f2; border-left: 3px solid #ef4444; }
+    .conversation-avatar { width: 40px; height: 40px; border-radius: 50%; background: #e5e7eb; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #6b7280; }
+    .conversation-info { flex: 1; min-width: 0; }
+    .conversation-name { font-size: 14px; font-weight: 600; color: #1f2937; }
+    .conversation-preview { font-size: 12px; color: #9ca3af; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 4px; }
+    .conversation-badge { background: #ef4444; color: white; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+    .chat-header { padding: 16px; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; }
+    .chat-content { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+    .message { display: flex; gap: 8px; margin-bottom: 8px; }
+    .message.sent { justify-content: flex-end; }
+    .message.received { justify-content: flex-start; }
+    .message-bubble { max-width: 70%; padding: 10px 14px; border-radius: 12px; font-size: 13px; line-height: 1.4; }
+    .message.sent .message-bubble { background: #ef4444; color: white; }
+    .message.received .message-bubble { background: #f3f4f6; color: #1f2937; }
+    .message-timestamp { font-size: 11px; color: #9ca3af; margin-top: 2px; text-align: right; }
+    .message.received .message-timestamp { text-align: left; }
+    .chat-input-area { padding: 16px; border-top: 1px solid #e5e7eb; display: flex; gap: 8px; }
+    .chat-input-field { flex: 1; border: 1px solid #e5e7eb; padding: 10px 12px; border-radius: 8px; font-size: 13px; font-family: inherit; }
+    .chat-input-field:focus { outline: none; border-color: #ef4444; }
+    .chat-send-btn { padding: 10px 16px; background: #ef4444; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 13px; }
+    .chat-send-btn:hover { background: #dc2626; }
+    .chat-send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: #9ca3af; }
+    .empty-state-icon { font-size: 48px; margin-bottom: 12px; }
+
+    @media (max-width: 768px) {
+      .messaging-container { grid-template-columns: 1fr; }
+      .conversations-list { position: absolute; left: -300px; top: 0; height: 100%; width: 300px; background: white; z-index: 10; transition: left 0.3s; }
+      .conversations-list.visible { left: 0; }
+      .chat-window { position: relative; }
+      .message-bubble { max-width: 90%; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <button class="sidebar-toggle" id="sidebarToggle"><span></span><span></span><span></span></button>
+    <a href="#" class="navbar-brand">
+      <div class="navbar-logo">HCS</div>
+      <div class="navbar-brand-text">
+        <h1>Home Care Service</h1>
+        <p>Messages</p>
+      </div>
+    </a>
+    <div class="navbar-links">
+      <a href="../home.html">Home</a>
+      <a href="#" id="logoutLink">Logout</a>
+    </div>
+  </nav>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-profile">
+      <div class="avatar-wrap">
+        <div class="avatar" id="avatarEl">U</div>
+        <div class="avatar-badge"></div>
+      </div>
+      <div class="sidebar-user-name" id="userName">User</div>
+      <div class="sidebar-user-role" id="userRole">Role</div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav"></nav>
+  </aside>
+
+  <div class="main-wrap">
+    <div class="dashboard-shell">
+      <div class="shell-topbar">
+        <div class="shell-brand">
+          <div class="shell-logo">HCS</div>
+          <div class="shell-brand-text">
+            <h2>Messages</h2>
+            <p>Your conversations</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="messaging-container">
+        <div class="conversations-list" id="conversationsList"></div>
+        <div class="chat-window">
+          <div class="chat-header">
+            <div>
+              <h3 id="chatTitle" style="font-size: 16px; font-weight: 600; color: #1f2937; margin: 0;">Select a conversation</h3>
+              <p id="chatSubtitle" style="font-size: 12px; color: #9ca3af; margin: 4px 0 0 0;">Click on a conversation to start messaging</p>
+            </div>
+          </div>
+          <div class="chat-content" id="chatContent">
+            <div class="empty-state">
+              <div class="empty-state-icon">💬</div>
+              <p>Select a conversation to view messages</p>
+            </div>
+          </div>
+          <div class="chat-input-area" id="chatInputArea" style="display: none;">
+            <input type="text" class="chat-input-field" id="messageInput" placeholder="Type your message...">
+            <button class="chat-send-btn" id="sendBtn" onclick="sendMessage()">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script>
+    let currentConversationId = null;
+    const currentUser = auth.getCurrentUser();
+
+    if (!currentUser) {
+      window.location.href = '../pages/userLogin.html';
+    } else {
+      dashboard.initializeDashboard();
+      loadConversations();
+    }
+
+    function loadConversations() {
+      const conversations = auth.getUserConversations(currentUser.id);
+      const conversationsList = document.getElementById('conversationsList');
+      
+      if (conversations.length === 0) {
+        conversationsList.innerHTML = '<div style="padding: 20px; text-align: center; color: #9ca3af;">No conversations yet</div>';
+        return;
+      }
+
+      conversationsList.innerHTML = conversations.map(conv => {
+        const otherUser = auth.getUserById(conv.otherUserId);
+        const unreadCount = conv.messages.filter(m => m.recipientId === currentUser.id && !m.read).length;
+        return `
+          <div class="conversation-item ${conv.id === currentConversationId ? 'active' : ''}" onclick="selectConversation('${conv.id}')">
+            <div class="conversation-avatar">${otherUser?.name?.charAt(0) || '?'}</div>
+            <div class="conversation-info">
+              <div class="conversation-name">${otherUser?.name || 'Unknown'}</div>
+              <div class="conversation-preview">${conv.messages[conv.messages.length - 1]?.content?.substring(0, 30) || 'No messages'}</div>
+            </div>
+            ${unreadCount > 0 ? `<div class="conversation-badge">${unreadCount}</div>` : ''}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectConversation(conversationId) {
+      currentConversationId = conversationId;
+      const conv = auth.getConversation(conversationId);
+      if (!conv) return;
+
+      const otherUser = auth.getUserById(conv.otherUserId);
+      document.getElementById('chatTitle').textContent = otherUser?.name || 'Unknown user';
+      document.getElementById('chatSubtitle').textContent = `${otherUser?.role?.name || 'User'} • Last message today`;
+      document.getElementById('chatInputArea').style.display = 'flex';
+
+      auth.markMessagesAsRead(conversationId, currentUser.id);
+      renderMessages(conv);
+      loadConversations();
+    }
+
+    function renderMessages(conv) {
+      const chatContent = document.getElementById('chatContent');
+      chatContent.innerHTML = conv.messages.map(msg => `
+        <div class="message ${msg.senderId === currentUser.id ? 'sent' : 'received'}">
+          <div>
+            <div class="message-bubble">${msg.content}</div>
+            <div class="message-timestamp">${new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+          </div>
+        </div>
+      `).join('');
+      chatContent.scrollTop = chatContent.scrollHeight;
+    }
+
+    function sendMessage() {
+      if (!currentConversationId) return;
+      const input = document.getElementById('messageInput');
+      const content = input.value.trim();
+      if (!content) return;
+
+      const conv = auth.getConversation(currentConversationId);
+      const message = {
+        id: auth.generateId(),
+        conversationId: currentConversationId,
+        senderId: currentUser.id,
+        recipientId: conv.otherUserId,
+        content: content,
+        timestamp: new Date().toISOString(),
+        read: false
+      };
+
+      const messages = JSON.parse(localStorage.getItem('hcs_messages') || '[]');
+      const convIndex = messages.findIndex(m => m.id === currentConversationId);
+      if (convIndex !== -1) {
+        messages[convIndex].messages.push(message);
+        localStorage.setItem('hcs_messages', JSON.stringify(messages));
+      }
+
+      input.value = '';
+      selectConversation(currentConversationId);
+    }
+
+    document.getElementById('messageInput').addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      dashboard.logout();
+    });
+  </script>
+</body>
+</html>

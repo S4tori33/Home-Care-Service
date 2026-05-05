@@ -149,21 +149,31 @@ class AuthSystem {
    * Create a new user
    */
   registerUser(userData) {
-    // Validate input
-    if (!userData.email || !userData.password) {
-      throw new Error('Email and password are required');
+    // Normalize email and validate input
+    const email = userData.email ? userData.email.trim().toLowerCase() : '';
+    if (!email || !userData.password) {
+      console.log('[Auth] Registration error: Email and password required');
+      return {
+        success: false,
+        message: 'Email and password are required'
+      };
     }
 
     // Check if user exists
     const users = this.getAllUsers();
-    if (users.some(u => u.email === userData.email)) {
-      throw new Error('User with this email already exists');
+    if (users.some(u => u.email === email)) {
+      console.log(`[Auth] Registration error: User already exists: ${email}`);
+      return {
+        success: false,
+        message: 'User with this email already exists'
+      };
     }
 
     // Create user object
     const user = {
+      ...userData, // Include any additional fields first
       id: this.generateId(),
-      email: userData.email,
+      email: email,
       password: userData.password, // In production, should be hashed
       role: userData.role || 'customer',
       firstName: userData.firstName || '',
@@ -173,30 +183,64 @@ class AuthSystem {
       createdAt: new Date().toISOString(),
       verified: false,
       status: 'active',
-      lastLogin: null,
-      ...userData // Include any additional fields
+      lastLogin: null
     };
 
     // Save user
     users.push(user);
     localStorage.setItem(this.STORAGE_KEY_USERS, JSON.stringify(users));
+    
+    console.log(`[Auth] ✓ User registered: ${user.email} with role: ${user.role}`);
 
-    return { ...user, password: undefined }; // Don't return password
+    return {
+      success: true,
+      user: { ...user, password: undefined }
+    };
   }
 
   /**
    * Authenticate user with email and password
    */
   loginUser(email, password) {
+    const normalizedEmail = email ? email.trim().toLowerCase() : '';
     const users = this.getAllUsers();
-    const user = users.find(u => u.email === email);
-
-    if (!user || user.password !== password) {
-      throw new Error('Invalid email or password');
+    
+    // Debug logging
+    console.log(`[Auth] Login attempt for: ${normalizedEmail}`);
+    console.log(`[Auth] Total users in system: ${users.length}`);
+    
+    // Find user by email
+    const user = users.find(u => u.email === normalizedEmail);
+    
+    if (!user) {
+      console.log(`[Auth] ❌ User not found: ${normalizedEmail}`);
+      return {
+        success: false,
+        message: 'Account does not exist. Please check your email or register.'
+      };
     }
+    
+    console.log(`[Auth] ✓ User found: ${normalizedEmail}`);
+    console.log(`[Auth] Password check: stored='${user.password}' vs entered='${password}'`);
+    
+    // Check password
+    if (user.password !== password) {
+      console.log(`[Auth] ❌ Password incorrect for: ${normalizedEmail}`);
+      return {
+        success: false,
+        message: 'Incorrect password. Please try again.'
+      };
+    }
+    
+    console.log(`[Auth] ✓ Password correct for: ${normalizedEmail}`);
 
+    // Check if account is banned
     if (user.status === 'banned') {
-      throw new Error('This account has been banned');
+      console.log(`[Auth] ❌ Account banned: ${normalizedEmail}`);
+      return {
+        success: false,
+        message: 'This account has been banned. Please contact support.'
+      };
     }
 
     // Update last login
@@ -205,15 +249,22 @@ class AuthSystem {
 
     // Set current user
     this.setCurrentUser(user);
+    
+    console.log(`[Auth] ✅ Login successful for: ${normalizedEmail}`);
+    console.log(`[Auth] User role: ${user.role}`);
 
-    return { ...user, password: undefined };
+    return {
+      success: true,
+      user: { ...user, password: undefined },
+      role: user.role
+    };
   }
 
   /**
    * Get current logged-in user
    */
   getCurrentUser() {
-    const stored = localStorage.getItem(this.STORAGE_KEY_CURRENT_USER);
+    const stored = localStorage.getItem(this.STORAGE_KEY_CURRENT_USER) || localStorage.getItem('currentUser');
     return stored ? JSON.parse(stored) : null;
   }
 
@@ -224,6 +275,7 @@ class AuthSystem {
     const userCopy = { ...user };
     delete userCopy.password;
     localStorage.setItem(this.STORAGE_KEY_CURRENT_USER, JSON.stringify(userCopy));
+    localStorage.setItem('currentUser', JSON.stringify(userCopy));
   }
 
   /**
@@ -271,6 +323,7 @@ class AuthSystem {
    */
   logout() {
     localStorage.removeItem(this.STORAGE_KEY_CURRENT_USER);
+    localStorage.removeItem('currentUser');
   }
 
   /**
@@ -520,10 +573,15 @@ class AuthSystem {
    */
 
   initializeDemoAccounts() {
-    // Only initialize if no users exist
-    if (this.getAllUsers().length > 0) {
+    const existingUsers = this.getAllUsers();
+    
+    // If we have 11 or more users, skip initialization
+    if (existingUsers.length >= 11) {
+      console.log('[Auth] Demo accounts already initialized. Total users:', existingUsers.length);
       return;
     }
+
+    console.log('[Auth] Initializing demo accounts...');
 
     const demoAccounts = [
       {
@@ -627,14 +685,35 @@ class AuthSystem {
       }
     ];
 
-    // Register demo accounts
+    // Directly add accounts to storage (bypass registerUser to avoid duplicate conflicts)
+    const users = this.getAllUsers();
+    let addedCount = 0;
+
     demoAccounts.forEach(account => {
-      try {
-        this.registerUser(account);
-      } catch (e) {
-        // Account might already exist, that's ok
+      // Skip if user already exists
+      if (users.some(u => u.email === account.email)) {
+        console.log(`[Auth] ✓ Demo account already exists: ${account.email}`);
+        return;
       }
+
+      // Create user object directly
+      const user = {
+        id: this.generateId(),
+        ...account,
+        avatar: this.generateAvatar(account.firstName, account.lastName),
+        createdAt: new Date().toISOString(),
+        status: 'active',
+        lastLogin: null
+      };
+      
+      users.push(user);
+      addedCount++;
+      console.log(`[Auth] ✓ Created demo account: ${account.email} (${account.role})`);
     });
+
+    // Save all users to storage
+    localStorage.setItem(this.STORAGE_KEY_USERS, JSON.stringify(users));
+    console.log(`[Auth] ✓ Demo accounts initialized. Added: ${addedCount}, Total users: ${users.length}`);
   }
 
   /**
@@ -719,7 +798,34 @@ class AuthSystem {
         return [allRoles.find(r => r.id === 'customer')];
     }
   }
+
+  /**
+   * Diagnostic helper - check system status
+   */
+  getDiagnostics() {
+    const users = this.getAllUsers();
+    const currentUser = this.getCurrentUser();
+    const accountEmails = users.map(u => u.email);
+    
+    return {
+      totalUsers: users.length,
+      accountEmails: accountEmails,
+      currentUser: currentUser ? currentUser.email : 'None',
+      currentRole: currentUser ? this.getUserRole()?.name : 'None',
+      demoAccountsMatch: accountEmails.length === 11 && accountEmails.includes('superadmin@test.com')
+    };
+  }
 }
 
 // Initialize auth system globally
 const auth = new AuthSystem();
+
+// Log initialization status
+console.log('%c⚡ AuthSystem Initialized', 'color: #10b981; font-weight: bold; font-size: 14px;');
+console.log('%c📊 System Diagnostics:', 'color: #3b82f6; font-weight: bold;');
+const diag = auth.getDiagnostics();
+console.table({
+  'Total Users': diag.totalUsers,
+  'Demo Accounts Ready': diag.demoAccountsMatch ? '✓ YES' : '✗ NO',
+  'Sample Accounts': diag.accountEmails.slice(0, 3).join(', ') + (diag.accountEmails.length > 3 ? '...' : '')
+});

@@ -183,37 +183,39 @@ class DashboardManager {
       caregiver: [
         { label: 'Dashboard', href: '/dashboard/caregiver', icon: chartIcon },
         { label: 'My Jobs', href: '/dashboard/caregiver/jobs', icon: bookingIcon },
-        { label: 'Messages', href: '/dashboard/caregiver/messages', icon: messageIcon }
+        { label: 'Messages', href: '/pages/messaging.html', icon: messageIcon }
       ],
       pet_care: [
         { label: 'Dashboard', href: '/dashboard/pet-care', icon: chartIcon },
         { label: 'My Jobs', href: '/dashboard/pet-care/jobs', icon: bookingIcon },
-        { label: 'Messages', href: '/dashboard/pet-care/messages', icon: messageIcon }
+        { label: 'Messages', href: '/pages/messaging.html', icon: messageIcon }
       ],
       garden_maintenance: [
         { label: 'Dashboard', href: '/dashboard/garden', icon: chartIcon },
         { label: 'My Jobs', href: '/dashboard/garden/jobs', icon: bookingIcon },
-        { label: 'Messages', href: '/dashboard/garden/messages', icon: messageIcon }
+        { label: 'Messages', href: '/pages/messaging.html', icon: messageIcon }
       ],
       house_cleaning: [
         { label: 'Dashboard', href: '/dashboard/cleaning', icon: chartIcon },
         { label: 'My Jobs', href: '/dashboard/cleaning/jobs', icon: bookingIcon },
-        { label: 'Messages', href: '/dashboard/cleaning/messages', icon: messageIcon }
+        { label: 'Messages', href: '/pages/messaging.html', icon: messageIcon }
       ],
       customer: [
         { label: 'Dashboard', href: '/dashboard/customer', icon: chartIcon },
         { label: 'Book Service', href: '/pages/booking.html', icon: bookingIcon },
         { label: 'My Bookings', href: '/dashboard/customer/bookings', icon: bookingIcon },
-        { label: 'Messages', href: '/dashboard/customer/messages', icon: messageIcon }
+        { label: 'Messages', href: '/pages/messaging.html', icon: messageIcon }
       ],
       customer_support: [
         { label: 'Dashboard', href: '/dashboard/support', icon: chartIcon },
         { label: 'Support Tickets', href: '/dashboard/support/tickets', icon: checklistIcon },
+        { label: 'Messages', href: '/pages/messaging.html', icon: messageIcon },
         { label: 'Users', href: '/dashboard/support/users', icon: usersIcon }
       ],
       moderator: [
         { label: 'Dashboard', href: '/dashboard/moderator', icon: chartIcon },
         { label: 'Reports', href: '/dashboard/moderator/reports', icon: checklistIcon },
+        { label: 'Messages', href: '/pages/messaging.html', icon: messageIcon },
         { label: 'Users', href: '/dashboard/moderator/users', icon: usersIcon }
       ]
     };
