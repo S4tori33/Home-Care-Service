@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up – Home Care Service</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/userLogin.css">
+    <style>
+        /* ── Step indicator ──────────────────────────────── */
+        .steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 28px;
+        }
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        .step-dot {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1.5px solid rgba(255,255,255,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.4);
+            transition: all 0.3s;
+        }
+        .step.active .step-dot {
+            background: rgba(255,255,255,0.25);
+            border-color: rgba(255,255,255,0.7);
+            color: #fff;
+            box-shadow: 0 0 14px rgba(255,255,255,0.2);
+        }
+        .step.done .step-dot {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.8);
+        }
+        .step-label {
+            font-size: 10.5px;
+            color: rgba(255,255,255,0.3);
+            white-space: nowrap;
+        }
+        .step.active .step-label { color: rgba(255,255,255,0.8); }
+        .step.done  .step-label  { color: rgba(255,255,255,0.55); }
+        .step-line {
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.15);
+            margin: 0 8px 16px;
+            min-width: 36px;
+            transition: background 0.3s;
+        }
+        .step-line.done { background: rgba(255,255,255,0.4); }
+
+        /* ── Multi-step panels ───────────────────────────── */
+        .form-steps { position: relative; overflow: hidden; }
+        .form-step  { display: none; animation: fadeUp 0.3s ease both; }
+        .form-step.active { display: block; }
+
+        /* ── Password strength ───────────────────────────── */
+        .strength-bar {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .strength-seg {
+            flex: 1; height: 3px;
+            border-radius: 2px;
+            background: rgba(255,255,255,0.12);
+            transition: background 0.3s;
+        }
+        .strength-hint {
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 4px;
+        }
+
+        /* ── Terms ───────────────────────────────────────── */
+        .terms-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .terms-row input[type="checkbox"] {
+            appearance: none; -webkit-appearance: none;
+            width: 18px; height: 18px;
+            border-radius: 5px;
+            border: 1.5px solid rgba(255,255,255,0.3);
+            background: var(--input-bg);
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-top: 1px;
+            position: relative;
+            transition: all 0.2s;
+        }
+        .terms-row input[type="checkbox"]:checked {
+            background: rgba(255,255,255,0.25);
+            border-color: rgba(255,255,255,0.7);
+        }
+        .terms-row input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%,-50%);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .terms-row label {
+            font-size: 12.5px;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.5;
+            cursor: pointer;
+        }
+        .terms-row label a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: underline;
+        }
+
+        /* ── Success screen ──────────────────────────────── */
+        .success-screen {
+            display: none;
+            text-align: center;
+            padding: 1rem 0 0.5rem;
+            animation: fadeUp 0.4s ease both;
+        }
+        .success-icon {
+            width: 68px; height: 68px;
+            background: rgba(255,255,255,0.18);
+            border: 2px solid rgba(255,255,255,0.45);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #fff;
+            margin: 0 auto 1.25rem;
+        }
+        .success-screen h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+        .success-screen p {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            line-height: 1.65;
+            margin-bottom: 1.75rem;
+        }
+
+        /* ── Back nav button ─────────────────────────────── */
+        .btn-back {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 1.5px solid rgba(255,255,255,0.25);
+            border-radius: 10px;
+            color: rgba(255,255,255,0.65);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+        .btn-back:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.4);
+            color: var(--white);
+        }
+
+        /* ── Login link ──────────────────────────────────── */
+        .login-link {
+            text-align: center;
+            margin-top: 1.25rem;
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+        }
+        .login-link a {
+            color: var(--white);
+            font-weight: 500;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+
+        <a href="../index.html" class="back-link" aria-label="Return to login">←</a>
+
+        <!-- Brand -->
+        <div class="brand">
+            <div class="brand-icon"><span>HCS</span></div>
+            <div class="brand-text">
+                <h1>Home Care Service</h1>
+                <p>Quality Care, Quality Life</p>
+            </div>
+        </div>
+
+        <!-- Form Container -->
+        <div class="form-container">
+
+            <div style="text-align:center; margin-bottom:22px;">
+                <h2 style="font-family:'Outfit',sans-serif;font-weight:700;font-size:1.5rem;color:#fff;margin-bottom:5px;">Create Your Account</h2>
+                <p style="font-size:13px;color:var(--text-muted);">Join HCS and access trusted care services</p>
+            </div>
+
+            <!-- Step indicator -->
+            <div class="steps" id="stepIndicator">
+                <div class="step active" id="step-ind-1">
+                    <div class="step-dot">1</div>
+                    <div class="step-label">Personal</div>
+                </div>
+                <div class="step-line" id="line-1"></div>
+                <div class="step" id="step-ind-2">
+                    <div class="step-dot">2</div>
+                    <div class="step-label">Credentials</div>
+                </div>
+            </div>
+
+            <div class="form-steps">
+
+                <!-- STEP 1: Personal -->
+                <div class="form-step active" id="step1">
+                    <div class="name-row">
+                        <div class="form-group">
+                            <label class="form-label" for="firstName">First Name *</label>
+                            <input type="text" id="firstName" class="form-input" placeholder="Juan" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" class="form-input" placeholder="Cruz" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="lmiddlename">Middle Name</label>
+                            <input type="text" id="middlename" class="form-input" placeholder="Dela" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="dob">Date of Birth *</label>
+                        <input type="date" id="dob" class="form-input" max="2008-05-05" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" class="form-input" placeholder="+63 9XX XXX XXXX">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="address">Address *</label>
+                        <input type="text" id="address" class="form-input" placeholder="Street, City, Province">
+                    </div>
+                    <div id="err1" style="color:#ffb3b3;font-size:12px;margin-bottom:10px;display:none;"></div>
+                    <div class="form-actions">
+                        <button class="btn btn-primary" onclick="nextStep(1)">Continue →</button>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Credentials -->
+                <div class="form-step" id="step2">
+                    <div class="form-group">
+                        <label class="form-label" for="regEmail">Email Address *</label>
+                        <input type="email" id="regEmail" class="form-input" placeholder="you@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="regPassword">Password *</label>
+                        <input type="password" id="regPassword" class="form-input" placeholder="Create a strong password" maxlength="30" oninput="checkStrength(this.value)">
+                        <div class="strength-bar">
+                            <div class="strength-seg" id="s1"></div>
+                            <div class="strength-seg" id="s2"></div>
+                            <div class="strength-seg" id="s3"></div>
+                            <div class="strength-seg" id="s4"></div>
+                        </div>
+                        <div class="strength-hint" id="strengthHint">Enter a password *</div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="regConfirm">Confirm Password *</label>
+                        <input type="password" id="regConfirm" class="form-input" placeholder="Repeat your password" maxlength="30">
+                    </div>
+                    <div id="err2" style="color:#ffb3b3;font-size:12px;margin-bottom:10px;display:none;"></div>
+
+                    <div class="terms-row">
+                        <input type="checkbox" id="terms">
+                        <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a> of Home Care Service.</label>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn btn-primary" onclick="submitSignup()">Create Account</button>
+                        <button class="btn-back" onclick="prevStep(2)">← Back</button>
+                    </div>
+                </div>
+
+            </div><!-- /.form-steps -->
+
+            <!-- Success -->
+            <div class="success-screen" id="successScreen">
+                <div class="success-icon">✓</div>
+                <h3>Account Created!</h3>
+                <p>Welcome to Home Care Service.<br>Please log in to get started.</p>
+                <div class="form-actions">
+                    <button class="btn btn-primary" onclick="window.location.href='../index.html'">Go to Login</button>
+                </div>
+            </div>
+
+            <div class="login-link" id="loginLinkRow">
+                Already have an account? <a href="../index.html">Log In</a>
+            </div>
+
+        </div><!-- /.form-container -->
+
+    </section>
+
+    <script>
+        let currentStep = 1;
+
+        function nextStep(from) {
+            if (!validateStep(from)) return;
+            currentStep = from + 1;
+            document.getElementById('step' + from).classList.remove('active');
+            document.getElementById('step' + currentStep).classList.add('active');
+            updateIndicator();
+        }
+        function prevStep(from) {
+            currentStep = from - 1;
+            document.getElementById('step' + from).classList.remove('active');
+            document.getElementById('step' + currentStep).classList.add('active');
+            updateIndicator();
+        }
+        function updateIndicator() {
+            for (let i = 1; i <= 2; i++) {
+                const ind = document.getElementById('step-ind-' + i);
+                ind.classList.remove('active','done');
+                if (i < currentStep) ind.classList.add('done');
+                if (i === currentStep) ind.classList.add('active');
+            }
+            document.getElementById('line-1').classList.toggle('done', currentStep > 1);
+        }
+        function validateStep(step) {
+            const err = document.getElementById('err' + step);
+            err.style.display = 'none';
+            if (step === 1) {
+                if (!document.getElementById('firstName').value.trim() ||
+                    !document.getElementById('lastName').value.trim()) {
+                    return showErr(err, 'Please enter your first and last name.');
+                }
+            }
+            if (step === 2) {
+                const em = document.getElementById('regEmail').value.trim();
+                const pw = document.getElementById('regPassword').value;
+                const cp = document.getElementById('regConfirm').value;
+                if (!em || !/\S+@\S+\.\S+/.test(em)) return showErr(err, 'Please enter a valid email.');
+                if (pw.length < 6) return showErr(err, 'Password must be at least 6 characters.');
+                if (pw !== cp)     return showErr(err, 'Passwords do not match.');
+                if (!document.getElementById('terms').checked) return showErr(err, 'Please accept the Terms of Service to continue.');
+            }
+            return true;
+        }
+        function showErr(el, msg) { el.textContent = msg; el.style.display = 'block'; return false; }
+
+        function submitSignup() {
+            if (!validateStep(2)) return;
+
+            // Hide form, show success
+            document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+            document.getElementById('stepIndicator').style.display = 'none';
+            document.getElementById('loginLinkRow').style.display  = 'none';
+            document.querySelector('.form-container > div:first-child').style.display = 'none';
+            document.getElementById('successScreen').style.display = 'block';
+        }
+
+        function checkStrength(val) {
+            const segs  = ['s1','s2','s3','s4'].map(id => document.getElementById(id));
+            const hint  = document.getElementById('strengthHint');
+            const cols  = ['#ff6b6b','#ffa726','#c8e06b','rgba(255,255,255,0.7)'];
+            const names = ['Weak','Fair','Good','Strong'];
+            let score = 0;
+            if (val.length >= 6)  score++;
+            if (val.length >= 10) score++;
+            if (/[A-Z]/.test(val) && /[0-9]/.test(val)) score++;
+            if (/[^A-Za-z0-9]/.test(val)) score++;
+            segs.forEach((s, i) => {
+                s.style.background = i < score ? cols[score - 1] : 'rgba(255,255,255,0.12)';
+            });
+            hint.textContent = val.length === 0 ? 'Enter a password' : (names[score - 1] || 'Too short');
+            hint.style.color  = val.length === 0 ? 'rgba(255,255,255,0.3)' : cols[score - 1] || '#ff6b6b';
+        }
+    </script>
+
+</body>
+</html>
+

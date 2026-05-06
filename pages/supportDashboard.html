@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Support Dashboard - Home Care Service</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/dashboard.css">
+  <style>
+    .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 32px; }
+    .admin-card { background: white; border: 1px solid #e5e7eb; padding: 24px; border-radius: 12px; }
+    .admin-card:hover { border-color: #8b5cf6; box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1); }
+    .admin-card h3 { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 16px; }
+    .admin-card .stat { font-size: 28px; font-weight: 700; color: #8b5cf6; margin-bottom: 8px; }
+    .admin-btn { padding: 10px 16px; background: #8b5cf6; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 16px; }
+    .admin-btn:hover { background: #7c3aed; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <button class="sidebar-toggle" id="sidebarToggle"><span></span><span></span><span></span></button>
+    <a href="#" class="navbar-brand">
+      <div class="navbar-logo">HCS</div>
+      <div class="navbar-brand-text">
+        <h1>Home Care Service</h1>
+        <p>Customer Support</p>
+      </div>
+    </a>
+    <div class="navbar-links">
+      <a href="home.html">Home</a>
+      <a href="#" id="logoutLink">Logout</a>
+    </div>
+  </nav>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-profile">
+      <div class="avatar-wrap">
+        <div class="avatar" id="avatarEl">CS</div>
+        <div class="avatar-badge"></div>
+      </div>
+      <div class="sidebar-user-name" id="userName">Support Agent</div>
+      <div class="sidebar-user-role" id="userRole">Agent</div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav"></nav>
+  </aside>
+
+  <div class="main-wrap">
+    <div class="dashboard-shell">
+      <div class="shell-topbar">
+        <div class="shell-brand">
+          <div class="shell-logo">HCS</div>
+          <div class="shell-brand-text">
+            <h2>Customer Support Dashboard</h2>
+            <p>Manage support tickets and user concerns</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-header">
+        <h1>Welcome, <span id="headerName">Support Agent</span>! 🎧</h1>
+        <p class="dashboard-subtitle">Handle customer issues and provide assistance</p>
+      </div>
+
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h3>🎫 Open Tickets</h3>
+          <div class="stat" id="openTickets">0</div>
+          <p>Awaiting resolution</p>
+          <button class="admin-btn" onclick="viewTickets()">View</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>⏳ In Progress</h3>
+          <div class="stat" id="inProgress">0</div>
+          <p>Being worked on</p>
+          <button class="admin-btn" onclick="viewInProgress()">View</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>✅ Resolved</h3>
+          <div class="stat" id="resolved">0</div>
+          <p>Completed this month</p>
+          <button class="admin-btn" onclick="viewResolved()">View</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>💬 New Messages</h3>
+          <div class="stat" id="newMessages">0</div>
+          <p>Unread user messages</p>
+          <button class="admin-btn" onclick="viewMessages()">View</button>
+        </div>
+      </div>
+
+      <div style="margin-top: 40px;">
+        <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 20px; color: #1f2937;">Recent Tickets</h2>
+        <p style="color: #9ca3af; text-align: center; padding: 20px;">No tickets at the moment.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script>
+    if (auth.getUserRole().id !== 'customer_support') window.location.href = '../index.html';
+    dashboard.initializeDashboard();
+
+    function viewTickets() { alert('Opening ticket management...'); }
+    function viewInProgress() { alert('Showing in-progress tickets...'); }
+    function viewResolved() { alert('Showing resolved tickets...'); }
+    function viewMessages() { alert('Opening messages...'); }
+
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      dashboard.logout();
+    });
+  </script>
+</body>
+</html>
+

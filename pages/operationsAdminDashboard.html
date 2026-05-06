@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operations Dashboard - Home Care Service</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/dashboard.css">
+  <link rel="stylesheet" href="../styles/adminDashboard.css">
+  <style>
+    .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 32px; }
+    .admin-card { background: white; border: 1px solid #e5e7eb; padding: 24px; border-radius: 12px; transition: all 0.3s ease; }
+    .admin-card:hover { border-color: #d97706; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.1); }
+    .admin-card h3 { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 16px; }
+    .admin-card .stat { font-size: 28px; font-weight: 700; color: #d97706; margin-bottom: 8px; }
+    .admin-card p { font-size: 13px; color: #6b7280; }
+    .admin-btn { padding: 10px 16px; border: 1px solid #d97706; background: white; color: #d97706; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-top: 16px; }
+    .admin-btn:hover { background: #d97706; color: white; }
+    .admin-btn.primary { background: #d97706; color: white; }
+    .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .status-pending { background: #fef3c7; color: #92400e; }
+    .status-confirmed { background: #dcfce7; color: #15803d; }
+    .status-completed { background: #d1d5db; color: #374151; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <button class="sidebar-toggle" id="sidebarToggle"><span></span><span></span><span></span></button>
+    <a href="#" class="navbar-brand">
+      <div class="navbar-logo">HCS</div>
+      <div class="navbar-brand-text">
+        <h1>Home Care Service</h1>
+        <p>Operations Center</p>
+      </div>
+    </a>
+    <div class="navbar-links">
+      <a href="home.html">Home</a>
+      <a href="#" id="logoutLink">Logout</a>
+    </div>
+  </nav>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-profile">
+      <div class="avatar-wrap">
+        <div class="avatar" id="avatarEl">OA</div>
+        <div class="avatar-badge"></div>
+      </div>
+      <div class="sidebar-user-name" id="userName">Operations Admin</div>
+      <div class="sidebar-user-role" id="userRole">Administrator</div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav"></nav>
+  </aside>
+
+  <div class="main-wrap">
+    <div class="dashboard-shell">
+      <div class="shell-topbar">
+        <div class="shell-brand">
+          <div class="shell-logo">HCS</div>
+          <div class="shell-brand-text">
+            <h2>Operations Admin Dashboard</h2>
+            <p>Booking & Service Management</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-header">
+        <h1>Welcome, <span id="headerName">Operations Admin</span>! 📊</h1>
+        <p class="dashboard-subtitle">Manage bookings and service provider assignments</p>
+      </div>
+
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h3>📋 Total Bookings</h3>
+          <div class="stat" id="totalBookings">0</div>
+          <p>All bookings in system</p>
+          <button class="admin-btn primary" onclick="viewAllBookings()">View All</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>⏳ Pending Assignment</h3>
+          <div class="stat" id="pendingAssignment">0</div>
+          <p>Need provider assignment</p>
+          <button class="admin-btn primary" onclick="viewPendingAssignment()">Assign</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>✅ Confirmed</h3>
+          <div class="stat" id="confirmedBookings">0</div>
+          <p>Assigned and proceeding</p>
+          <button class="admin-btn" onclick="viewConfirmed()">View</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>✔️ Completed</h3>
+          <div class="stat" id="completedBookings">0</div>
+          <p>Successfully completed</p>
+          <button class="admin-btn" onclick="viewCompleted()">View</button>
+        </div>
+      </div>
+
+      <div class="section-title" style="font-size: 18px; margin-bottom: 16px;">Service Breakdown</div>
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h3>🏥 Elderly Care</h3>
+          <div class="stat" id="caregivingServices">0</div>
+          <button class="admin-btn" onclick="viewServiceType('caregiver')">Manage</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>🐾 Pet Care</h3>
+          <div class="stat" id="petServices">0</div>
+          <button class="admin-btn" onclick="viewServiceType('pet_care')">Manage</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>🌿 Garden Work</h3>
+          <div class="stat" id="gardenServices">0</div>
+          <button class="admin-btn" onclick="viewServiceType('garden_maintenance')">Manage</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>🧹 House Cleaning</h3>
+          <div class="stat" id="cleaningServices">0</div>
+          <button class="admin-btn" onclick="viewServiceType('house_cleaning')">Manage</button>
+        </div>
+      </div>
+
+      <div class="section-title" style="font-size: 18px; margin-bottom: 16px;">Quick Actions</div>
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h3>➕ Create Booking</h3>
+          <p style="margin-bottom: 16px;">Manually create new booking</p>
+          <button class="admin-btn primary" onclick="createBooking()">Create</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>👤 Assign Provider</h3>
+          <p style="margin-bottom: 16px;">Assign provider to booking</p>
+          <button class="admin-btn primary" onclick="assignProvider()">Assign</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>📞 Contact Provider</h3>
+          <p style="margin-bottom: 16px;">Message assigned providers</p>
+          <button class="admin-btn primary" onclick="contactProvider()">Message</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script>
+    if (!dashboard.checkAccess('operations_admin')) {
+      window.location.href = '../index.html';
+    }
+    dashboard.initializeDashboard();
+
+    function updateStats() {
+      const bookings = auth.getAllBookings();
+      
+      document.getElementById('totalBookings').textContent = bookings.length;
+      document.getElementById('pendingAssignment').textContent = bookings.filter(b => b.status === 'pending').length;
+      document.getElementById('confirmedBookings').textContent = bookings.filter(b => b.status === 'confirmed').length;
+      document.getElementById('completedBookings').textContent = bookings.filter(b => b.status === 'completed').length;
+      
+      document.getElementById('caregivingServices').textContent = bookings.filter(b => b.serviceType === 'Elderly Care').length;
+      document.getElementById('petServices').textContent = bookings.filter(b => b.serviceType === 'Pet Care').length;
+      document.getElementById('gardenServices').textContent = bookings.filter(b => b.serviceType === 'Garden Maintenance').length;
+      document.getElementById('cleaningServices').textContent = bookings.filter(b => b.serviceType === 'House Cleaning').length;
+    }
+
+    function viewAllBookings() { alert('Opening booking management...'); }
+    function viewPendingAssignment() { alert('Showing bookings needing assignment...'); }
+    function viewConfirmed() { alert('Showing confirmed bookings...'); }
+    function viewCompleted() { alert('Showing completed bookings...'); }
+    function viewServiceType(type) { alert(`Showing ${type} services...`); }
+    function createBooking() { alert('Opening booking creation form...'); }
+    function assignProvider() { alert('Opening provider assignment tool...'); }
+    function contactProvider() { alert('Opening messaging system...'); }
+
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      dashboard.logout();
+    });
+
+    updateStats();
+    setInterval(updateStats, 10000);
+  </script>
+</body>
+</html>
+

@@ -57,8 +57,13 @@ img {
     display: flex;
     align-items: center;
     gap: 20px;
+<<<<<<< HEAD
     padding: 0 26px;
     background: rgba(255, 255, 255, 0.92);
+=======
+    padding: 10px 10px;
+    background: rgba(51, 23, 232, 0.92);
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
     backdrop-filter: blur(18px);
     border-bottom: 1px solid rgba(203, 213, 225, 0.6);
     z-index: 1000;
@@ -108,11 +113,19 @@ img {
     font-size: 1rem;
     margin: 0;
     font-weight: 700;
+<<<<<<< HEAD
+=======
+    color:white;
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
 }
 
 .navbar-brand-text p {
     margin: 0;
+<<<<<<< HEAD
     color: var(--text-muted);
+=======
+    color: white;
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
     font-size: 0.86rem;
 }
 
@@ -123,7 +136,11 @@ img {
 }
 
 .navbar-links a {
+<<<<<<< HEAD
     color: var(--text-muted);
+=======
+    color: white;
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
     font-size: 0.95rem;
     padding: 12px 14px;
     border-radius: 12px;
@@ -148,7 +165,11 @@ img {
 }
 
 .main-wrap {
+<<<<<<< HEAD
     padding: 24px 26px 40px;
+=======
+    padding: calc(var(--nav-h) + 24px) 26px 40px;
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
     max-width: 1440px;
     margin: 0 auto;
 }
@@ -161,12 +182,25 @@ img {
     margin-bottom: 28px;
 }
 
+<<<<<<< HEAD
 .profile-header-copy {
     flex: 1;
 }
 
 .profile-header-copy h1 {
     margin: 0 0 6px;
+=======
+.profile-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent);
+    font-size: 0.94rem;
+}
+
+.profile-header-copy h1 {
+    margin: 12px 0 6px;
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
     font-size: clamp(2rem, 2.2vw, 2.4rem);
     letter-spacing: -0.04em;
 }

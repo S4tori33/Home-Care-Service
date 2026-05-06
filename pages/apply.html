@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Service Provider Application | Home Care Service</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f4f7fb;
+  --surface: #fff;
+  --text: #1d1f26;
+  --muted: #6f7587;
+  --primary: #3751ff;
+  --primary-soft: rgba(55,81,255,.12);
+  --border: #dfe3ee;
+  --danger: #dc3545;
+  --success: #2d9c6c;
+  --radius: 20px;
+}
+*{box-sizing:border-box;}
+body{margin:0;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);}
+a{color:inherit;text-decoration:none;}
+button, input, select, textarea{font:inherit;}
+.page-shell{min-height:100vh;}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.25rem 2rem;background:#fff;box-shadow:0 2px 24px rgba(15,23,42,.08);position:sticky;top:0;z-index:20;}
+.brand{display:flex;align-items:center;gap:1rem;}
+.brand-logo{width:50px;height:50px;border-radius:18px;background:linear-gradient(135deg,#3751ff,#49c4ff);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:1.15rem;}
+.brand-copy{display:flex;flex-direction:column;}
+.brand-copy span{font-size:.95rem;color:var(--muted);}
+.back-link{border:1px solid var(--border);background:#fff;color:var(--text);border-radius:999px;padding:.9rem 1.2rem;cursor:pointer;transition:all .2s ease;}
+.back-link:hover{background:var(--bg);}
+.main{max-width:1120px;margin:2rem auto;padding:0 2rem;}
+.progress-shell{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:1.5rem;margin-bottom:1.5rem;}
+.progress-top{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;}
+.progress-label{font-size:.95rem;color:var(--muted);}
+.progress-bar{width:100%;height:12px;background:#e7ebf6;border-radius:999px;margin-top:.9rem;overflow:hidden;}
+.progress-fill{height:100%;background:linear-gradient(90deg,#3751ff,#69d5ff);width:0%;transition:width .3s ease;}
+.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;margin-top:1rem;}
+.step-pill{background:#f8faff;color:var(--muted);border:1px solid transparent;padding:.95rem 1rem;border-radius:16px;text-align:center;font-size:.92rem;transition:all .2s ease;}
+.step-pill.active, .step-pill.completed{background:var(--primary-soft);color:var(--primary);border-color:rgba(55,81,255,.2);font-weight:700;}
+.form-card{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:2rem;box-shadow:0 18px 40px rgba(15,23,42,.05);}
+.section-title{margin:0 0 1rem;font-size:1.35rem;letter-spacing:-.02em;}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.field-group{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1rem;}
+.field-group label{font-size:.95rem;color:var(--text);font-weight:600;}
+.field-group label .required{color:var(--danger);}
+.field-group input,
+.field-group textarea{border:1px solid var(--border);border-radius:16px;padding:.95rem 1rem;background:#fbfcff;outline:none;transition:border .2s ease,box-shadow .2s ease;}
+.field-group input:focus,
+.field-group textarea:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(55,81,255,.08);}
+.field-group textarea{resize:vertical;min-height:100px;}
+.field-error{color:var(--danger);font-size:.85rem;min-height:1.1rem;}
+.field-invalid input,
+.field-invalid textarea{border-color:var(--danger);}
+.option-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem;}
+.card-option{border:1px solid var(--border);border-radius:20px;padding:1.25rem;cursor:pointer;transition:all .2s ease;background:#fff;display:flex;flex-direction:column;gap:.5rem;min-height:120px;position:relative;}
+.card-option.selected{border-color:var(--primary);background:rgba(55,81,255,.08);}
+.card-option .checkmark{position:absolute;top:1rem;right:1rem;width:24px;height:24px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.8rem;opacity:0;transition:opacity .2s ease;}
+.card-option.selected .checkmark{opacity:1;}
+.card-option h3{margin:0;font-size:1rem;}
+.card-option p{margin:0;color:var(--muted);font-size:.92rem;line-height:1.5;}
+.chip-grid{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:.75rem;}
+.chip{border:1px solid var(--border);border-radius:999px;padding:.85rem 1rem;cursor:pointer;transition:all .2s ease;color:var(--text);background:#fff;}
+.chip.selected{border-color:var(--primary);background:var(--primary-soft);color:var(--primary);}
+.upload-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.upload-slot{border:1px solid var(--border);border-radius:20px;padding:1rem;min-height:140px;display:flex;flex-direction:column;justify-content:space-between;}
+.upload-label{display:flex;align-items:center;gap:.5rem;font-weight:700;color:var(--text);}
+.upload-desc{color:var(--muted);font-size:.9rem;}
+.upload-file{margin-top:1rem;font-size:.9rem;color:var(--text);}
+.review-section{display:grid;gap:1rem;}
+.review-card{background:#f8faff;border:1px solid var(--border);border-radius:20px;padding:1.25rem;}
+.review-row{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.review-label{color:var(--muted);font-size:.95rem;}
+.review-value{font-weight:700;max-width:72%;}
+.actions{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin-top:1.5rem;}
+.actions button{border:none;border-radius:16px;padding:.95rem 1.3rem;cursor:pointer;transition:all .2s ease;}
+.btn-secondary{background:#eef1ff;color:var(--text);}
+.btn-primary{background:var(--primary);color:#fff;}
+.btn-primary:disabled{background:rgba(55,81,255,.4);cursor:not-allowed;}
+.modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);display:flex;align-items:center;justify-content:center;padding:1.5rem;z-index:30;opacity:0;pointer-events:none;transition:opacity .2s ease;}
+.modal-overlay.active{opacity:1;pointer-events:auto;}
+.modal-card{background:#fff;border-radius:24px;padding:2rem;width:100%;max-width:520px;box-shadow:0 30px 80px rgba(15,23,42,.18);position:relative;}
+.modal-card h3{margin:0 0 .75rem;}
+.modal-card p{margin:0 0 1rem;color:var(--muted);line-height:1.6;}
+.modal-close{position:absolute;top:1rem;right:1rem;width:36px;height:36px;border-radius:50%;border:none;background:var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.modal-actions{display:flex;justify-content:flex-end;gap:.75rem;flex-wrap:wrap;margin-top:1.5rem;}
+.success-icon{width:64px;height:64px;border-radius:50%;background:rgba(46,196,133,.12);color:var(--success);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 1rem;}
+.info-box{background:#f0fdf6;border:1px solid rgba(45,156,108,.18);padding:1rem;border-radius:18px;color:#134e4a;margin:1rem 0;}
+.info-box ul{margin:.5rem 0 0 1.2rem;padding:0;color:#134e4a;}
+.info-box li{margin-bottom:.5rem;}
+.checkbox-row{display:flex;align-items:flex-start;gap:.75rem;margin-top:1rem;}
+.checkbox-row input{margin-top:.2rem;}
+.checkbox-row label{color:var(--text);font-weight:600;}
+.error-summary{color:var(--danger);font-size:.95rem;margin-top:1rem;}
+@media(max-width:900px){.grid-2,.option-grid,.upload-grid,.steps{grid-template-columns:1fr;}.topbar{flex-direction:column;align-items:flex-start;}} 
+</style>
+</head>
+<body>
+<div class="page-shell">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-logo">HCS</div>
+      <div class="brand-copy">
+        <strong>Service Provider Application</strong>
+        <span>Apply to become a certified home care provider</span>
+      </div>
+    </div>
+    <button class="back-link" type="button" onclick="handleLeaveHome()">Back to Home</button>
+  </header>
+  <main class="main">
+    <div class="progress-shell">
+      <div class="progress-top">
+        <div>
+          <div class="progress-label">Application Progress</div>
+          <div class="progress-label step-counter">Step 1 of 4</div>
+        </div>
+        <div class="progress-label progress-status">Personal Info</div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill"></div></div>
+      <div class="steps">
+        <div class="step-pill" data-step="1">Personal Info</div>
+        <div class="step-pill" data-step="2">Service Type</div>
+        <div class="step-pill" data-step="3">Experience</div>
+        <div class="step-pill" data-step="4">Review</div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <form id="providerApplicationForm" novalidate>
+        <div class="step-panel" data-step="1">
+          <h2 class="section-title">Personal Information</h2>
+          <div class="grid-2">
+            <div class="field-group" id="group-firstName">
+              <label for="firstName">First Name <span class="required">*</span></label>
+              <input id="firstName" name="firstName" type="text" autocomplete="given-name">
+              <div class="field-error" id="error-firstName"></div>
+            </div>
+            <div class="field-group" id="group-lastName">
+              <label for="lastName">Last Name <span class="required">*</span></label>
+              <input id="lastName" name="lastName" type="text" autocomplete="family-name">
+              <div class="field-error" id="error-lastName"></div>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="field-group" id="group-email">
+              <label for="email">Email <span class="required">*</span></label>
+              <input id="email" name="email" type="email" autocomplete="email">
+              <div class="field-error" id="error-email"></div>
+            </div>
+            <div class="field-group" id="group-phone">
+              <label for="phone">Phone <span class="required">*</span></label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel">
+              <div class="field-error" id="error-phone"></div>
+            </div>
+          </div>
+          <div class="field-group" id="group-street">
+            <label for="street">Street Address <span class="required">*</span></label>
+            <input id="street" name="street" type="text" autocomplete="street-address">
+            <div class="field-error" id="error-street"></div>
+          </div>
+          <div class="grid-2">
+            <div class="field-group" id="group-city">
+              <label for="city">City <span class="required">*</span></label>
+              <select id="city" name="city" autocomplete="address-level2">
+                <option value="">Select a city</option>
+                <option value="Zamboanga City">Zamboanga City</option>
+                <option value="Other City">Other City</option>
+              </select>
+              <div class="field-error" id="error-city"></div>
+            </div>
+            <div class="field-group" id="group-barangay">
+              <label for="barangay">Barangay</label>
+              <select id="barangay" name="barangay" disabled>
+                <option value="">Choose Zamboanga City first</option>
+              </select>
+              <div class="field-error" id="error-barangay"></div>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="field-group" id="group-zip">
+              <label for="zip">ZIP <span class="required">*</span></label>
+              <input id="zip" name="zip" type="text" autocomplete="postal-code">
+              <div class="field-error" id="error-zip"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-panel" data-step="2" style="display:none;">
+          <h2 class="section-title">Service Type & Availability</h2>
+          <div class="option-grid" id="serviceOptions">
+            <div class="card-option" data-value="Home Care">
+              <div class="checkmark">✓</div>
+              <h3>Home Care</h3>
+              <p>Personal care, hygiene, and daily living support.</p>
+            </div>
+            <div class="card-option" data-value="Pet Care">
+              <div class="checkmark">✓</div>
+              <h3>Pet Care</h3>
+              <p>Pet walking, feeding, and companionship services.</p>
+            </div>
+            <div class="card-option" data-value="Housekeeping">
+              <div class="checkmark">✓</div>
+              <h3>Housekeeping</h3>
+              <p>Cleaning, laundry, and household maintenance.</p>
+            </div>
+            <div class="card-option" data-value="Garden Care">
+              <div class="checkmark">✓</div>
+              <h3>Garden Care</h3>
+              <p>Outdoor maintenance and yard support.</p>
+            </div>
+          </div>
+          <div class="field-error" id="error-serviceType"></div>
+          <div class="field-group" style="margin-top:1.5rem;">
+            <label class="required">Availability <span class="required">*</span></label>
+            <div class="chip-grid" id="availabilityOptions">
+              <div class="chip" data-value="Weekdays">Weekdays</div>
+              <div class="chip" data-value="Weekends">Weekends</div>
+              <div class="chip" data-value="Evenings">Evenings</div>
+            </div>
+            <div class="field-error" id="error-availability"></div>
+          </div>
+        </div>
+
+        <div class="step-panel" data-step="3" style="display:none;">
+          <h2 class="section-title">Experience & Qualifications</h2>
+          <div class="grid-2">
+            <div class="field-group" id="group-yearsExperience">
+              <label for="yearsExperience">Years of Experience <span class="required">*</span></label>
+              <input id="yearsExperience" name="yearsExperience" type="number" min="0">
+              <div class="field-error" id="error-yearsExperience"></div>
+            </div>
+            <div class="field-group" id="group-skills">
+              <label for="skills">Skills & Expertise <span class="required">*</span></label>
+              <textarea id="skills" name="skills"></textarea>
+              <div class="field-error" id="error-skills"></div>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="certifications">Certifications</label>
+            <textarea id="certifications" name="certifications"></textarea>
+          </div>
+          <div class="field-group">
+            <label>Languages</label>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="languages" value="Tagalog"> Tagalog</label>
+              <label><input type="checkbox" name="languages" value="English"> English</label>
+              <label><input type="checkbox" name="languages" value="Cebuano"> Cebuano</label>
+              <label><input type="checkbox" name="languages" value="Ilocano"> Ilocano</label>
+              <label><input type="checkbox" name="languages" value="Hiligaynon"> Hiligaynon</label>
+              <label><input type="checkbox" name="languages" value="Central Bikol"> Central Bikol</label>
+              <label><input type="checkbox" name="languages" value="Waray"> Waray</label>
+              <label><input type="checkbox" name="languages" value="Kapampangan"> Kapampangan</label>
+              <label><input type="checkbox" name="languages" value="Pangasinan"> Pangasinan</label>
+              <label><input type="checkbox" name="languages" value="Maguindanao"> Maguindanao</label>
+              <label><input type="checkbox" name="languages" value="Maranao"> Maranao</label>
+              <label><input type="checkbox" name="languages" value="Tausug"> Tausug</label>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="additionalNotes">Additional Notes</label>
+            <textarea id="additionalNotes" name="additionalNotes"></textarea>
+          </div>
+          <div class="upload-grid">
+            <div class="upload-slot">
+              <div>
+                <div class="upload-label">Resume / CV</div>
+                <div class="upload-desc">PDF, DOC, DOCX, JPG, PNG up to 5MB.</div>
+              </div>
+              <div>
+                <input id="resumeUpload" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none;" onchange="handleFileUpload(event,'resume')">
+                <button type="button" class="btn btn-secondary" onclick="document.getElementById('resumeUpload').click()">Upload File</button>
+                <div class="upload-file" id="resumeLabel">No file chosen</div>
+              </div>
+            </div>
+            <div class="upload-slot">
+              <div>
+                <div class="upload-label">License / Certification</div>
+                <div class="upload-desc">PDF, DOC, DOCX, JPG, PNG up to 5MB.</div>
+              </div>
+              <div>
+                <input id="licenseUpload" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none;" onchange="handleFileUpload(event,'license')">
+                <button type="button" class="btn btn-secondary" onclick="document.getElementById('licenseUpload').click()">Upload File</button>
+                <div class="upload-file" id="licenseLabel">No file chosen</div>
+              </div>
+            </div>
+          </div>
+          <div class="field-error" id="error-fileUpload"></div>
+        </div>
+
+        <div class="step-panel" data-step="4" style="display:none;">
+          <h2 class="section-title">Review & Submit</h2>
+          <div class="review-section">
+            <div class="review-card">
+              <h3>Personal Info</h3>
+              <div class="review-row"><div class="review-label">Name</div><div class="review-value" id="reviewName"></div></div>
+              <div class="review-row"><div class="review-label">Email</div><div class="review-value" id="reviewEmail"></div></div>
+              <div class="review-row"><div class="review-label">Phone</div><div class="review-value" id="reviewPhone"></div></div>
+              <div class="review-row"><div class="review-label">Address</div><div class="review-value" id="reviewAddress"></div></div>
+            </div>
+            <div class="review-card">
+              <h3>Service Info</h3>
+              <div class="review-row"><div class="review-label">Service Type</div><div class="review-value" id="reviewServiceType"></div></div>
+              <div class="review-row"><div class="review-label">Availability</div><div class="review-value" id="reviewAvailability"></div></div>
+            </div>
+            <div class="review-card">
+              <h3>Experience</h3>
+              <div class="review-row"><div class="review-label">Years of Experience</div><div class="review-value" id="reviewYears"></div></div>
+              <div class="review-row"><div class="review-label">Skills & Expertise</div><div class="review-value" id="reviewSkills"></div></div>
+              <div class="review-row"><div class="review-label">Certifications</div><div class="review-value" id="reviewCertifications"></div></div>
+              <div class="review-row"><div class="review-label">Languages</div><div class="review-value" id="reviewLanguages"></div></div>
+              <div class="review-row"><div class="review-label">Additional Notes</div><div class="review-value" id="reviewNotes"></div></div>
+              <div class="review-row"><div class="review-label">Resume</div><div class="review-value" id="reviewResume"></div></div>
+              <div class="review-row"><div class="review-label">License</div><div class="review-value" id="reviewLicense"></div></div>
+            </div>
+          </div>
+          <div class="checkbox-row">
+            <input id="agreeTerms" type="checkbox" onchange="updateSubmitState()">
+            <label for="agreeTerms">I agree to the terms and conditions.</label>
+          </div>
+          <div class="field-error" id="error-terms"></div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-secondary" id="backButton" onclick="prevStep()" style="display:none;">Back</button>
+          <button type="button" class="btn btn-primary" id="nextButton" onclick="nextStep()">Next</button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+
+<div id="confirmModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-card">
+    <button type="button" class="modal-close" onclick="closeConfirmModal()">×</button>
+    <h3>Confirm Submission</h3>
+    <p>Please review your application one more time before sending it. Once submitted, our team will review your profile and contact you.</p>
+    <div class="error-summary" id="confirmError" style="display:none;"></div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-secondary" onclick="closeConfirmModal()">Review Again</button>
+      <button type="button" class="btn btn-primary" id="confirmSubmitButton" onclick="submitApplication()">Confirm & Submit</button>
+    </div>
+  </div>
+</div>
+
+<div id="successModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-card">
+    <button type="button" class="modal-close" onclick="closeSuccessModal()">×</button>
+    <div class="success-icon">✓</div>
+    <h3>Application Submitted!</h3>
+    <p>Your service provider application has been sent successfully.</p>
+    <div class="info-box">
+      <strong>What's next?</strong>
+      <ul>
+        <li>Our team reviews your application within 2 business days.</li>
+        <li>You will receive an email with next steps.</li>
+        <li>Prepare your documents for the onboarding call.</li>
+      </ul>
+    </div>
+    <button type="button" class="btn btn-primary" style="width:100%;" onclick="returnHome()">Return to Home</button>
+  </div>
+</div>
+
+<script>
+const formState = {
+  step: 1,
+  dirty: false,
+  personal: {
+    firstName: '', lastName: '', email: '', phone: '', street: '', city: '', barangay: '', zip: ''
+  },
+  service: { serviceTypes: [], availability: '' },
+  experience: {
+    yearsExperience: '', skills: '', certifications: '', languages: [], additionalNotes: '', resume: null, license: null
+  },
+  agreed: false
+};
+const totalSteps = 4;
+const maxFileSize = 5 * 1024 * 1024;
+const acceptedTypes = ['application/pdf','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document','image/jpeg','image/png'];
+
+const stepPanels = Array.from(document.querySelectorAll('.step-panel'));
+const stepPills = Array.from(document.querySelectorAll('.step-pill'));
+const progressFill = document.querySelector('.progress-fill');
+const stepCounter = document.querySelector('.step-counter');
+const progressStatus = document.querySelector('.progress-status');
+const backButton = document.getElementById('backButton');
+const nextButton = document.getElementById('nextButton');
+const confirmModal = document.getElementById('confirmModal');
+const successModal = document.getElementById('successModal');
+const confirmSubmitButton = document.getElementById('confirmSubmitButton');
+
+function setDirty() { formState.dirty = true; }
+function initPage() {
+  loadFormState();
+  updateStepUI();
+  attachOptionHandlers();
+  attachFieldListeners();
+  window.addEventListener('beforeunload', beforeUnloadHandler);
+}
+
+function attachFieldListeners() {
+  document.querySelectorAll('#providerApplicationForm input, #providerApplicationForm textarea, #providerApplicationForm select').forEach(el => el.addEventListener('input', () => {
+    setDirty(); saveFormState();
+  }));
+  document.getElementById('city').addEventListener('change', handleCityChange);
+}
+
+function attachOptionHandlers() {
+  document.querySelectorAll('#serviceOptions .card-option').forEach(card => {
+    card.addEventListener('click', () => toggleServiceType(card.dataset.value));
+  });
+  document.querySelectorAll('#availabilityOptions .chip').forEach(chip => {
+    chip.addEventListener('click', () => selectAvailability(chip.dataset.value));
+  });
+}
+
+function toggleServiceType(value) {
+  const index = formState.service.serviceTypes.indexOf(value);
+  if (index === -1) {
+    formState.service.serviceTypes.push(value);
+  } else {
+    formState.service.serviceTypes.splice(index, 1);
+  }
+  setDirty(); saveFormState(); renderServiceSelection();
+}
+
+function selectAvailability(value) {
+  formState.service.availability = value;
+  setDirty(); saveFormState(); renderAvailabilitySelection();
+}
+
+function renderServiceSelection() {
+  document.querySelectorAll('#serviceOptions .card-option').forEach(card => {
+    card.classList.toggle('selected', formState.service.serviceTypes.includes(card.dataset.value));
+  });
+}
+
+function renderAvailabilitySelection() {
+  document.querySelectorAll('#availabilityOptions .chip').forEach(chip => {
+    chip.classList.toggle('selected', chip.dataset.value === formState.service.availability);
+  });
+}
+
+function populateBarangayOptions() {
+  const barangaySelect = document.getElementById('barangay');
+  const city = document.getElementById('city').value;
+  const barangays = [
+    'Arena Blanco','Ayala','Baliwasan','Baluno','Barangay Zone','Barangay Zone II','Barangay Zone III','Barangay Zone IV','Boalan','Bolong','Buenavista','Bunguiao','Busay','Cabaluay','Cabatangan','Cacao','Calabasa','Calarian','Camino Nuevo','Campo Islam','Canelar','Capisan','Cawit','Culianan','Curuan','Dita','Divisoria','Dulian (Upper Bunguiao)','Dulian (Upper Pasonanca)','Guisao','Guiwan','Kasanyangan','La Paz','Labuan','Lamisahan','Landang Gua','Landang Laum','Lanzones','Lapakan','Latuan','Licomo','Limaong','Limpapa','Lubigan','Lumayang','Lumbangan','Lunzura','Maasin','Malagutay','Mampang','Manalipa','Mangusu','Manicahan','Mariki','Mercedes','Muti','Pamucut','Pangapuyan','Panubiga','Pasilmant','Pasobolon','Pasonanca','Patalon','Putik','Quiniput','Recodo','Rio Hondo','Salaan','San Jose Cawa-cawa','San Jose Gusu','San Roque','Sangali','Santa Barbara','Santa Catalina','Santa Maria','Santo Niño','Sibulao','Sinubung','Sinunoc','Tagasilay','Taguiti','Talabaan','Talisayan','Talon-talon','Taluksangay','Tetuan','Tictapul','Tigbalabag','Tigtabon','Tolosa','Tugbungan','Tulungatung','Tumaga','Tumalutab','Tumitus','Victoria','Vitali','Zambowood'
+  ];
+  barangaySelect.innerHTML = '';
+  if (city === 'Zamboanga City') {
+    barangaySelect.disabled = false;
+    barangaySelect.appendChild(new Option('Select a barangay', ''));
+    barangays.forEach(name => barangaySelect.appendChild(new Option(name, name)));
+    barangaySelect.value = formState.personal.barangay || '';
+  } else {
+    barangaySelect.disabled = true;
+    barangaySelect.appendChild(new Option('Choose Zamboanga City first', ''));
+    formState.personal.barangay = '';
+  }
+}
+
+function handleCityChange() {
+  formState.personal.city = document.getElementById('city').value;
+  setDirty(); saveFormState();
+  populateBarangayOptions();
+}
+
+function loadFormState() {
+  const saved = sessionStorage.getItem('providerApplicationState');
+  if (saved) {
+    Object.assign(formState, JSON.parse(saved));
+  }
+  Object.entries(formState.personal).forEach(([key, value]) => {
+    const input = document.getElementById(key);
+    if (input) input.value = value;
+  });
+  populateBarangayOptions();
+  document.getElementById('yearsExperience').value = formState.experience.yearsExperience;
+  document.getElementById('skills').value = formState.experience.skills;
+  document.getElementById('certifications').value = formState.experience.certifications;
+  const languageValues = Array.isArray(formState.experience.languages)
+    ? formState.experience.languages
+    : formState.experience.languages ? [formState.experience.languages] : [];
+  document.querySelectorAll('input[name="languages"]').forEach(checkbox => {
+    checkbox.checked = languageValues.includes(checkbox.value);
+  });
+  formState.experience.languages = languageValues;
+  document.getElementById('additionalNotes').value = formState.experience.additionalNotes;
+  document.getElementById('agreeTerms').checked = formState.agreed;
+  if (formState.experience.resume) {
+    document.getElementById('resumeLabel').textContent = formState.experience.resume.name;
+  }
+  if (formState.experience.license) {
+    document.getElementById('licenseLabel').textContent = formState.experience.license.name;
+  }
+  renderServiceSelection();
+  renderAvailabilitySelection();
+}
+
+function saveFormState() {
+  formState.personal.firstName = document.getElementById('firstName').value.trim();
+  formState.personal.lastName = document.getElementById('lastName').value.trim();
+  formState.personal.email = document.getElementById('email').value.trim();
+  formState.personal.phone = document.getElementById('phone').value.trim();
+  formState.personal.street = document.getElementById('street').value.trim();
+  formState.personal.city = document.getElementById('city').value.trim();
+  formState.personal.barangay = document.getElementById('barangay').value.trim();
+  formState.personal.zip = document.getElementById('zip').value.trim();
+  formState.experience.yearsExperience = document.getElementById('yearsExperience').value.trim();
+  formState.experience.skills = document.getElementById('skills').value.trim();
+  formState.experience.certifications = document.getElementById('certifications').value.trim();
+  formState.experience.languages = Array.from(document.querySelectorAll('input[name="languages"]:checked')).map(option => option.value);
+  formState.experience.additionalNotes = document.getElementById('additionalNotes').value.trim();
+  formState.agreed = document.getElementById('agreeTerms').checked;
+  sessionStorage.setItem('providerApplicationState', JSON.stringify(formState));
+}
+
+function updateStepUI() {
+  stepPanels.forEach(panel => {
+    panel.style.display = Number(panel.dataset.step) === formState.step ? 'block' : 'none';
+  });
+  stepPills.forEach(pill => {
+    const stepNum = Number(pill.dataset.step);
+    pill.classList.toggle('active', stepNum === formState.step);
+    pill.classList.toggle('completed', stepNum < formState.step);
+  });
+  const progress = ((formState.step - 1) / (totalSteps - 1)) * 100;
+  progressFill.style.width = `${progress}%`;
+  stepCounter.textContent = `Step ${formState.step} of ${totalSteps}`;
+  progressStatus.textContent = stepPills.find(p => Number(p.dataset.step) === formState.step).textContent;
+  backButton.style.display = formState.step > 1 ? 'inline-flex' : 'none';
+  nextButton.textContent = formState.step === totalSteps ? 'Submit Application' : 'Next';
+  updateSubmitState();
+  if (formState.step === 4) {
+    populateReview();
+  }
+}
+
+function validateStep() {
+  clearValidation();
+  if (formState.step === 1) return validateStepOne();
+  if (formState.step === 2) return validateStepTwo();
+  if (formState.step === 3) return validateStepThree();
+  return true;
+}
+
+function clearValidation() {
+  document.querySelectorAll('.field-error').forEach(el => { el.textContent = ''; });
+  document.querySelectorAll('.field-invalid').forEach(group => group.classList.remove('field-invalid'));
+  document.getElementById('confirmError').style.display='none';
+}
+
+function validateStepOne() {
+  let valid = true;
+  const required = ['firstName','lastName','email','phone','street','city','zip'];
+  required.forEach(field => {
+    const value = document.getElementById(field).value.trim();
+    if (!value) {
+      valid = false;
+      const group = document.getElementById(`group-${field}`);
+      if (group) group.classList.add('field-invalid');
+      document.getElementById(`error-${field}`).textContent = 'This field is required.';
+    }
+  });
+  if (document.getElementById('city').value === 'Zamboanga City') {
+    const barangayValue = document.getElementById('barangay').value.trim();
+    if (!barangayValue) {
+      valid = false;
+      document.getElementById('group-barangay').classList.add('field-invalid');
+      document.getElementById('error-barangay').textContent = 'Please select a barangay.';
+    }
+  }
+  const emailValue = document.getElementById('email').value.trim();
+  if (emailValue && !/^\S+@\S+\.\S+$/.test(emailValue)) {
+    valid = false; document.getElementById('group-email').classList.add('field-invalid');
+    document.getElementById('error-email').textContent = 'Enter a valid email address.';
+  }
+  return valid;
+}
+
+function validateStepTwo() {
+  let valid = true;
+  if (!formState.service.serviceTypes.length) {
+    valid = false;
+    document.getElementById('error-serviceType').textContent = 'Please select at least one service type.';
+  }
+  if (!formState.service.availability) {
+    valid = false;
+    document.getElementById('error-availability').textContent = 'Please select availability.';
+  }
+  return valid;
+}
+
+function validateStepThree() {
+  let valid = true;
+  const years = document.getElementById('yearsExperience').value.trim();
+  const skills = document.getElementById('skills').value.trim();
+  if (!years) {
+    valid = false; document.getElementById('group-yearsExperience').classList.add('field-invalid');
+    document.getElementById('error-yearsExperience').textContent = 'Enter years of experience.';
+  }
+  if (!skills) {
+    valid = false; document.getElementById('group-skills').classList.add('field-invalid');
+    document.getElementById('error-skills').textContent = 'Describe your skills.';
+  }
+  return valid;
+}
+
+function nextStep() {
+  if (formState.step === totalSteps) {
+    if (!document.getElementById('agreeTerms').checked) {
+      document.getElementById('error-terms').textContent = 'You must agree to the terms before submitting.';
+      return;
+    }
+    openConfirmModal();
+    return;
+  }
+  saveFormState();
+  if (!validateStep()) return;
+  formState.step += 1;
+  saveFormState();
+  updateStepUI();
+}
+
+function prevStep() {
+  if (formState.step > 1) {
+    formState.step -= 1;
+    saveFormState();
+    updateStepUI();
+  }
+}
+
+function populateReview() {
+  document.getElementById('reviewName').textContent = `${formState.personal.firstName} ${formState.personal.lastName}`;
+  document.getElementById('reviewEmail').textContent = formState.personal.email;
+  document.getElementById('reviewPhone').textContent = formState.personal.phone;
+  document.getElementById('reviewAddress').textContent = `${formState.personal.street}${formState.personal.barangay ? ', ' + formState.personal.barangay : ''}, ${formState.personal.city}, ${formState.personal.zip}`;
+  document.getElementById('reviewServiceType').textContent = formState.service.serviceTypes.join(', ');
+  document.getElementById('reviewAvailability').textContent = formState.service.availability;
+  document.getElementById('reviewYears').textContent = formState.experience.yearsExperience;
+  document.getElementById('reviewSkills').textContent = formState.experience.skills;
+  document.getElementById('reviewCertifications').textContent = formState.experience.certifications || 'None provided';
+  document.getElementById('reviewLanguages').textContent = Array.isArray(formState.experience.languages) && formState.experience.languages.length
+    ? formState.experience.languages.join(', ')
+    : 'None provided';
+  document.getElementById('reviewNotes').textContent = formState.experience.additionalNotes || 'None provided';
+  document.getElementById('reviewResume').textContent = formState.experience.resume ? formState.experience.resume.name : 'No file uploaded';
+  document.getElementById('reviewLicense').textContent = formState.experience.license ? formState.experience.license.name : 'No file uploaded';
+}
+
+function handleFileUpload(event, key) {
+  const file = event.target.files[0];
+  if (!file) return;
+  if (!acceptedTypes.includes(file.type)) {
+    document.getElementById('error-fileUpload').textContent = 'Unsupported file type. Use PDF, DOC, DOCX, JPG, or PNG.';
+    event.target.value = '';
+    return;
+  }
+  if (file.size > maxFileSize) {
+    document.getElementById('error-fileUpload').textContent = 'File must be 5MB or smaller.';
+    event.target.value = '';
+    return;
+  }
+  formState.experience[key] = { name: file.name, size: file.size, type: file.type };
+  setDirty(); saveFormState();
+  document.getElementById(`${key}Label`).textContent = file.name;
+  document.getElementById('error-fileUpload').textContent = '';
+}
+
+function updateSubmitState() {
+  const submitEnabled = document.getElementById('agreeTerms')?.checked;
+  confirmSubmitButton.disabled = !submitEnabled;
+}
+
+function openConfirmModal() {
+  confirmModal.classList.add('active');
+  confirmModal.setAttribute('aria-hidden','false');
+}
+
+function closeConfirmModal() {
+  confirmModal.classList.remove('active');
+  confirmModal.setAttribute('aria-hidden','true');
+}
+
+function closeSuccessModal() {
+  successModal.classList.remove('active');
+  successModal.setAttribute('aria-hidden','true');
+}
+
+function submitApplication() {
+  confirmSubmitButton.disabled = true;
+  confirmSubmitButton.textContent = 'Submitting...';
+  const payload = {
+    personal: formState.personal,
+    service: formState.service,
+    experience: formState.experience,
+    agreed: document.getElementById('agreeTerms').checked
+  };
+  fetch('/applications/provider', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  })
+  .then(async response => {
+    confirmSubmitButton.disabled = false;
+    confirmSubmitButton.textContent = 'Confirm & Submit';
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      const message = data?.message || 'Submission failed. Please try again.';
+      document.getElementById('confirmError').textContent = message;
+      document.getElementById('confirmError').style.display='block';
+      return;
+    }
+    clearFormState();
+    closeConfirmModal();
+    successModal.classList.add('active');
+    successModal.setAttribute('aria-hidden','false');
+  })
+  .catch(() => {
+    confirmSubmitButton.disabled = false;
+    confirmSubmitButton.textContent = 'Confirm & Submit';
+    document.getElementById('confirmError').textContent = 'Network error. Please try again.';
+    document.getElementById('confirmError').style.display='block';
+  });
+}
+
+function clearFormState() {
+  sessionStorage.removeItem('providerApplicationState');
+  formState.step = 1;
+  formState.dirty = false;
+  formState.personal = { firstName:'', lastName:'', email:'', phone:'', street:'', city:'', zip:'' };
+  formState.service = { serviceTypes: [], availability:'' };
+  formState.experience = { yearsExperience:'', skills:'', certifications:'', languages: [], additionalNotes:'', resume:null, license:null };
+  formState.agreed = false;
+  document.getElementById('providerApplicationForm').reset();
+  document.getElementById('resumeLabel').textContent='No file chosen';
+  document.getElementById('licenseLabel').textContent='No file chosen';
+  renderServiceSelection();
+  renderAvailabilitySelection();
+  updateStepUI();
+}
+
+function beforeUnloadHandler(event) {
+  if (!formState.dirty) return;
+  event.preventDefault();
+  event.returnValue = '';
+}
+
+function handleLeaveHome() {
+  if (formState.dirty && !confirm('You have unsaved changes. Leave the page and discard progress?')) {
+    return;
+  }
+  window.location.href = 'home.html';
+}
+
+function returnHome() {
+  formState.dirty = false;
+  window.location.href = 'home.html';
+}
+
+initPage();
+</script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Successful - Home Care Service</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Outfit, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    .card {
+      background: #fff;
+      padding: 48px 40px;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.25);
+      text-align: center;
+      max-width: 420px;
+      width: 92%;
+    }
+    .check {
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 24px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 36px;
+    }
+    h1 { font-size: 26px; color: #111827; margin-bottom: 8px; }
+    p { color: #6b7280; font-size: 15px; margin-bottom: 28px; line-height: 1.5; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 32px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 600;
+      font-size: 15px;
+      cursor: pointer;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      width: 100%;
+    }
+    .btn:hover { opacity: .95; }
+    .secondary {
+      margin-top: 12px;
+      background: transparent;
+      color: #6b7280;
+      border: 1px solid #e5e7eb;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="check">✓</div>
+    <h1>Login Successful</h1>
+    <p>You are signed in. Continue to your dashboard.</p>
+    <button type="button" class="btn" id="nextBtn">Next</button>
+    <button type="button" class="btn secondary" id="backBtn">Back to login</button>
+  </div>
+  <script>
+    function requireUser() {
+      const raw = localStorage.getItem('currentUser');
+      if (!raw) {
+        window.location.href = '../index.html';
+        return null;
+      }
+      return JSON.parse(raw);
+    }
+
+    function proceedToDashboard() {
+      const user = requireUser();
+      if (!user) return;
+
+      const base = '../dashboard/';
+      switch (user.role) {
+        case 'super_admin':
+          window.location.href = base + 'superadmin.html';
+          break;
+        case 'platform_admin':
+          window.location.href = base + 'platform.html';
+          break;
+        case 'hr_admin':
+          window.location.href = base + 'hr.html';
+          break;
+        case 'operations_admin':
+          window.location.href = base + 'operations.html';
+          break;
+        case 'caregiver':
+        case 'pet_care':
+        case 'garden_maintenance':
+        case 'house_cleaning':
+          window.location.href = base + 'provider.html';
+          break;
+        case 'regular_user':
+          window.location.href = base + 'user.html';
+          break;
+        case 'customer_support':
+          window.location.href = base + 'support.html';
+          break;
+        case 'moderator':
+          window.location.href = base + 'moderator.html';
+          break;
+        default:
+          window.location.href = base + 'user.html';
+      }
+    }
+
+    document.getElementById('nextBtn').addEventListener('click', proceedToDashboard);
+    document.getElementById('backBtn').addEventListener('click', () => {
+      localStorage.removeItem('currentUser');
+      localStorage.removeItem('hcs_current_user');
+      window.location.href = '../index.html';
+    });
+
+    if (!requireUser()) {}
+  </script>
+</body>
+</html>
+

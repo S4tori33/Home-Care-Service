@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 Ôªø<!DOCTYPE html>
+=======
+<!DOCTYPE html>
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -10,11 +14,93 @@
 <link rel="stylesheet" href="../styles/profile.css">
 </head>
 <body>
+<<<<<<< HEAD
     <div class="main-wrap">
         <section class="profile-header-section">
             <div class="profile-header-copy">
                 <h1>Jobseeker Profile</h1>
                 <p>Manage your personal information and preferences</p>
+=======
+    <!-- -- NAVBAR ------------------------------------- -->
+    <nav class="navbar">
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+            <span></span><span></span><span></span>
+        </button>
+        <a href="home.html" class="navbar-brand">
+            <div class="navbar-logo">HCS</div>
+            <div class="navbar-brand-text">
+                <h1>Home Care Service</h1>
+                <p>Quality Care, Quality Life</p>
+            </div>
+        </a>
+        <div class="navbar-links">
+            <a href="home.html">Home</a>
+            <a href="home.html#services">Services</a>
+            <a href="about.html">About</a>
+            <a href="jobSeekerApplication.html">Careers</a>
+            <a href="home.html#contact">Contact</a>
+        </div>
+        <div class="navbar-spacer"></div>
+    </nav>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-profile">
+            <div class="avatar-wrap">
+                <div class="avatar" id="avatarEl" title="Change profile picture">JD</div>
+                <div class="avatar-badge"></div>
+            </div>
+            <div class="sidebar-user-name" id="userName">John Doe</div>
+            <div class="sidebar-user-role" id="userRole">Premium Member</div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="sidebar-section-label">Main</div>
+            <a href="home.html" class="sidebar-item" data-page="home">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9L12 2l9 7v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-5H9v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/></svg>
+                Home
+            </a>
+            <a href="dashboard.html" class="sidebar-item" data-page="dashboard">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                Dashboard
+            </a>
+            <a href="#" class="sidebar-item" data-page="bookings">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                My Bookings
+            </a>
+            <a href="home.html#services" class="sidebar-item" data-page="services">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                Services
+            </a>
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-label">Account</div>
+            <a href="#" class="sidebar-item active" data-page="profile">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                My Profile
+            </a>
+            <a href="#" class="sidebar-item" data-page="notifications">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                Notifications
+            </a>
+            <a href="#" class="sidebar-item" data-page="help">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                Help & Support
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="../index.html" class="sidebar-item logout" style="margin-bottom:0;">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Log Out
+            </a>
+        </div>
+    </aside>
+    <div class="main-wrap">
+        <section class="profile-header-section">
+            <div class="profile-header-copy">
+                <a href="home.html" class="profile-back-link">? Back</a>
+                <div>
+                    <h1>User Profile</h1>
+                    <p>Manage your personal information and preferences</p>
+                </div>
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
             </div>
             <button class="btn btn-primary header-action">Edit Profile</button>
         </section>
@@ -47,6 +133,7 @@
                 <div class="quick-actions card">
                     <h3>Quick Actions</h3>
                     <a href="dashboard.html" class="action-item">
+<<<<<<< HEAD
                         <span class="action-icon">üè†</span>
                         Go to Dashboard
                     </a>
@@ -56,6 +143,17 @@
                     </a>
                     <a href="jobseekerProfile.html" class="action-item">
                         <span class="action-icon">‚ù§Ô∏è</span>
+=======
+                        <span class="action-icon">??</span>
+                        Go to Dashboard
+                    </a>
+                    <a href="booking.html" class="action-item">
+                        <span class="action-icon">??</span>
+                        Book a Service
+                    </a>
+                    <a href="jobseekerProfile.html" class="action-item">
+                        <span class="action-icon">??</span>
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
                         Favorite Providers
                     </a>
                 </div>
@@ -63,7 +161,11 @@
             <div class="profile-content">
                 <div class="card section-card">
                     <div class="card-header">
+<<<<<<< HEAD
                         <h2>User Details</h2>
+=======
+                        <h2>Personal Information</h2>
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
                     </div>
                     <div class="form-grid two-column">
                         <div class="field-group">
@@ -151,17 +253,29 @@
                     </div>
                     <div class="payment-list">
                         <div class="payment-card">
+<<<<<<< HEAD
                             <div class="payment-icon">üí≥</div>
                             <div>
                                 <strong>Visa ‚Ä¢‚Ä¢‚Ä¢‚Ä¢ 4242</strong>
+=======
+                            <div class="payment-icon">??</div>
+                            <div>
+                                <strong>Visa ïïïï 4242</strong>
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
                                 <span class="payment-note default">Default</span>
                             </div>
                             <button class="btn btn-link">Edit</button>
                         </div>
                         <div class="payment-card">
+<<<<<<< HEAD
                             <div class="payment-icon">üí≥</div>
                             <div>
                                 <strong>Mastercard ‚Ä¢‚Ä¢‚Ä¢‚Ä¢ 8888</strong>
+=======
+                            <div class="payment-icon">??</div>
+                            <div>
+                                <strong>Mastercard ïïïï 8888</strong>
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
                             </div>
                             <button class="btn btn-link">Edit</button>
                         </div>
@@ -174,6 +288,7 @@
                     <div class="security-list">
                         <a href="#" class="security-item">
                             <span>Change Password</span>
+<<<<<<< HEAD
                             <span class="security-arrow">‚Ä∫</span>
                         </a>
                         <a href="#" class="security-item">
@@ -183,13 +298,28 @@
                         <a href="#" class="security-item">
                             <span>Login History</span>
                             <span class="security-arrow">‚Ä∫</span>
+=======
+                            <span class="security-arrow">õ</span>
+                        </a>
+                        <a href="#" class="security-item">
+                            <span>Two-Factor Authentication</span>
+                            <span class="security-arrow">õ</span>
+                        </a>
+                        <a href="#" class="security-item">
+                            <span>Login History</span>
+                            <span class="security-arrow">õ</span>
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
                         </a>
                     </div>
                 </div>
             </div>
         </section>
         <footer>
+<<<<<<< HEAD
             <p>¬© 2026 Home Care Service (HCS). All Rights Reserved.</p>
+=======
+            <p>© 2026 Home Care Service (HCS). All Rights Reserved.</p>
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
         </footer>
     </div>
     <script src="../js/script.js"></script>
@@ -200,3 +330,7 @@
     </script>
 </body>
 </html>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb

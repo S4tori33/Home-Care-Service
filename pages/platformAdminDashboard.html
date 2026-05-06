@@ -72,6 +72,7 @@
       align-items: center;
       gap: 8px;
     }
+<<<<<<< HEAD
     .service-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -184,6 +185,8 @@
     .service-modal-body ul li {
       margin-bottom: 8px;
     }
+=======
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
   </style>
 </head>
 <body>
@@ -201,7 +204,11 @@
       </div>
     </a>
     <div class="navbar-links">
+<<<<<<< HEAD
       <a href="../home.html">Home</a>
+=======
+      <a href="home.html">Home</a>
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
       <a href="#" id="logoutLink">Logout</a>
     </div>
   </nav>
@@ -315,6 +322,7 @@
         </div>
       </div>
 
+<<<<<<< HEAD
       <div class="section-title">🛎️ Service Catalog</div>
       <div class="service-grid" id="serviceGrid"></div>
 
@@ -336,6 +344,8 @@
         </div>
       </div>
 
+=======
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
     </div>
   </div>
 
@@ -343,7 +353,11 @@
   <script src="../js/dashboard.js"></script>
   <script>
     if (!dashboard.checkAccess('platform_admin')) {
+<<<<<<< HEAD
       window.location.href = '../pages/userLogin.html';
+=======
+      window.location.href = '../index.html';
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
     }
     dashboard.initializeDashboard();
 
@@ -357,7 +371,11 @@
       }).length;
       document.getElementById('inactiveUsers').textContent = users.filter(u => !u.lastLogin || (new Date() - new Date(u.lastLogin)) > 30 * 24 * 60 * 60 * 1000).length;
       document.getElementById('bannedUsers').textContent = users.filter(u => u.status === 'banned').length;
+<<<<<<< HEAD
       document.getElementById('countCustomers').textContent = users.filter(u => u.role === 'customer').length;
+=======
+      document.getElementById('countCustomers').textContent = users.filter(u => u.role === 'customer' || u.role === 'regular_user').length;
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
       document.getElementById('countProviders').textContent = users.filter(u => ['caregiver', 'pet_care', 'garden_maintenance', 'house_cleaning'].includes(u.role)).length;
       document.getElementById('countSupport').textContent = users.filter(u => ['customer_support', 'moderator'].includes(u.role)).length;
     }
@@ -371,6 +389,7 @@
     function viewAnalytics() { alert('Opening analytics...'); }
     function generateReport() { alert('Generating report...'); }
 
+<<<<<<< HEAD
     const services = [
       {
         title: 'House Cleaning',
@@ -441,6 +460,8 @@
 
     renderServiceGrid();
 
+=======
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb
     document.getElementById('logoutLink').addEventListener('click', (e) => {
       e.preventDefault();
       dashboard.logout();
@@ -451,3 +472,7 @@
   </script>
 </body>
 </html>
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3a8f5e6452d675811dcf6951e1f7e34b7f2b02cb

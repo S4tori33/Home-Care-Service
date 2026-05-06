@@ -1,0 +1,262 @@
+.location-form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus, .form-group select:focus {
+    outline: none;
+    border-color: #1f4eff;
+    box-shadow: 0 0 0 2px rgba(31, 78, 255, 0.1);
+}
+
+.form-group input:invalid {
+    border-color: #e74c3c;
+}
+
+.optional {
+    color: #666;
+    font-weight: normal;
+    font-size: 14px;
+}
+
+.location-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn-secondary {
+    background: #f5f5f5;
+    color: #666;
+    border: 1px solid #ddd;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background: #e9e9e9;
+    color: #333;
+}
+
+.btn-primary {
+    background: #1f4eff;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    background: #1a45d1;
+    transform: translateY(-1px);
+}
+
+.form-instructions {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #1f4eff;
+    margin-bottom: 20px;
+}
+
+.form-instructions p {
+    margin: 0;
+    color: #555;
+    font-size: 14px;
+}
+
+.address-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+@media (max-width: 768px) {
+    .address-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Booking Confirmation Modal */
+.booking-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.booking-modal-backdrop.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.booking-modal {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.booking-modal-backdrop.open .booking-modal {
+    transform: scale(1);
+}
+
+.booking-modal-header {
+    text-align: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.booking-modal-header h2 {
+    color: #1f4eff;
+    margin: 0 0 5px 0;
+    font-size: 24px;
+}
+
+.booking-modal-header p {
+    color: #666;
+    margin: 0;
+    font-size: 14px;
+}
+
+.booking-details {
+    margin-bottom: 25px;
+}
+
+.detail-section {
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #1f4eff;
+}
+
+.detail-section h3 {
+    margin: 0 0 10px 0;
+    color: #333;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.detail-section p {
+    margin: 5px 0;
+    color: #555;
+    font-size: 14px;
+}
+
+.detail-section p strong {
+    color: #333;
+}
+
+.payment-summary {
+    background: linear-gradient(135deg, #1f4eff 0%, #1a45d1 100%);
+    color: white;
+    border-left-color: #1a45d1;
+}
+
+.payment-summary h3 {
+    color: white;
+}
+
+.payment-summary .payment-breakdown p {
+    color: #e8f4fd;
+}
+
+.payment-summary .payment-breakdown p strong {
+    color: white;
+}
+
+.payment-summary .total-amount {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    text-align: center;
+}
+
+.payment-summary .total-amount p {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
+    color: white;
+}
+
+.payment-summary .payment-note {
+    font-size: 12px;
+    color: #b8d4f0;
+    font-style: italic;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.booking-modal-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.booking-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 5px;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.booking-modal-close:hover {
+    color: #333;
+}

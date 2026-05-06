@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moderator Dashboard - Home Care Service</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/dashboard.css">
+  <style>
+    .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 32px; }
+    .admin-card { background: white; border: 1px solid #e5e7eb; padding: 24px; border-radius: 12px; }
+    .admin-card:hover { border-color: #ef4444; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.1); }
+    .admin-card h3 { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 16px; }
+    .admin-card .stat { font-size: 28px; font-weight: 700; color: #ef4444; margin-bottom: 8px; }
+    .admin-btn { padding: 10px 16px; background: #ef4444; color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; margin-top: 16px; }
+    .admin-btn:hover { background: #dc2626; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <button class="sidebar-toggle" id="sidebarToggle"><span></span><span></span><span></span></button>
+    <a href="#" class="navbar-brand">
+      <div class="navbar-logo">HCS</div>
+      <div class="navbar-brand-text">
+        <h1>Home Care Service</h1>
+        <p>Content Moderation</p>
+      </div>
+    </a>
+    <div class="navbar-links">
+      <a href="home.html">Home</a>
+      <a href="#" id="logoutLink">Logout</a>
+    </div>
+  </nav>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-profile">
+      <div class="avatar-wrap">
+        <div class="avatar" id="avatarEl">MOD</div>
+        <div class="avatar-badge"></div>
+      </div>
+      <div class="sidebar-user-name" id="userName">Moderator</div>
+      <div class="sidebar-user-role" id="userRole">Moderator</div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav"></nav>
+  </aside>
+
+  <div class="main-wrap">
+    <div class="dashboard-shell">
+      <div class="shell-topbar">
+        <div class="shell-brand">
+          <div class="shell-logo">HCS</div>
+          <div class="shell-brand-text">
+            <h2>Moderator Dashboard</h2>
+            <p>Platform content and user moderation</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-header">
+        <h1>Welcome, <span id="headerName">Moderator</span>! 🛡️</h1>
+        <p class="dashboard-subtitle">Review reports and moderate platform content</p>
+      </div>
+
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h3>📋 Pending Reports</h3>
+          <div class="stat" id="pendingReports">0</div>
+          <p>Awaiting review</p>
+          <button class="admin-btn" onclick="viewReports()">Review</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>👤 Users to Review</h3>
+          <div class="stat" id="usersToReview">0</div>
+          <p>Flagged accounts</p>
+          <button class="admin-btn" onclick="reviewUsers()">Review</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>✅ Resolved</h3>
+          <div class="stat" id="resolvedReports">0</div>
+          <p>Cases completed</p>
+          <button class="admin-btn" onclick="viewResolved()">View</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>🚫 Banned</h3>
+          <div class="stat" id="bannedUsers">0</div>
+          <p>Suspended users</p>
+          <button class="admin-btn" onclick="viewBanned()">View</button>
+        </div>
+      </div>
+
+      <div style="margin-top: 40px;">
+        <h2 style="font-size: 20px; font-weight: 700; margin-bottom: 20px; color: #1f2937;">Recent Reports</h2>
+        <p style="color: #9ca3af; text-align: center; padding: 20px;">No reports at the moment.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script>
+    if (auth.getUserRole().id !== 'moderator') window.location.href = '../index.html';
+    dashboard.initializeDashboard();
+
+    const users = auth.getAllUsers();
+    document.getElementById('bannedUsers').textContent = users.filter(u => u.status === 'banned').length;
+
+    function viewReports() { alert('Opening report management...'); }
+    function reviewUsers() { alert('Opening user review...'); }
+    function viewResolved() { alert('Showing resolved cases...'); }
+    function viewBanned() { alert('Showing banned users...'); }
+
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      dashboard.logout();
+    });
+  </script>
+</body>
+</html>
+
