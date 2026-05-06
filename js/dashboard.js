@@ -27,7 +27,7 @@ class DashboardManager {
    */
   initializeDashboard() {
     if (!this.auth.isLoggedIn()) {
-      window.location.href = '../pages/userLogin.html';
+      window.location.href = '../index.html';
       return;
     }
 
@@ -139,7 +139,7 @@ class DashboardManager {
 
     // Add logout button
     const logoutBtn = document.createElement('a');
-    logoutBtn.href = '../pages/userLogin.html';
+    logoutBtn.href = '../index.html';
     logoutBtn.className = 'sidebar-item logout';
     logoutBtn.id = 'logoutBtn';
     logoutBtn.innerHTML = `
@@ -250,7 +250,7 @@ class DashboardManager {
   logout() {
     if (confirm('Are you sure you want to log out?')) {
       this.auth.logout();
-      window.location.href = '../pages/userLogin.html';
+      window.location.href = '../index.html';
     }
   }
 
@@ -271,7 +271,7 @@ class DashboardManager {
     const user = this.auth.getCurrentUser();
     
     if (!user) {
-      window.location.href = '../pages/userLogin.html';
+      window.location.href = '../index.html';
       return false;
     }
 
@@ -372,7 +372,7 @@ let selectedOtherId = null;
     const currentUser = auth.getCurrentUser();
 
     if (!currentUser) {
-      window.location.href = 'userLogin.html';
+      window.location.href = '../index.html';
     } else {
       dashboard.initializeDashboard();
       renderConversationPanel();

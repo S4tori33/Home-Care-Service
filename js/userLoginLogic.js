@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Login successful - redirect to confirmation page
-    window.location.href = 'authConfirmation.html';
+    window.location.href = 'pages/authConfirmation.html';
   });
 
   function showError(message) {

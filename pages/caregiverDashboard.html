@@ -47,8 +47,8 @@
       </div>
     </a>
     <div class="navbar-links">
-      <a href="../home.html">Home</a>
-      <a href="#" id="logoutLink">Logout</a>
+      <a href="home.html">Home</a>
+      <a href="../index.html" id="logoutLink">Logout</a>
     </div>
   </nav>
 
@@ -137,7 +137,7 @@
   <script>
     const userRole = auth.getUserRole();
     if (!userRole || !['caregiver', 'pet_care', 'garden_maintenance', 'house_cleaning'].includes(userRole.id)) {
-      window.location.href = '../pages/userLogin.html';
+      window.location.href = '../index.html';
     }
     dashboard.initializeDashboard();
 
@@ -253,3 +253,4 @@
   </script>
 </body>
 </html>
+

@@ -31,7 +31,7 @@
       </div>
     </a>
     <div class="navbar-links">
-      <a href="../home.html">Home</a>
+      <a href="home.html">Home</a>
       <a href="#" id="logoutLink">Logout</a>
     </div>
   </nav>
@@ -103,7 +103,7 @@
   <script src="../js/dashboard.js"></script>
   <script>
     const userRole = auth.getUserRole();
-    if (userRole.id !== 'pet_care') window.location.href = '../pages/userLogin.html';
+    if (userRole.id !== 'pet_care') window.location.href = '../index.html';
     dashboard.initializeDashboard();
 
     const user = auth.getCurrentUser();
@@ -122,3 +122,4 @@
   </script>
 </body>
 </html>
+

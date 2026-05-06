@@ -13,7 +13,10 @@
   <nav class="navbar">
     <button class="sidebar-toggle" id="sidebarToggle"><span></span><span></span><span></span></button>
     <a href="#" class="navbar-brand"><div class="navbar-logo">HCS</div><div class="navbar-brand-text"><h1>Home Care Service</h1><p>House Cleaning</p></div></a>
-    <div class="navbar-links"><a href="../home.html">Home</a><a href="#" id="logoutLink">Logout</a></div>
+    <div class="navbar-links">
+      <a href="home.html">Home</a>
+      <a href="../index.html" id="logoutLink">Logout</a>
+    </div>
   </nav>
 
   <aside class="sidebar" id="sidebar">
@@ -70,7 +73,7 @@
   <script src="../js/auth.js"></script>
   <script src="../js/dashboard.js"></script>
   <script>
-    if (auth.getUserRole().id !== 'house_cleaning') window.location.href = '../pages/userLogin.html';
+    if (auth.getUserRole().id !== 'house_cleaning') window.location.href = '../index.html';
     dashboard.initializeDashboard();
     document.getElementById('logoutLink').addEventListener('click', (e) => {
       e.preventDefault();
@@ -79,3 +82,4 @@
   </script>
 </body>
 </html>
+

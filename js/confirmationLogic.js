@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!user) {
     // No user logged in - redirect back to login
-    window.location.href = 'userLogin.html';
+    window.location.href = '../index.html';
     return;
   }
 
@@ -38,7 +38,7 @@ function redirectToDashboard() {
   const user = appData.getCurrentUser();
 
   if (!user) {
-    window.location.href = 'userLogin.html';
+    window.location.href = '../index.html';
     return;
   }
 
@@ -72,5 +72,5 @@ function redirectToDashboard() {
 
 function goBackToLogin() {
   appData.logout();
-  window.location.href = 'userLogin.html';
+  window.location.href = '../index.html';
 }

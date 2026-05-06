@@ -193,7 +193,7 @@ class Dashboard {
 
 function logout() {
   appData.logout();
-  window.location.href = 'userLogin.html';
+  window.location.href = '../index.html';
 }
 
 function switchTab(event, tabName) {

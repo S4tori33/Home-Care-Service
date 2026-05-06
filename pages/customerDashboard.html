@@ -29,9 +29,8 @@
       </div>
     </a>
     <div class="navbar-links">
-      <a href="../home.html">Home</a>
-      <a href="../pages/about.html">About</a>
-      <a href="#" id="logoutLink">Logout</a>
+      <a href="home.html">Home</a>
+      <a href="../index.html" id="logoutLink">Logout</a>
     </div>
   </nav>
 
@@ -126,7 +125,7 @@
     const userRole = auth.getUserRole();
     const r = auth.getCurrentUser().role;
     if (!userRole || (userRole.id !== 'regular_user' && r !== 'customer')) {
-      window.location.href = 'userLogin.html';
+      window.location.href = '../index.html';
     }
     dashboard.initializeDashboard();
 
@@ -187,3 +186,4 @@
   </script>
 </body>
 </html>
+
