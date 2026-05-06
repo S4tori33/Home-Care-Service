@@ -132,31 +132,41 @@ function showSuccessMessage() {
 }
 
 // Sidebar toggle functionality
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('sidebarOverlay');
-const toggle = document.getElementById('sidebarToggle');
+function initializeSidebarToggle() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const toggle = document.getElementById('sidebarToggle');
 
-function openSidebar() {
-    sidebar.classList.add('open');
-    overlay.classList.add('show');
-    toggle.classList.add('open');
-}
-function closeSidebar() {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('show');
-    toggle.classList.remove('open');
-}
-toggle.addEventListener('click', () => {
-    sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
-});
-overlay.addEventListener('click', closeSidebar);
+    if (!sidebar || !overlay || !toggle) return;
 
-// Active sidebar item + close on click
-document.querySelectorAll('.sidebar-item[data-page]').forEach(item => {
-    item.addEventListener('click', function(e) {
-        if (!this.getAttribute('href') || this.getAttribute('href') === '#') e.preventDefault();
-        document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-        this.classList.add('active');
-        closeSidebar();
+    function openSidebar() {
+        sidebar.classList.add('open');
+        overlay.classList.add('show');
+        toggle.classList.add('open');
+    }
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+        toggle.classList.remove('open');
+    }
+
+    toggle.addEventListener('click', () => {
+        sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
     });
-});
+    overlay.addEventListener('click', closeSidebar);
+
+    document.querySelectorAll('.sidebar-item[data-page]').forEach(item => {
+        item.addEventListener('click', function(e) {
+            if (!this.getAttribute('href') || this.getAttribute('href') === '#') e.preventDefault();
+            document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+            closeSidebar();
+        });
+    });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeSidebarToggle);
+} else {
+    initializeSidebarToggle();
+}

@@ -193,13 +193,14 @@ html, body {
 }
 
 .form-group {
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 /* name fields layout for signup */
 .name-row {
     display: flex;
     gap: 16px;
+    margin-bottom: 20px;
 }
 .name-row .form-group {
     flex: 1;
@@ -207,7 +208,13 @@ html, body {
 }
 
 @media (max-width: 520px) {
-    .name-row { flex-direction: column; gap: 0; }
+    .name-row { 
+        flex-direction: column; 
+        gap: 0; 
+    }
+    .name-row .form-group {
+        margin-bottom: 20px;
+    }
 }
 
 .form-label {
@@ -238,6 +245,25 @@ html, body {
 
 .form-input::placeholder {
     color: rgba(255,255,255,0.6);
+}
+
+/* ── CHECKBOX ────────────────────────────────────────────── */
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--white);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 0;
+}
+
+.form-checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--white);
+    cursor: pointer;
 }
 
 /* ── BUTTONS ─────────────────────────────────────────────── */

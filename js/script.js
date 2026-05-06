@@ -9,40 +9,84 @@ function toggleMenu() {
     nav.classList.toggle("show");
 }
 
+function recordSidebarToggle(action) {
+    if (!['open', 'close'].includes(action)) return;
+    const key = 'sidebarToggleUsage';
+
+    try {
+        const stored = localStorage.getItem(key);
+        const data = stored ? JSON.parse(stored) : {
+            openCount: 0,
+            closeCount: 0,
+            lastAction: '',
+            lastTimestamp: ''
+        };
+
+        if (action === 'open') data.openCount += 1;
+        if (action === 'close') data.closeCount += 1;
+        data.lastAction = action;
+        data.lastTimestamp = new Date().toISOString();
+
+        localStorage.setItem(key, JSON.stringify(data));
+    } catch (error) {
+        console.debug('Sidebar toggle tracking unavailable:', error);
+    }
+}
+
 /*function showAlert() {
     alert("Thank you for choosing HCS! Please email us at contactspeared@gmail.com.");
 }
 */
 
 // Sidebar toggle — works on ALL screen sizes
-const sidebar = document.getElementById('sidebar');
-const overlay = document.getElementById('sidebarOverlay');
-const toggle  = document.getElementById('sidebarToggle');
+function initializeSidebarToggle() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const toggle  = document.getElementById('sidebarToggle');
 
-function openSidebar() {
-    sidebar.classList.add('open');
-    overlay.classList.add('show');
-    toggle.classList.add('open');
-}
-function closeSidebar() {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('show');
-    toggle.classList.remove('open');
-}
-toggle.addEventListener('click', () => {
-    sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
-});
-overlay.addEventListener('click', closeSidebar);
+    if (!sidebar || !overlay || !toggle) return;
 
-// Active sidebar item + close on click
-document.querySelectorAll('.sidebar-item[data-page]').forEach(item => {
-    item.addEventListener('click', function(e) {
-        if (!this.getAttribute('href') || this.getAttribute('href') === '#') e.preventDefault();
-        document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
-        this.classList.add('active');
-        closeSidebar();
+    // Ensure toggle button does not submit a form if markup changes.
+    if (toggle.tagName.toLowerCase() === 'button') {
+        toggle.type = 'button';
+    }
+
+    function openSidebar() {
+        sidebar.classList.add('open');
+        overlay.classList.add('show');
+        toggle.classList.add('open');
+        recordSidebarToggle('open');
+    }
+    function closeSidebar() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+        toggle.classList.remove('open');
+        recordSidebarToggle('close');
+    }
+
+    toggle.addEventListener('click', (event) => {
+        event.preventDefault();
+        console.debug('Sidebar toggle clicked:', sidebar.classList.contains('open') ? 'closing' : 'opening');
+        sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
     });
-});
+    overlay.addEventListener('click', closeSidebar);
+
+    document.querySelectorAll('.sidebar-item[data-page]').forEach(item => {
+        item.addEventListener('click', function(e) {
+            if (!this.getAttribute('href') || this.getAttribute('href') === '#') e.preventDefault();
+            document.querySelectorAll('.sidebar-item').forEach(i => i.classList.remove('active'));
+            this.classList.add('active');
+            closeSidebar();
+        });
+    });
+}
+
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeSidebarToggle);
+} else {
+    initializeSidebarToggle();
+}
+
 
 // Navbar scroll highlight
 const sections = document.querySelectorAll('section[id]');
@@ -63,61 +107,26 @@ function showAlert() {
     alert('📞 Thank you for reaching out! HCS will contact you shortly.');
 }
 
-const serviceModalBackdrop = document.getElementById('serviceModalBackdrop');
-const serviceModalClose = document.getElementById('serviceModalClose');
-const serviceModalTitle = document.getElementById('serviceModalTitle');
-const serviceModalSubtitle = document.getElementById('serviceModalSubtitle');
-const serviceModalPricing = document.getElementById('serviceModalPricing');
-const serviceModalIncludes = document.getElementById('serviceModalIncludes');
-const serviceModalDescription = document.getElementById('serviceModalDescription');
+const serviceOptions = document.querySelectorAll('.service-option');
+        const nextButton = document.getElementById('nextStep');
+        let selectedService = null;
 
-function openServiceModal(title, subtitle, pricing, includes, description) {
-    if (!serviceModalBackdrop) return;
-    serviceModalTitle.textContent = title;
-    serviceModalSubtitle.textContent = subtitle;
-    serviceModalPricing.textContent = pricing;
-    serviceModalDescription.textContent = description;
-    serviceModalIncludes.innerHTML = '';
+        if (serviceOptions.length && nextButton) {
+            serviceOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    serviceOptions.forEach(o => o.classList.remove('selected'));
+                    option.classList.add('selected');
+                    selectedService = option.querySelector('.service-title')?.textContent.trim();
+                    nextButton.disabled = false;
+                });
+            });
 
-    includes.forEach(item => {
-        const li = document.createElement('li');
-        li.textContent = item;
-        serviceModalIncludes.appendChild(li);
-    });
-
-    serviceModalBackdrop.classList.add('open');
-    serviceModalBackdrop.setAttribute('aria-hidden', 'false');
-}
-
-function closeServiceModal() {
-    if (!serviceModalBackdrop) return;
-    serviceModalBackdrop.classList.remove('open');
-    serviceModalBackdrop.setAttribute('aria-hidden', 'true');
-}
-
-document.querySelectorAll('#services .service-card').forEach(card => {
-    card.style.cursor = 'pointer';
-    card.addEventListener('click', () => {
-        const title = card.querySelector('h3')?.textContent.trim() || '';
-        const subtitle = card.querySelector('p')?.textContent.trim() || '';
-        const details = card.querySelector('.service-details');
-        const pricing = details?.querySelector('h4:nth-of-type(1) + p')?.textContent.trim() || '';
-        const description = details?.querySelector('h4:last-of-type + p')?.textContent.trim() || '';
-        const includes = Array.from(details?.querySelectorAll('ul li') || []).map(li => li.textContent.trim());
-        openServiceModal(title, subtitle, pricing, includes, description);
-    });
-});
-
-serviceModalClose?.addEventListener('click', closeServiceModal);
-serviceModalBackdrop?.addEventListener('click', (event) => {
-    if (event.target === serviceModalBackdrop) closeServiceModal();
-});
-
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') closeServiceModal();
-});
-
-// ── PROFILE PAGE FUNCTIONALITY ───────────────────────────────────────
+            nextButton.addEventListener('click', () => {
+                if (!selectedService) return;
+                alert(`Selected service: ${selectedService}\n\nProceeding to the next step...`);
+                // TODO: Add real step navigation logic here.
+            });
+        }
 
 // Tab switching functionality
 function initializeProfileTabs() {
@@ -343,92 +352,166 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeAvatarUpload();
     initializeToggles();
     initializeFormHandling();
-    initializeServiceModal();
 });
 
-function initializeServiceModal() {
-    const backdrop = document.getElementById('serviceModalBackdrop');
-    const closeBtn = document.getElementById('serviceModalClose');
-    const titleEl = document.getElementById('serviceModalTitle');
-    const subtitleEl = document.getElementById('serviceModalSubtitle');
-    const pricingEl = document.getElementById('serviceModalPricing');
-    const includesEl = document.getElementById('serviceModalIncludes');
-    const descriptionEl = document.getElementById('serviceModalDescription');
 
-    if (!backdrop || !closeBtn || !titleEl || !subtitleEl || !pricingEl || !includesEl || !descriptionEl) return;
+/* SUPER ADMIN */
 
-    const openModal = (card) => {
-        const title = card.querySelector('summary h3')?.textContent.trim() || '';
-        const subtitle = card.querySelector('summary p')?.textContent.trim() || '';
-        const pricing = card.querySelector('.service-details h4:nth-of-type(1) + p')?.textContent.trim() || '';
-        const descriptionHeading = Array.from(card.querySelectorAll('.service-details h4'))
-            .find(h => h.textContent.trim().toLowerCase().includes('service details'));
-        const description = descriptionHeading?.nextElementSibling?.textContent.trim() || '';
-        const includesHeading = Array.from(card.querySelectorAll('.service-details h4'))
-            .find(h => h.textContent.trim().toLowerCase().includes("what's included") || h.textContent.trim().toLowerCase().includes('what’s included'));
-        const includesList = includesHeading?.nextElementSibling;
-
-        titleEl.textContent = title;
-        subtitleEl.textContent = subtitle;
-        pricingEl.textContent = pricing;
-        descriptionEl.textContent = description;
-        includesEl.innerHTML = '';
-
-        if (includesList && includesList.tagName === 'UL') {
-            includesList.querySelectorAll('li').forEach(li => {
-                const item = document.createElement('li');
-                item.textContent = li.textContent;
-                includesEl.appendChild(item);
-            });
-        }
-
-        backdrop.classList.add('open');
-        backdrop.setAttribute('aria-hidden', 'false');
-    };
-
-    const closeModal = () => {
-        backdrop.classList.remove('open');
-        backdrop.setAttribute('aria-hidden', 'true');
-    };
-
-    document.querySelectorAll('.service-card summary').forEach(summary => {
-        summary.addEventListener('click', event => {
-            event.preventDefault();
-            event.stopPropagation();
-            const card = summary.closest('.service-card');
-            if (card) {
-                openModal(card);
-            }
+// Tab switching
+    function switchTab(name, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + name).classList.add('active');
+ 
+      if (name === 'analytics') {
+        setTimeout(initCharts, 50);
+      }
+    }
+ 
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      if (confirm('Are you sure you want to logout?')) {
+        window.location.href = '../home.html';
+      }
+    });
+ 
+    // Charts
+    let chartsInitialized = false;
+ 
+    function initCharts() {
+      if (chartsInitialized) return;
+      chartsInitialized = true;
+ 
+      const months = ['Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'];
+ 
+      // User Growth Chart
+      const ugCtx = document.getElementById('userGrowthChart').getContext('2d');
+      drawLineChart(ugCtx, months, [
+        { label: 'Users', data: [950, 1000, 1060, 1100, 1150, 1200, 1248], color: '#3b82f6' },
+        { label: 'Providers', data: [310, 318, 325, 330, 336, 340, 342], color: '#f97316' },
+        { label: 'Admins', data: [10, 10, 10, 11, 11, 12, 12], color: '#8b5cf6' }
+      ]);
+ 
+      // Revenue Chart
+      const rvCtx = document.getElementById('revenueChart').getContext('2d');
+      drawBarChart(rvCtx, months, [115000, 120000, 124000, 128000, 133000, 136000, 145000], '#10b981');
+    }
+ 
+    function drawLineChart(ctx, labels, datasets) {
+      const canvas = ctx.canvas;
+      const W = canvas.offsetWidth;
+      const H = canvas.offsetHeight;
+      canvas.width = W * devicePixelRatio;
+      canvas.height = H * devicePixelRatio;
+      ctx.scale(devicePixelRatio, devicePixelRatio);
+ 
+      const pad = { top: 20, right: 20, bottom: 30, left: 55 };
+      const chartW = W - pad.left - pad.right;
+      const chartH = H - pad.top - pad.bottom;
+ 
+      // Find min/max across all datasets
+      let allVals = datasets.flatMap(d => d.data);
+      let minVal = Math.min(...allVals) * 0.95;
+      let maxVal = Math.max(...allVals) * 1.05;
+ 
+      function xPos(i) { return pad.left + (i / (labels.length - 1)) * chartW; }
+      function yPos(v) { return pad.top + chartH - ((v - minVal) / (maxVal - minVal)) * chartH; }
+ 
+      ctx.clearRect(0, 0, W, H);
+ 
+      // Grid lines
+      ctx.strokeStyle = '#f3f4f6';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = pad.top + (i / 4) * chartH;
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(W - pad.right, y); ctx.stroke();
+        const val = Math.round(maxVal - (i / 4) * (maxVal - minVal));
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = '11px DM Sans';
+        ctx.textAlign = 'right';
+        ctx.fillText(val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val, pad.left - 6, y + 4);
+      }
+ 
+      // X labels
+      ctx.fillStyle = '#9ca3af';
+      ctx.font = '11px DM Sans';
+      ctx.textAlign = 'center';
+      labels.forEach((l, i) => {
+        ctx.fillText(l, xPos(i), H - pad.bottom + 16);
+      });
+ 
+      // Draw lines
+      datasets.forEach(ds => {
+        ctx.strokeStyle = ds.color;
+        ctx.lineWidth = 2;
+        ctx.lineJoin = 'round';
+        ctx.beginPath();
+        ds.data.forEach((v, i) => {
+          i === 0 ? ctx.moveTo(xPos(i), yPos(v)) : ctx.lineTo(xPos(i), yPos(v));
         });
-    });
-
-    closeBtn.addEventListener('click', closeModal);
-    backdrop.addEventListener('click', event => {
-        if (event.target === backdrop) closeModal();
-    });
-    document.addEventListener('keydown', event => {
-        if (event.key === 'Escape' && backdrop.classList.contains('open')) closeModal();
-    });
-}
-
-
-const serviceOptions = document.querySelectorAll('.service-option');
-        const nextButton = document.getElementById('nextStep');
-        let selectedService = null;
-
-        if (serviceOptions.length && nextButton) {
-            serviceOptions.forEach(option => {
-                option.addEventListener('click', () => {
-                    serviceOptions.forEach(o => o.classList.remove('selected'));
-                    option.classList.add('selected');
-                    selectedService = option.querySelector('.service-title')?.textContent.trim();
-                    nextButton.disabled = false;
-                });
-            });
-
-            nextButton.addEventListener('click', () => {
-                if (!selectedService) return;
-                alert(`Selected service: ${selectedService}\n\nProceeding to the next step...`);
-                // TODO: Add real step navigation logic here.
-            });
-        }
+        ctx.stroke();
+ 
+        // Dots
+        ds.data.forEach((v, i) => {
+          ctx.fillStyle = '#fff';
+          ctx.beginPath();
+          ctx.arc(xPos(i), yPos(v), 4, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = ds.color;
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        });
+      });
+    }
+ 
+    function drawBarChart(ctx, labels, data, color) {
+      const canvas = ctx.canvas;
+      const W = canvas.offsetWidth;
+      const H = canvas.offsetHeight;
+      canvas.width = W * devicePixelRatio;
+      canvas.height = H * devicePixelRatio;
+      ctx.scale(devicePixelRatio, devicePixelRatio);
+ 
+      const pad = { top: 20, right: 20, bottom: 30, left: 70 };
+      const chartW = W - pad.left - pad.right;
+      const chartH = H - pad.top - pad.bottom;
+      const maxVal = Math.max(...data) * 1.1;
+      const barW = (chartW / labels.length) * 0.6;
+ 
+      ctx.clearRect(0, 0, W, H);
+ 
+      // Grid
+      ctx.strokeStyle = '#f3f4f6';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= 4; i++) {
+        const y = pad.top + (i / 4) * chartH;
+        ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(W - pad.right, y); ctx.stroke();
+        const val = Math.round(maxVal - (i / 4) * maxVal);
+        ctx.fillStyle = '#9ca3af';
+        ctx.font = '11px DM Sans';
+        ctx.textAlign = 'right';
+        ctx.fillText(val >= 1000 ? (val / 1000).toFixed(0) + 'k' : val, pad.left - 6, y + 4);
+      }
+ 
+      // X labels
+      ctx.fillStyle = '#9ca3af';
+      ctx.font = '11px DM Sans';
+      ctx.textAlign = 'center';
+ 
+      // Bars
+      const slotW = chartW / labels.length;
+      data.forEach((v, i) => {
+        const barH = (v / maxVal) * chartH;
+        const x = pad.left + i * slotW + (slotW - barW) / 2;
+        const y = pad.top + chartH - barH;
+ 
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.roundRect(x, y, barW, barH, [4, 4, 0, 0]);
+        ctx.fill();
+ 
+        ctx.fillStyle = '#9ca3af';
+        ctx.fillText(labels[i], x + barW / 2, H - pad.bottom + 16);
+      });
+    }

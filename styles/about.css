@@ -112,8 +112,8 @@ body {
 .navbar-links a {
     display: flex;
     position: relative;
-    left: 620px;
-    font-family: 'Outfit', sans-serif;
+    left: 690px;
+    font-family: 'Outfit', sans-serif;  
     font-size: 13.5px;
     font-weight: 500;
     color: rgba(255,255,255,0.7);
@@ -919,5 +919,545 @@ footer {
     .service-actions .btn {
         width: 100%;
         min-width: auto;
+    }
+}
+
+/* ── NEW ABOUT PAGE STYLES ──────────────────────────────────── */
+
+/* About Header */
+.about-header {
+    background: #ffffff;
+    padding: 20px 40px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.brand-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #3b5bdb 0%, #6480f5 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    color: #ffffff;
+    font-size: 18px;
+}
+
+.brand-text h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.brand-text p {
+    font-size: 13px;
+    color: #6b7280;
+    margin: 2px 0 0 0;
+}
+
+.back-link {
+    color: #1a1a1a;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.back-link:hover {
+    color: #3b5bdb;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #3b5bdb 0%, #6480f5 100%);
+    padding: 80px 40px;
+    text-align: center;
+    color: #ffffff;
+}
+
+.hero-content h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.hero-content p {
+    font-size: 18px;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 32px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+.btn-white {
+    background: #ffffff !important;
+    color: #3b5bdb !important;
+    font-weight: 600;
+    padding: 12px 32px;
+    border-radius: 10px;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-white:hover {
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: transparent !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    padding: 12px 32px;
+    border-radius: 10px;
+    text-decoration: none;
+    border: 2px solid #ffffff;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-outline:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    transform: translateY(-2px);
+}
+
+/* Statistics Section */
+.stats-section {
+    background: #f8f9fa;
+    padding: 60px 40px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 32px 24px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.stat-icon {
+    font-size: 40px;
+    margin-bottom: 16px;
+}
+
+.stat-value {
+    font-family: 'Outfit', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+/* Story Section */
+.story-section {
+    background: #ffffff;
+    padding: 60px 40px;
+}
+
+.story-section h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.story-content {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.story-content p {
+    font-size: 16px;
+    color: #475569;
+    line-height: 1.8;
+    margin-bottom: 16px;
+}
+
+/* Mission Section */
+.mission-section {
+    background: #f0f4ff;
+    padding: 60px 40px;
+}
+
+.mission-container {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.mission-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.mission-section h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 16px;
+}
+
+.mission-section p {
+    font-size: 16px;
+    color: #475569;
+    line-height: 1.8;
+}
+
+/* Values Section */
+.values-section {
+    background: #ffffff;
+    padding: 60px 40px;
+}
+
+.values-section h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.section-subtitle {
+    text-align: center;
+    color: #6b7280;
+    margin-bottom: 40px;
+    font-size: 16px;
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.value-card {
+    background: #f8f9fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 32px 28px;
+}
+
+.value-icon {
+    font-size: 32px;
+    margin-bottom: 16px;
+}
+
+.value-card h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 12px;
+}
+
+.value-card p {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Services Section */
+.services-section {
+    background: #f8f9fa;
+    padding: 60px 40px;
+}
+
+.services-section h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    max-width: 1200px;
+    margin: 40px auto 0;
+}
+
+.service-box {
+    border-radius: 14px;
+    padding: 32px 24px;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.service-box-icon {
+    font-size: 40px;
+    margin-bottom: 16px;
+}
+
+.service-box h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #1a1a1a;
+}
+
+.service-box p {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.service-box--blue {
+    background: #eff6ff;
+    color: #1a1a1a;
+}
+
+.service-box--green {
+    background: #f0fdf4;
+    color: #1a1a1a;
+}
+
+.service-box--orange {
+    background: #fffbeb;
+    color: #1a1a1a;
+}
+
+.service-box--pink {
+    background: #fdf2f8;
+    color: #1a1a1a;
+}
+
+/* Team Section */
+.team-section {
+    background: #ffffff;
+    padding: 60px 40px;
+}
+
+.team-section h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    max-width: 1200px;
+    margin: 40px auto 0;
+}
+
+.team-card {
+    background: #f8f9fa;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 24px;
+    text-align: center;
+}
+
+.team-avatar {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #3b5bdb 0%, #6480f5 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    color: #ffffff;
+    font-size: 24px;
+    margin: 0 auto 16px;
+}
+
+.team-card h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 4px;
+}
+
+.team-role {
+    font-size: 13px;
+    color: #3b5bdb;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.team-bio {
+    font-size: 13px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Testimonials Section */
+.testimonials-section {
+    background: #f8f9fa;
+    padding: 60px 40px;
+}
+
+.testimonials-section h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 40px;
+    font-weight: 700;
+    color: #1a1a1a;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1200px;
+    margin: 40px auto 0;
+}
+
+.testimonial-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    padding: 28px;
+}
+
+.testimonial-quote {
+    font-size: 36px;
+    color: #3b5bdb;
+    margin-bottom: 8px;
+}
+
+.testimonial-stars {
+    font-size: 14px;
+    color: #f59e0b;
+    margin-bottom: 16px;
+    letter-spacing: 2px;
+}
+
+.testimonial-text {
+    font-size: 14px;
+    color: #6b7280;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    font-style: italic;
+}
+
+.testimonial-author {
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.testimonial-role {
+    font-size: 12px;
+    color: #9ca3af;
+    margin: 2px 0 0 0;
+}
+
+/* About Footer */
+.about-footer {
+    background: linear-gradient(135deg, #3b5bdb 0%, #6480f5 100%);
+    color: #ffffff;
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 32px;
+    }
+    
+    .hero-content p {
+        font-size: 16px;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .values-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .testimonials-grid {
+        grid-template-columns: 1fr;
     }
 }

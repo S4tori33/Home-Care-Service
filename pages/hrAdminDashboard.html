@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HR Admin Dashboard - Home Care Service</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/dashboard.css">
+  <link rel="stylesheet" href="../styles/adminDashboard.css">
+  <style>
+    .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 32px; }
+    .admin-card { background: white; border: 1px solid #e5e7eb; padding: 24px; border-radius: 12px; transition: all 0.3s ease; }
+    .admin-card:hover { border-color: #059669; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.1); }
+    .admin-card h3 { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 16px; }
+    .admin-card .stat { font-size: 28px; font-weight: 700; color: #059669; margin-bottom: 8px; }
+    .admin-card p { font-size: 13px; color: #6b7280; }
+    .admin-btn { padding: 10px 16px; border: 1px solid #059669; background: white; color: #059669; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-top: 16px; }
+    .admin-btn:hover { background: #059669; color: white; }
+    .admin-btn.primary { background: #059669; color: white; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <button class="sidebar-toggle" id="sidebarToggle"><span></span><span></span><span></span></button>
+    <a href="#" class="navbar-brand">
+      <div class="navbar-logo">HCS</div>
+      <div class="navbar-brand-text">
+        <h1>Home Care Service</h1>
+        <p>HR Administration</p>
+      </div>
+    </a>
+    <div class="navbar-links">
+      <a href="../home.html">Home</a>
+      <a href="#" id="logoutLink">Logout</a>
+    </div>
+  </nav>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-profile">
+      <div class="avatar-wrap">
+        <div class="avatar" id="avatarEl">HA</div>
+        <div class="avatar-badge"></div>
+      </div>
+      <div class="sidebar-user-name" id="userName">HR Admin</div>
+      <div class="sidebar-user-role" id="userRole">Administrator</div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav"></nav>
+  </aside>
+
+  <div class="main-wrap">
+    <div class="dashboard-shell">
+      <div class="shell-topbar">
+        <div class="shell-brand">
+          <div class="shell-logo">HCS</div>
+          <div class="shell-brand-text">
+            <h2>HR Admin Dashboard</h2>
+            <p>Provider Verification & Applications</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-header">
+        <h1>Welcome, <span id="headerName">HR Admin</span>! 👥</h1>
+        <p class="dashboard-subtitle">Manage service provider applications and verifications</p>
+      </div>
+
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h3>📋 Pending Applications</h3>
+          <div class="stat" id="pendingApps">0</div>
+          <p>Awaiting review and approval</p>
+          <button class="admin-btn primary" onclick="viewPending()">Review</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>✅ Approved</h3>
+          <div class="stat" id="approvedCount">0</div>
+          <p>Active service providers</p>
+          <button class="admin-btn" onclick="viewApproved()">View</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>❌ Rejected</h3>
+          <div class="stat" id="rejectedCount">0</div>
+          <p>Applications declined</p>
+          <button class="admin-btn" onclick="viewRejected()">View</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>🔍 Under Review</h3>
+          <div class="stat" id="underReview">0</div>
+          <p>Being verified now</p>
+          <button class="admin-btn" onclick="viewReview()">View</button>
+        </div>
+      </div>
+
+      <div class="section-title" style="font-size: 18px; margin-bottom: 16px;">Provider Type Distribution</div>
+      <div class="admin-grid">
+        <div class="admin-card">
+          <h3>🏥 Caregivers</h3>
+          <div class="stat" id="caregiverCount">0</div>
+          <button class="admin-btn" onclick="viewProviderType('caregiver')">Manage</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>🐾 Pet Care</h3>
+          <div class="stat" id="petcareCount">0</div>
+          <button class="admin-btn" onclick="viewProviderType('pet_care')">Manage</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>🌿 Garden Maintenance</h3>
+          <div class="stat" id="gardenCount">0</div>
+          <button class="admin-btn" onclick="viewProviderType('garden_maintenance')">Manage</button>
+        </div>
+
+        <div class="admin-card">
+          <h3>🧹 House Cleaning</h3>
+          <div class="stat" id="cleaningCount">0</div>
+          <button class="admin-btn" onclick="viewProviderType('house_cleaning')">Manage</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+  <script>
+    if (!dashboard.checkAccess('hr_admin')) {
+      window.location.href = '../pages/userLogin.html';
+    }
+    dashboard.initializeDashboard();
+
+    function updateStats() {
+      const users = auth.getAllUsers();
+      const providers = users.filter(u => ['caregiver', 'pet_care', 'garden_maintenance', 'house_cleaning'].includes(u.role));
+      
+      document.getElementById('pendingApps').textContent = providers.filter(u => !u.verified).length;
+      document.getElementById('approvedCount').textContent = providers.filter(u => u.verified && u.status === 'active').length;
+      document.getElementById('rejectedCount').textContent = providers.filter(u => u.status === 'rejected').length;
+      document.getElementById('underReview').textContent = providers.filter(u => u.status === 'reviewing').length;
+      
+      document.getElementById('caregiverCount').textContent = providers.filter(u => u.role === 'caregiver').length;
+      document.getElementById('petcareCount').textContent = providers.filter(u => u.role === 'pet_care').length;
+      document.getElementById('gardenCount').textContent = providers.filter(u => u.role === 'garden_maintenance').length;
+      document.getElementById('cleaningCount').textContent = providers.filter(u => u.role === 'house_cleaning').length;
+    }
+
+    function viewPending() { alert('Showing pending applications...'); }
+    function viewApproved() { alert('Showing approved providers...'); }
+    function viewRejected() { alert('Showing rejected applications...'); }
+    function viewReview() { alert('Showing under review applications...'); }
+    function viewProviderType(type) { alert(`Showing ${type} providers...`); }
+
+    document.getElementById('logoutLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      dashboard.logout();
+    });
+
+    updateStats();
+    setInterval(updateStats, 10000);
+  </script>
+</body>
+</html>

@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>System Diagnostics - HCS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 900px;
+      width: 100%;
+      padding: 40px;
+    }
+
+    h1 {
+      color: #1f2937;
+      margin-bottom: 8px;
+      font-size: 28px;
+    }
+
+    .subtitle {
+      color: #6b7280;
+      margin-bottom: 32px;
+      font-size: 14px;
+    }
+
+    .section {
+      margin-bottom: 32px;
+      padding: 20px;
+      background: #f9fafb;
+      border-radius: 12px;
+      border-left: 4px solid #667eea;
+    }
+
+    .section h2 {
+      font-size: 16px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 16px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stat-item {
+      background: white;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #667eea;
+    }
+
+    .account-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .account-table th {
+      background: white;
+      padding: 10px;
+      text-align: left;
+      border-bottom: 2px solid #e5e7eb;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .account-table td {
+      padding: 10px;
+      border-bottom: 1px solid #e5e7eb;
+      color: #6b7280;
+    }
+
+    .account-table tr:hover {
+      background: white;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .status-success {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .status-error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .test-button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+
+    .test-button:hover {
+      background: #5568d3;
+    }
+
+    .test-button:active {
+      background: #4a5bb8;
+    }
+
+    .test-result {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      display: none;
+    }
+
+    .test-result.show {
+      display: block;
+    }
+
+    .test-success {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #86efac;
+    }
+
+    .test-error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #5568d3;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #667eea;
+      border: 2px solid #667eea;
+    }
+
+    .btn-secondary:hover {
+      background: #f9fafb;
+    }
+
+    .code-block {
+      background: #1f2937;
+      color: #10b981;
+      padding: 12px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      overflow-x: auto;
+      margin-top: 8px;
+    }
+
+    .success-icon {
+      color: #10b981;
+      font-weight: bold;
+    }
+
+    .error-icon {
+      color: #ef4444;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <h1>🔧 System Diagnostics</h1>
+    <p class="subtitle">Verify HCS Authentication System Status</p>
+
+    <!-- System Status -->
+    <div class="section">
+      <h2>📊 System Status</h2>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-label">Total Users</div>
+          <div class="stat-value" id="totalUsers">-</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Demo Accounts</div>
+          <div class="stat-value" id="demoStatus">-</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Logged In</div>
+          <div class="stat-value" id="loggedInStatus">-</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Demo Accounts -->
+    <div class="section">
+      <h2>👤 Demo Accounts Available</h2>
+      <table class="account-table">
+        <thead>
+          <tr>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Role</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="accountBody">
+          <!-- Will be populated by JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Login Test -->
+    <div class="section">
+      <h2>🔐 Test Login</h2>
+      <p style="color: #6b7280; font-size: 13px; margin-bottom: 12px;">Enter credentials to test the login system</p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+        <input type="email" id="testEmail" placeholder="Email" value="superadmin@test.com" style="padding: 10px; border: 1px solid #e5e7eb; border-radius: 8px; font-family: inherit;">
+        <input type="password" id="testPassword" placeholder="Password" value="123456" style="padding: 10px; border: 1px solid #e5e7eb; border-radius: 8px; font-family: inherit;">
+      </div>
+      <button class="test-button" onclick="testLogin()">Test Login</button>
+      <div class="test-result" id="testResult"></div>
+    </div>
+
+    <!-- Browser Console Commands -->
+    <div class="section">
+      <h2>💻 Useful Console Commands</h2>
+      <p style="color: #6b7280; font-size: 13px; margin-bottom: 12px;">Paste these in browser console (F12):</p>
+      
+      <strong style="color: #1f2937; display: block; margin-bottom: 8px;">View all demo accounts:</strong>
+      <div class="code-block">auth.getAllUsers().forEach(u => console.log(u.email, '-', u.role))</div>
+
+      <strong style="color: #1f2937; display: block; margin-bottom: 8px; margin-top: 16px;">Get system diagnostics:</strong>
+      <div class="code-block">auth.getDiagnostics()</div>
+
+      <strong style="color: #1f2937; display: block; margin-bottom: 8px; margin-top: 16px;">Clear and reset system:</strong>
+      <div class="code-block">localStorage.clear(); location.reload()</div>
+
+      <strong style="color: #1f2937; display: block; margin-bottom: 8px; margin-top: 16px;">Test specific login:</strong>
+      <div class="code-block">auth.loginUser('caregiver@test.com', '123456')</div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="section">
+      <h2>⚙️ System Actions</h2>
+      <div class="action-buttons">
+        <button class="btn btn-primary" onclick="goToLogin()">Go to Login</button>
+        <button class="btn btn-secondary" onclick="resetSystem()">Reset System</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script>
+    // Initialize page
+    function initializePage() {
+      displaySystemStatus();
+      displayDemoAccounts();
+    }
+
+    // Display system status
+    function displaySystemStatus() {
+      const users = auth.getAllUsers();
+      const currentUser = auth.getCurrentUser();
+      const demoCount = users.filter(u => u.email.includes('@test.com')).length;
+      
+      document.getElementById('totalUsers').textContent = users.length;
+      document.getElementById('demoStatus').innerHTML = demoCount === 11 
+        ? '<span class="success-icon">✓</span> 11/11' 
+        : `<span class="error-icon">✗</span> ${demoCount}/11`;
+      document.getElementById('loggedInStatus').innerHTML = currentUser 
+        ? `<span class="success-icon">✓</span> ${currentUser.email}` 
+        : '<span class="error-icon">✗</span> None';
+    }
+
+    // Display demo accounts
+    function displayDemoAccounts() {
+      const users = auth.getAllUsers().filter(u => u.email.includes('@test.com'));
+      const tbody = document.getElementById('accountBody');
+      
+      if (users.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #9ca3af;">No demo accounts found</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = users.map(user => `
+        <tr>
+          <td><strong>${user.email}</strong></td>
+          <td><code style="background: #f3f4f6; padding: 2px 6px; border-radius: 4px;">123456</code></td>
+          <td>${user.role}</td>
+          <td><span class="status-badge status-success">✓ Active</span></td>
+          <td><button onclick="testLoginFor('${user.email}')" style="padding: 4px 8px; background: #667eea; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 11px;">Test</button></td>
+        </tr>
+      `).join('');
+    }
+
+    // Test login
+    function testLogin() {
+      const email = document.getElementById('testEmail').value;
+      const password = document.getElementById('testPassword').value;
+      const resultDiv = document.getElementById('testResult');
+
+      resultDiv.classList.remove('show', 'test-success', 'test-error');
+      resultDiv.innerHTML = '<strong>Testing...</strong>';
+      resultDiv.classList.add('show');
+
+      // Simulate async operation
+      setTimeout(() => {
+        const result = auth.loginUser(email, password);
+        
+        if (result.success) {
+          resultDiv.innerHTML = `
+            <strong>✓ Login Successful!</strong><br>
+            Email: ${result.user.email}<br>
+            Role: ${result.user.role}<br>
+            Name: ${result.user.firstName} ${result.user.lastName}
+          `;
+          resultDiv.classList.add('test-success');
+        } else {
+          resultDiv.innerHTML = `
+            <strong>✗ Login Failed</strong><br>
+            ${result.message}
+          `;
+          resultDiv.classList.add('test-error');
+        }
+      }, 500);
+    }
+
+    // Test login for specific user
+    function testLoginFor(email) {
+      document.getElementById('testEmail').value = email;
+      document.getElementById('testPassword').value = '123456';
+      testLogin();
+    }
+
+    // Go to login
+    function goToLogin() {
+      window.location.href = '../pages/userLogin.html';
+    }
+
+    // Reset system
+    function resetSystem() {
+      if (confirm('This will clear all data and reset the system. Continue?')) {
+        localStorage.clear();
+        location.reload();
+      }
+    }
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', initializePage);
+  </script>
+</body>
+</html>

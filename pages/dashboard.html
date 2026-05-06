@@ -6,259 +6,557 @@
   <title>Dashboard - Home Care Service</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../styles/dashboard.css">
 </head>
 <body>
 
- <!-- ── NAVBAR ───────────────────────────────────── -->
-    <nav class="navbar">
-        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
-            <span></span><span></span><span></span>
-        </button>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="#" class="navbar-brand">
+      <div class="navbar-logo">HCS</div>
+      <div class="navbar-brand-text">
+        <h1>Home Care Service</h1>
+        <p>Quality Care, Quality Life</p>
+      </div>
+    </a>
+    <div class="navbar-links">
+      <a href="../home.html">Home</a>
+      <a href="../home.html#services">Services</a>
+      <a href="../pages/about.html">About</a>
+      <a href="jobSeekerApplication.html">Careers</a>
+      <a href="../home.html#contact">Contact</a>
+      <a href="../pages/userLogin.html" class="active">Logout</a>
+    </div>
+  </nav>
 
-        <a href="#" class="navbar-brand">
-            <div class="navbar-logo">HCS</div>
-            <div class="navbar-brand-text">
-                <h1>Home Care Service</h1>
-                <p>Quality Care, Quality Life</p>
-            </div>
-        </a>
+  <!-- SIDEBAR OVERLAY -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-        <div class="navbar-links">
-            <a href="../home.html">Home</a>
-            <a href="../home.html#services">Services</a>
-            <a href="about.html">About</a>
-            <a href="jobSeekerApplication.html">Careers</a>
-            <a href="../home.html#contact">Contact</a>
-        </div>
-
-        <div class="navbar-spacer"></div>
-
-        <a href="userLogin.html" class="btn-nav-login">Log In / Sign Up</a>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-profile">
+      <div class="avatar-wrap">
+        <div class="avatar" id="avatarEl">GU</div>
+        <div class="avatar-badge"></div>
+      </div>
+      <div class="sidebar-user-name" id="userName">Guest User</div>
+      <div class="sidebar-user-role" id="userRole">Not logged in</div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Main</div>
+      <a href="../home.html" class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9L12 2l9 7v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-5H9v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/></svg>
+        Home
+      </a>
+      <a href="../pages/dashboard.html" class="sidebar-item active">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="../pages/booking.html" class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        My Bookings
+      </a>
+      <a href="../home.html#services" class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        Services
+      </a>
+      <a href="../pages/profile.html" class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Messages
+      </a>
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-label">Account</div>
+      <a href="#" class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        Notifications
+      </a>
+      <div class="sidebar-divider"></div>
+      <a href="../pages/about.html" class="sidebar-item">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        Help & Support
+      </a>
     </nav>
+    <div class="sidebar-footer">
+      <a href="../pages/userLogin.html" class="sidebar-item logout" style="margin-bottom:0;" id="logoutBtn">
+        <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Log Out
+      </a>
+    </div>
+  </aside>
 
-    <!-- ── SIDEBAR OVERLAY ──────────────────────────── -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-    <!-- ── LEFT SIDEBAR ─────────────────────────────── -->
-    <aside class="sidebar" id="sidebar">
-
-        <div class="sidebar-profile">
-            <div class="avatar-wrap">
-                <div class="avatar" id="avatarEl" title="Change profile picture">Avatar Here</div>
-                <div class="avatar-badge"></div>
-            </div>
-            <div class="sidebar-user-name" id="userName">Guest User</div>
-            <div class="sidebar-user-role" id="userRole">Not logged in</div>
-        </div>
-
-        <nav class="sidebar-nav">
-
-            <div class="sidebar-section-label">Main</div>
-
-            <!-- 0. Home -->
-            <a href="../home.html" class="sidebar-item" data-page="home">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 9L12 2l9 7v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-5H9v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/>
-                </svg>
-                Home
-            </a>
-
-            <!-- 1. Dashboard -->
-            <a href="#" class="sidebar-item active" data-page="dashboard">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="7" height="7"/>
-                    <rect x="14" y="3" width="7" height="7"/>
-                    <rect x="14" y="14" width="7" height="7"/>
-                    <rect x="3" y="14" width="7" height="7"/>
-                </svg>
-                Dashboard
-            </a>
-
-            <!-- 2. My Bookings -->
-            <a href="booking.html" class="sidebar-item" data-page="bookings">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-                </svg>
-                My Bookings
-            </a>
-
-            <!-- 3. Services -->
-            <a href="../home.html#services" class="sidebar-item" data-page="services">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                </svg>
-                Services
-            </a>
-
-            <!-- 4. Messages -->
-            <a href="#" class="sidebar-item" data-page="messages">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                </svg>
-                Messages
-            </a>
-
-            <!-- 5. Payments -->
-            <a href="#" class="sidebar-item" data-page="payments">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
-                </svg>
-                Payments
-            </a>
-
-            <div class="sidebar-divider"></div>
-            <div class="sidebar-section-label">Account</div>
-
-            <!-- 6. My Profile -->
-            <a href="profile.html" class="sidebar-item" data-page="profile">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                </svg>
-                My Profile
-            </a>
-
-            <!-- 7. Dashboard -->
-            <a href="#" class="sidebar-item active" data-page="dashboard">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 13h8V3H3v10z"/>
-                    <path d="M13 21h8V11h-8v10z"/>
-                    <path d="M3 21h8v-6H3v6z"/>
-                </svg>
-                Dashboard
-            </a>
-
-            <!-- 7. Notifications -->
-            <a href="#" class="sidebar-item" data-page="notifications">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-                </svg>
-                Notifications
-            </a>
-
-
-
-            <div class="sidebar-divider"></div>
-
-            <!-- 9. Help & Support -->
-            <a href="#" class="sidebar-item" data-page="help">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-                </svg>
-                Help & Support
-            </a>
-
-        </nav>
-
-        <div class="sidebar-footer">
-            <a href="pages/userLogin.html" class="sidebar-item logout" style="margin-bottom:0;">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                    <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
-                </svg>
-                Log Out
-            </a>
-        </div>
-    </aside>
-
+  <!-- MAIN -->
   <div class="main-wrap">
+    <div class="dashboard-shell">
 
-      <header class="dashboard-header">
-          <div>
-              <h1>Welcome back, User <span class="wave"></span></h1>
-              <p class="dashboard-subtitle">Manage your bookings and profile information</p>
+      <!-- TOP BAR -->
+      <div class="shell-topbar">
+        <div class="shell-brand">
+          <div class="shell-logo">HCS</div>
+          <div class="shell-brand-text">
+            <h2>Home Care Service</h2>
+            <p>User Dashboard</p>
           </div>
-          <div class="dashboard-actions">
-              <a href="booking.html" class="btn btn-primary">+ New Booking</a>
-          </div>
-      </header>
-
-      <div class="dashboard-tabs">
-          <button class="tab-btn active" data-tab="overview">Overview</button>
-          <button class="tab-btn" data-tab="bookings">My Bookings</button>
+        </div>
+        <div class="shell-actions">
+          <a href="../pages/booking.html" class="btn-new-booking">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Booking
+          </a>
+          <a href="../pages/userLogin.html" class="btn-logout-icon" title="Logout">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          </a>
+        </div>
       </div>
 
+      <!-- HEADER -->
+      <div class="dashboard-header">
+        <h1>Welcome back, <span id="headerName">John</span>! 👋</h1>
+        <p class="dashboard-subtitle">Manage your bookings and profile information</p>
+      </div>
+
+      <!-- TABS -->
+      <div class="dashboard-tabs">
+        <button class="tab-btn active" data-tab="overview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          Overview
+        </button>
+        <button class="tab-btn" data-tab="bookings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          My Bookings
+        </button>
+        <button class="tab-btn" data-tab="profile">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Profile
+        </button>
+      </div>
+
+      <!-- TAB CONTENT -->
       <div class="tab-content">
-          <div class="tab-pane active" id="overview">
-              <div class="stats-grid">
-                  <div class="stat-card">
-                      <div class="stat-icon"></div>
-                      <div>
-                          <div class="stat-label">Upcoming</div>
-                          <div class="stat-value">2</div>
-                      </div>
+
+        <!-- OVERVIEW TAB -->
+        <div class="tab-pane active" id="overview">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon-wrap blue">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </div>
+              <div>
+                <div class="stat-label">Upcoming</div>
+                <div class="stat-value">2</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrap green">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div>
+                <div class="stat-label">Completed</div>
+                <div class="stat-value">3</div>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrap purple">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              </div>
+              <div>
+                <div class="stat-label">Total Bookings</div>
+                <div class="stat-value">12</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bookings-card">
+            <div class="bookings-card-header">
+              <h3>Upcoming Bookings</h3>
+              <a href="#" class="view-all-link" onclick="switchTab('bookings');return false;">View All →</a>
+            </div>
+
+            <!-- Booking 1 -->
+            <div class="booking-item">
+              <div class="booking-icon-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              </div>
+              <div class="booking-body">
+                <div class="booking-row">
+                  <div class="booking-title">House Cleaning</div>
+                  <span class="badge badge-confirmed">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    Confirmed
+                  </span>
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  Friday, March 20, 2026
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:6px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  10:00 AM - 12:00 PM
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Mendy Drive, Sta. Maria - Zamboanga City
+                </div>
+              </div>
+              <div class="booking-right">
+                <div class="booking-amount">$120</div>
+                <div class="booking-actions">
+                  <button class="action-btn" title="Edit">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  </button>
+                  <button class="action-btn danger" title="Cancel">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Booking 2 -->
+            <div class="booking-item">
+              <div class="booking-icon-wrap" style="background:#fef3c7;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <div class="booking-body">
+                <div class="booking-row">
+                  <div class="booking-title">Garden Maintenance</div>
+                  <span class="badge badge-pending">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    Pending
+                  </span>
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  Sunday, March 22, 2026
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:6px"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  2:00 PM - 4:00 PM
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Regional Street, San Roque - Zamboanga City
+                </div>
+              </div>
+              <div class="booking-right">
+                <div class="booking-amount">$150</div>
+                <div class="booking-actions">
+                  <button class="action-btn" title="Edit">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  </button>
+                  <button class="action-btn danger" title="Cancel">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- CTA -->
+          <div class="dashboard-cta">
+            <div class="cta-content">
+              <h3>Need a service?</h3>
+              <p>Book your next appointment in just a few clicks.</p>
+            </div>
+            <a href="../pages/booking.html" class="btn-cta">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Book Now
+            </a>
+          </div>
+        </div>
+
+        <!-- MY BOOKINGS TAB -->
+        <div class="tab-pane" id="bookings">
+          <div class="all-bookings-header">
+            <h2>All Bookings</h2>
+            <a href="../pages/booking.html" class="btn-new-small">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              New Booking
+            </a>
+          </div>
+
+          <div class="section-label">Upcoming</div>
+
+          <div class="booking-item-full">
+            <div class="booking-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div class="booking-body">
+              <div class="booking-row">
+                <div class="booking-title">House Cleaning</div>
+                <span class="badge badge-confirmed">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  Confirmed
+                </span>
+              </div>
+              <div class="booking-full-meta">
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  Friday, March 20, 2026
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  10:00 AM - 12:00 PM
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Mendy Drive, Sta. Maria - Zamboanga City
+                </div>
+              </div>
+            </div>
+            <div class="booking-full-right">
+              <div class="booking-full-amount">$120</div>
+              <div class="booking-full-actions">
+                <a href="../pages/booking.html" class="btn-edit">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  Edit
+                </a>
+                <button class="btn-cancel">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="booking-item-full">
+            <div class="booking-icon-wrap" style="background:#fef3c7;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="booking-body">
+              <div class="booking-row">
+                <div class="booking-title">Garden Maintenance</div>
+                <span class="badge badge-pending">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  Pending
+                </span>
+              </div>
+              <div class="booking-full-meta">
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  Sunday, March 22, 2026
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  2:00 PM - 4:00 PM
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Regional Street, San Roque - Zamboanga City
+                </div>
+              </div>
+            </div>
+            <div class="booking-full-right">
+              <div class="booking-full-amount">$150</div>
+              <div class="booking-full-actions">
+                <a href="../pages/booking.html" class="btn-edit">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  Edit
+                </a>
+                <button class="btn-cancel">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="section-label">History</div>
+
+          <div class="booking-item-full">
+            <div class="booking-icon-wrap" style="background:#f0fdf4;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </div>
+            <div class="booking-body">
+              <div class="booking-row">
+                <div class="booking-title">Pet Care</div>
+                <span class="badge" style="background:#dcfce7;color:#15803d;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  Completed
+                </span>
+              </div>
+              <div class="booking-full-meta">
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  March 18, 2026
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  8:00 AM - 10:00 AM
+                </div>
+              </div>
+            </div>
+            <div class="booking-full-right">
+              <div class="booking-full-amount">$80</div>
+              <div class="booking-full-actions">
+                <a href="../pages/booking.html" class="btn-book-again">Book Again</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="booking-item-full">
+            <div class="booking-icon-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div class="booking-body">
+              <div class="booking-row">
+                <div class="booking-title">House Cleaning</div>
+                <span class="badge" style="background:#dcfce7;color:#15803d;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  Completed
+                </span>
+              </div>
+              <div class="booking-full-meta">
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  March 10, 2026
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  10:00 AM - 12:00 PM
+                </div>
+              </div>
+            </div>
+            <div class="booking-full-right">
+              <div class="booking-full-amount">$120</div>
+              <div class="booking-full-actions">
+                <a href="../pages/booking.html" class="btn-book-again">Book Again</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="booking-item-full">
+            <div class="booking-icon-wrap" style="background:#fce7f3;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </div>
+            <div class="booking-body">
+              <div class="booking-row">
+                <div class="booking-title">Elderly Care</div>
+                <span class="badge" style="background:#dcfce7;color:#15803d;">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                  Completed
+                </span>
+              </div>
+              <div class="booking-full-meta">
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                  March 5, 2026
+                </div>
+                <div class="booking-meta">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  12:00 PM - 2:00 PM
+                </div>
+              </div>
+            </div>
+            <div class="booking-full-right">
+              <div class="booking-full-amount">$200</div>
+              <div class="booking-full-actions">
+                <a href="../pages/booking.html" class="btn-book-again">Book Again</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFILE TAB -->
+        <div class="tab-pane" id="profile">
+          <div class="profile-layout">
+            <div class="profile-left-card">
+              <div class="profile-avatar" id="profileAvatar">JD</div>
+              <div class="profile-name" id="profileName">John Doe</div>
+              <div class="profile-member">Member since January 2024</div>
+              <a href="../pages/profile.html" class="btn-edit-profile">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                Edit
+              </a>
+            </div>
+
+            <div class="profile-right-card">
+              <div class="info-card">
+                <div class="info-card-header">
+                  <h3>Contact Information</h3>
+                  <a href="../pages/profile.html" class="btn-edit-small">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    Edit Profile
+                  </a>
+                </div>
+                <div class="info-grid">
+                  <div class="info-field">
+                    <label>First Name</label>
+                    <div class="field-val">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                      John
+                    </div>
                   </div>
-                  <div class="stat-card">
-                      <div class="stat-icon"></div>
-                      <div>
-                          <div class="stat-label">Completed</div>
-                          <div class="stat-value">3</div>
-                      </div>
+                  <div class="info-field">
+                    <label>Last Name</label>
+                    <div class="field-val">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                      Doe
+                    </div>
                   </div>
-                  <div class="stat-card">
-                      <div class="stat-icon"></div>
-                      <div>
-                          <div class="stat-label">Total Bookings</div>
-                          <div class="stat-value">12</div>
-                      </div>
+                  <div class="info-field" style="grid-column:1/-1">
+                    <label>Email Address</label>
+                    <div class="field-val">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                      john.doe@example.com
+                    </div>
                   </div>
+                  <div class="info-field" style="grid-column:1/-1">
+                    <label>Phone Number</label>
+                    <div class="field-val">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.72 12 19.79 19.79 0 0 1 1.62 3.37 2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.96a16 16 0 0 0 6.29 6.29l.92-.92a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                      (555) 123-4567
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <section class="bookings-card">
-                  <div class="bookings-header">
-                      <h3>Upcoming Bookings</h3>
-                      <a href="booking.html" class="link-link">View All →</a>
+              <div class="info-card">
+                <h3 style="margin-bottom:16px;">Default Service Address</h3>
+                <div class="info-grid">
+                  <div class="info-field" style="grid-column:1/-1">
+                    <label>Street Address</label>
+                    <div class="field-val">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                      123 Main Street, Apt 4B
+                    </div>  
                   </div>
+                  <div class="info-field">
+                    <label>City</label>
+                    <div class="field-val">New York</div>
+                  </div>
+                  <div class="info-field">
+                    <label>ZIP Code</label>
+                    <div class="field-val">10001</div>
+                  </div>
+                </div>
+              </div>
 
-                  <div class="booking-item">
-                      <img src="../assets/icons/house-cleaning.png" alt="House Cleaning" class="booking-icon">
-                      <div class="booking-body">
-                          <div class="booking-row">
-                              <div class="booking-title">House Cleaning</div>
-                              <span class="booking-badge confirmed">Confirmed</span>
-                          </div>
-                          <div class="booking-meta">Friday, March 20, 2026 • 10:00 AM - 12:00 PM</div>
-                          <div class="booking-meta">Mendy Drive, Sta. Maria - Zamboanga City</div>
-                      </div>
-                      <div class="booking-amount">$120</div>
+              <div class="info-card">
+                <h3 style="margin-bottom:4px;">Account Settings</h3>
+                <div class="settings-list">
+                  <div class="settings-item">
+                    <svg class="settings-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    <span class="settings-label">Change Password</span>
                   </div>
-
-                  <div class="booking-item">
-                      <img src="../assets/icons/garden.png" alt="Garden Maintenance" class="booking-icon">
-                      <div class="booking-body">
-                          <div class="booking-row">
-                              <div class="booking-title">Garden Maintenance</div>
-                              <span class="booking-badge pending">Pending</span>
-                          </div>
-                          <div class="booking-meta">Sunday, March 22, 2026 • 2:00 PM - 4:00 PM</div>
-                          <div class="booking-meta">Regional Street, San Roque - Zamboanga City</div>
-                      </div>
-                      <div class="booking-amount">0</div>
+                  <div class="settings-item">
+                    <svg class="settings-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                    <span class="settings-label">Email Preferences</span>
                   </div>
-              </section>
-
-              <section class="dashboard-cta">
-                  <div class="cta-content">
-                      <h3>Need a service?</h3>
-                      <p>Book your next appointment in just a few clicks.</p>
+                  <div class="settings-item">
+                    <svg class="settings-icon danger" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                    <span class="settings-label danger">Delete Account</span>
                   </div>
-                  <a href="booking.html" class="btn btn-primary">Book Now</a>
-              </section>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
 
-          <div class="tab-pane" id="bookings">
-              <p class="dashboard-info">Your booking list will show here once you make reservations.</p>
-          </div>
-          
-      </div>
-  </div>
+      </div><!-- end tab-content -->
+    </div><!-- end dashboard-shell -->
+  </div><!-- end main-wrap -->
 
+  <script src="../js/dashboard.js"></script>
+  <script src="../js/auth.js"></script>
   <script src="../js/script.js"></script>
 </body>
 </html>
-"

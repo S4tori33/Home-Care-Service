@@ -12,7 +12,7 @@
 <body>
 
     <section class="hero">
-
+        
         <!-- Brand / Logo -->
         <div class="brand">
             <div class="brand-icon">
@@ -27,71 +27,53 @@
         <!-- Form Container -->
         <a href="../home.html" class="btn btn-secondary back-link" aria-label="Return">←</a>
         <div class="form-container">
-            <!-- Form Tabs -->
-            <div class="form-tabs" id="formTabs">
-                <button class="tab-btn active" data-form="login">Log In</button>
-                <button class="tab-btn" data-form="signup">Sign Up</button>
-                <div class="tab-slider"></div>
-            </div>
-
             <!-- Login Form -->
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h2 style="color: #ffffff;"> Sign Up | Login</h2>
+                
+            </div>
+            
             <form class="form active" id="loginForm">
                 <div class="form-group">
                     <label class="form-label" for="loginEmail">Email Address</label>
-                    <input type="email" id="loginEmail" class="form-input" placeholder="Enter your email" required>
+                    <input type="email" id="loginEmail" class="form-input" placeholder="Enter demo email" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" class="form-input" placeholder="Enter your password" required maxlength="12">
+                    <input type="password" id="loginPassword" class="form-input" placeholder="Enter password" required maxlength="12" value="123456">
                 </div>
+                <div id="loginError" style="color: #d32f2f; font-size: 12px; margin-bottom: 10px; display: none;"></div>
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Log In</button>
-                    <a href="#" class="btn btn-secondary">Forgot Password?</a>
+
                 </div>
-                <br>
-                <p class="form-note" style="color:var(--white)"> Are you an administrator? <br> <a href="adminLogin.html">Go to Admin Login</a></p>
+                <br> <br>
+                <div id="signup">
+                    <p style="color:white;"> Don't have an account yet? <a href="signup.html"> Sign Up </a></p>
+                </div>
             </form>
 
-            <!-- Sign Up Form -->
-            <form class="form" id="signupForm">
-                <!-- name fields arranged in two rows -->
-                <div class="name-row">
-                    <div class="form-group">
-                        <label class="form-label" for="signupSurname">Surname</label>
-                        <input type="text" id="signupSurname" class="form-input" placeholder="Surname" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="signupFirstName">First Name</label>
-                        <input type="text" id="signupFirstName" class="form-input" placeholder="First Name" required>
-                    </div>
+            <!-- Demo Users List
+            <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                <p style="font-weight: 600; margin-bottom: 15px;">Available Demo Accounts:</p>
+                <div style="font-size: 12px; line-height: 1.8; color: #555;">
+                    <div><strong>Admin Accounts:</strong></div>
+                    <div>• superadmin@test.com (Super Admin)</div>
+                    <div>• platformadmin@test.com (Platform Admin)</div>
+                    <div>• hradmin@test.com (HR Admin)</div>
+                    <div>• operationsadmin@test.com (Operations Admin)</div>
+                    <div style="margin-top: 10px;"><strong>Service Provider Accounts:</strong></div>
+                    <div>• caregiver@test.com (Caregiver)</div>
+                    <div>• petcare@test.com (Pet Care)</div>
+                    <div>• garden@test.com (Garden Maintenance)</div>
+                    <div>• cleaning@test.com (House Cleaning)</div>
+                    <div style="margin-top: 10px;"><strong>Regular User Accounts:</strong></div>
+                    <div>• user@test.com (Regular User)</div>
+                    <div>• support@test.com (Customer Support)</div>
+                    <div>• moderator@test.com (Moderator)</div>
                 </div>
-                <div class="name-row">
-                    <div class="form-group">
-                        <label class="form-label" for="signupMiddleName">Middle Name</label>
-                        <input type="text" id="signupMiddleName" class="form-input" placeholder="Middle Name">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="signupSuffix">Suffix</label>
-                        <input type="text" id="signupSuffix" class="form-input" placeholder="Suffix (Optional)">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <br>
-                    <label class="form-label" for="signupEmail">Email Address</label>
-                    <input type="email" id="signupEmail" class="form-input" placeholder="Enter your email" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="signupPassword">Password</label>
-                    <input type="password" id="signupPassword" class="form-input" placeholder="Create a password" required>
-                </div>
-                <div class="form-group">
-                    <label class="form-label" for="signupConfirmPassword">Confirm Password</label>
-                    <input type="password" id="signupConfirmPassword" class="form-input" placeholder="Confirm your password" required>
-                </div>
-                <div class="form-actions">
-                    <button type="submit" class="btn btn-primary">Sign Up</button>
-                </div>
-            </form>
+            </div>
+        -->
         </div>
 
     </section>
@@ -100,7 +82,8 @@
         <p>© 2026 Home Care Service (HCS). All Rights Reserved.</p>
     </footer>
 
-    <script src="../js/userLogin.js"></script>
+    <script src="../js/appData.js"></script>
+    <script src="../js/userLoginLogic.js"></script>
 
 </body>
 </html>
