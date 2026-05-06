@@ -50,31 +50,138 @@
 </head>
 <body>
 
-  <nav class="navbar">
-    <button class="sidebar-toggle" id="sidebarToggle"><span></span><span></span><span></span></button>
-    <a href="#" class="navbar-brand">
-      <div class="navbar-logo">HCS</div>
-      <div class="navbar-brand-text">
-        <h1>Home Care Service</h1>
-        <p>Messages</p>
-      </div>
-    </a>
-    <div class="navbar-links">
-      <a href="../home.html">Home</a>
-      <a href="#" id="logoutLink">Logout</a>
-    </div>
-  </nav>
+      <!-- ── NAVBAR ───────────────────────────────────── -->
+    <nav class="navbar">
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+            <span></span><span></span><span></span>
+        </button>
 
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-profile">
-      <div class="avatar-wrap">
-        <div class="avatar" id="avatarEl">U</div>
-        <div class="avatar-badge"></div>
-      </div>
-      <div class="sidebar-user-name" id="userName">User</div>
-      <div class="sidebar-user-role" id="userRole">Role</div>
-    </div>
-    <nav class="sidebar-nav" id="sidebarNav"></nav>
+        <a href="../home.html" class="navbar-brand">
+            <div class="navbar-logo">HCS</div>
+            <div class="navbar-brand-text">
+                <h1>Home Care Service</h1>
+                <p>Quality Care, Quality Life</p>
+            </div>
+        </a>
+
+        <div class="navbar-links">
+            <a href="../home.html">Home</a>
+            <a href="#services">Services</a>
+            <a href="about.html">About</a>
+            <a href="jobSeekerApplication.html">Careers</a>
+            <a href="#contact">Contact</a>
+        </div>
+
+        <div class="navbar-spacer"></div>
+
+    </nav>
+
+    <!-- ── SIDEBAR OVERLAY ──────────────────────────── -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ── LEFT SIDEBAR ─────────────────────────────── -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-profile">
+            <div class="avatar-wrap">
+                <div class="avatar" id="avatarEl" title="Change profile picture">Avatar Here</div>
+                <div class="avatar-badge"></div>
+            </div>
+            <div class="sidebar-user-name" id="userName">Guest User</div>
+            <div class="sidebar-user-role" id="userRole">Not logged in</div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <div class="sidebar-section-label">Main</div>
+
+            <!-- 0. Home -->
+            <a href="../home.html" class="sidebar-item" data-page="home">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9L12 2l9 7v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-5H9v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/>
+                </svg>
+                Home
+            </a>
+
+            <!-- 1. Dashboard -->
+            <a href="dashboard.html" class="sidebar-item" data-page="dashboard">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7"/>
+                    <rect x="14" y="3" width="7" height="7"/>
+                    <rect x="14" y="14" width="7" height="7"/>
+                    <rect x="3" y="14" width="7" height="7"/>
+                </svg>
+                Dashboard
+            </a>
+
+            <!-- 2. My Bookings -->
+            <a href="pages/booking.html" class="sidebar-item" data-page="bookings">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                Book a Service
+            </a>
+
+            <!-- 3. Services -->
+            <a href="../home.html#services" class="sidebar-item" data-page="services">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                </svg>
+                Services
+            </a>
+
+            <!-- 4. Messages -->
+            <a href="#" class="sidebar-item" data-page="messages">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                Messages
+            </a>
+
+            <!-- 5. Payments -->
+            <a href="#" class="sidebar-item" data-page="payments">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+                </svg>
+                Payments
+            </a>
+
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-label">Account</div>
+
+            <!-- 6. My Profile -->
+            <a href="profile.html" class="sidebar-item" data-page="profile">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                My Profile
+            </a>
+
+            <!-- 7. Notifications -->
+            <a href="#" class="sidebar-item" data-page="notifications">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                </svg>
+                Notifications
+            </a>
+
+
+
+            <div class="sidebar-divider"></div>
+
+            <!-- 9. Help & Support -->
+            <a href="#" class="sidebar-item" data-page="help">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" y="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                Help & Support
+            </a>
+
+        </nav>
   </aside>
 
   <div class="main-wrap">
@@ -115,153 +222,6 @@
 
   <script src="../js/auth.js"></script>
   <script src="../js/dashboard.js"></script>
-  <script>
-    let selectedOtherId = null;
-    const currentUser = auth.getCurrentUser();
 
-    if (!currentUser) {
-      window.location.href = 'userLogin.html';
-    } else {
-      dashboard.initializeDashboard();
-      renderConversationPanel();
-      const params = new URLSearchParams(window.location.search);
-      const withId = params.get('with');
-      if (withId) {
-        selectPartner(withId);
-      }
-    }
-
-    function displayName(u) {
-      if (!u) return 'Unknown';
-      const n = `${u.firstName || ''} ${u.lastName || ''}`.trim();
-      return n || u.email || 'User';
-    }
-
-    function initials(u) {
-      if (!u) return '?';
-      const a = (u.firstName || '').charAt(0);
-      const b = (u.lastName || '').charAt(0);
-      return (a + b).toUpperCase() || (u.email || '?').charAt(0).toUpperCase();
-    }
-
-    function conversationRows() {
-      const conv = auth.getUserConversations(currentUser.id);
-      const eligible = auth.getEligibleMessagePartners(currentUser.id);
-      const seen = new Set(conv.map(c => c.otherUserId));
-      const rows = conv.slice();
-
-      eligible.forEach(e => {
-        if (!seen.has(e.otherUserId)) {
-          rows.push({
-            otherUserId: e.otherUserId,
-            otherUser: e.otherUser,
-            lastMessage: {
-              content: 'No messages yet — say hello',
-              timestamp: new Date().toISOString()
-            },
-            unreadCount: 0
-          });
-          seen.add(e.otherUserId);
-        }
-      });
-
-      return rows.sort(
-        (a, b) =>
-          new Date(b.lastMessage.timestamp).getTime() -
-          new Date(a.lastMessage.timestamp).getTime()
-      );
-    }
-
-    function renderConversationPanel() {
-      const conversationsList = document.getElementById('conversationsList');
-      const rows = conversationRows();
-
-      if (!rows.length) {
-        conversationsList.innerHTML =
-          '<div style="padding: 20px; text-align: center; color: #9ca3af;">No eligible contacts yet. Complete booking assignment and acceptance first.</div>';
-        return;
-      }
-
-      conversationsList.innerHTML = rows
-        .map(conv => {
-          const otherUser = conv.otherUser || auth.getUserById(conv.otherUserId);
-          const preview = (conv.lastMessage && conv.lastMessage.content) || '';
-          const active = conv.otherUserId === selectedOtherId ? 'active' : '';
-          return `
-          <div class="conversation-item ${active}" data-other="${conv.otherUserId}">
-            <div class="conversation-avatar">${initials(otherUser)}</div>
-            <div class="conversation-info">
-              <div class="conversation-name">${displayName(otherUser)}</div>
-              <div class="conversation-preview">${preview.substring(0, 40)}</div>
-            </div>
-            ${conv.unreadCount > 0 ? `<div class="conversation-badge">${conv.unreadCount}</div>` : ''}
-          </div>`;
-        })
-        .join('');
-
-      conversationsList.querySelectorAll('.conversation-item').forEach(el => {
-        el.addEventListener('click', () => {
-          selectPartner(el.getAttribute('data-other'));
-        });
-      });
-    }
-
-    function selectPartner(otherUserId) {
-      if (!otherUserId) return;
-      selectedOtherId = otherUserId;
-
-      const otherUser = auth.getUserById(otherUserId);
-      document.getElementById('chatTitle').textContent = displayName(otherUser);
-      document.getElementById('chatSubtitle').textContent =
-        (otherUser && otherUser.email) || '';
-      document.getElementById('chatInputArea').style.display = 'flex';
-
-      auth.markMessagesAsRead(currentUser.id, otherUserId);
-
-      const msgs = auth.getMessages(currentUser.id, otherUserId);
-      const chatContent = document.getElementById('chatContent');
-      chatContent.innerHTML = msgs
-        .map(
-          msg => `
-        <div class="message ${msg.senderId === currentUser.id ? 'sent' : 'received'}">
-          <div>
-            <div class="message-bubble">${msg.content.replace(/</g, '&lt;')}</div>
-            <div class="message-timestamp">${new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
-          </div>
-        </div>`
-        )
-        .join('');
-      chatContent.scrollTop = chatContent.scrollHeight;
-
-      renderConversationPanel();
-    }
-
-    function sendMessage() {
-      if (!selectedOtherId) return;
-      const input = document.getElementById('messageInput');
-      const content = input.value.trim();
-      if (!content) return;
-
-      try {
-        auth.sendMessage(currentUser.id, selectedOtherId, content);
-        input.value = '';
-        selectPartner(selectedOtherId);
-      } catch (err) {
-        alert(err.message || 'Could not send message');
-      }
-    }
-
-    document.getElementById('messageInput').addEventListener('keypress', e => {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-      }
-    });
-
-    document.getElementById('logoutLink').addEventListener('click', e => {
-      e.preventDefault();
-      dashboard.logout();
-    });
-  </script>
 </body>
 </html>

@@ -515,3 +515,427 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fillText(labels[i], x + barW / 2, H - pad.bottom + 16);
       });
     }
+
+/**
+ * modals.js — Super Admin Dashboard Modal System
+ * Handles: Manage Users, Admin Controls, System Settings
+ */
+
+/* ─────────────────────────────────────────────
+   MOCK DATA
+───────────────────────────────────────────── */
+const MOCK_USERS = [
+  { id: 1, name: 'Alice Reyes',     email: 'alice.reyes@email.com',    role: 'User',   status: 'Active' },
+  { id: 2, name: 'Ben Navarro',     email: 'ben.navarro@email.com',    role: 'User',   status: 'Active' },
+  { id: 3, name: 'Clara Santos',    email: 'clara.santos@email.com',   role: 'Admin',  status: 'Active' },
+  { id: 4, name: 'Diego Mendoza',   email: 'diego.mendoza@email.com',  role: 'User',   status: 'Suspended' },
+  { id: 5, name: 'Eva Torres',      email: 'eva.torres@email.com',     role: 'User',   status: 'Active' },
+  { id: 6, name: 'Felix Cruz',      email: 'felix.cruz@email.com',     role: 'User',   status: 'Active' },
+  { id: 7, name: 'Grace Lim',       email: 'grace.lim@email.com',      role: 'Admin',  status: 'Active' },
+  { id: 8, name: 'Henry Tan',       email: 'henry.tan@email.com',      role: 'User',   status: 'Suspended' },
+  { id: 9, name: 'Iris Dela Cruz',  email: 'iris.delacruz@email.com',  role: 'User',   status: 'Active' },
+  { id: 10,'name': 'Jake Bautista', email: 'jake.bautista@email.com',  role: 'User',   status: 'Active' },
+];
+
+const MOCK_ADMINS = [
+  { id: 1, name: 'Maria Santos',   email: 'maria.santos@admin.com',    role: 'Platform Admin',   perms: { users: true,  bookings: true,  reports: true,  settings: true  } },
+  { id: 2, name: 'Carlos Reyes',   email: 'carlos.reyes@admin.com',    role: 'Operations Admin', perms: { users: false, bookings: true,  reports: true,  settings: false } },
+  { id: 3, name: 'Ana Villanueva', email: 'ana.villanueva@admin.com',  role: 'HR Admin',         perms: { users: true,  bookings: false, reports: true,  settings: false } },
+  { id: 4, name: 'Luis Garcia',    email: 'luis.garcia@admin.com',     role: 'Operations Admin', perms: { users: false, bookings: true,  reports: false, settings: false } },
+];
+
+let usersData  = JSON.parse(JSON.stringify(MOCK_USERS));
+let adminsData = JSON.parse(JSON.stringify(MOCK_ADMINS));
+
+const systemSettings = {
+  platformName:     'CareConnect',
+  maintenanceMode:  false,
+  emailNotifs:      true,
+  backupFrequency:  'daily',
+};
+
+/* ─────────────────────────────────────────────
+   MODAL ENGINE
+───────────────────────────────────────────── */
+let currentModal = null;
+let previouslyFocused = null;
+
+function openModal(id) {
+  const modal = document.getElementById(id);
+  if (!modal) return;
+  previouslyFocused = document.activeElement;
+  currentModal = modal;
+  modal.setAttribute('aria-hidden', 'false');
+  modal.classList.add('modal-open');
+  document.body.style.overflow = 'hidden';
+  trapFocus(modal);
+  const closeBtn = modal.querySelector('.modal-close');
+  if (closeBtn) closeBtn.focus();
+}
+
+function closeModal(id) {
+  const modal = document.getElementById(id);
+  if (!modal) return;
+  modal.setAttribute('aria-hidden', 'true');
+  modal.classList.remove('modal-open');
+  document.body.style.overflow = '';
+  currentModal = null;
+  if (previouslyFocused) previouslyFocused.focus();
+}
+
+function trapFocus(modal) {
+  const focusable = modal.querySelectorAll(
+    'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+  );
+  const first = focusable[0];
+  const last  = focusable[focusable.length - 1];
+  modal.addEventListener('keydown', function handler(e) {
+    if (e.key !== 'Tab') return;
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last)  { e.preventDefault(); first.focus(); }
+    }
+    if (!modal.classList.contains('modal-open')) modal.removeEventListener('keydown', handler);
+  });
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && currentModal) closeModal(currentModal.id);
+});
+
+/* ─────────────────────────────────────────────
+   TOAST
+───────────────────────────────────────────── */
+function showToast(msg, type = 'success') {
+  const existing = document.querySelector('.sa-toast');
+  if (existing) existing.remove();
+  const t = document.createElement('div');
+  t.className = `sa-toast sa-toast-${type}`;
+  t.setAttribute('role', 'alert');
+  t.innerHTML = `<span>${type === 'success' ? '✓' : '⚠'}</span> ${msg}`;
+  document.body.appendChild(t);
+  requestAnimationFrame(() => t.classList.add('sa-toast-show'));
+  setTimeout(() => { t.classList.remove('sa-toast-show'); setTimeout(() => t.remove(), 350); }, 2800);
+}
+
+/* ─────────────────────────────────────────────
+   MANAGE USERS MODAL
+───────────────────────────────────────────── */
+const USERS_PER_PAGE = 5;
+let userPage    = 1;
+let userFilter  = '';
+let viewUserId  = null;
+
+function getFilteredUsers() {
+  return usersData.filter(u =>
+    u.name.toLowerCase().includes(userFilter) ||
+    u.email.toLowerCase().includes(userFilter) ||
+    u.role.toLowerCase().includes(userFilter) ||
+    u.status.toLowerCase().includes(userFilter)
+  );
+}
+
+function renderUsersTable() {
+  const filtered = getFilteredUsers();
+  const total    = filtered.length;
+  const pages    = Math.max(1, Math.ceil(total / USERS_PER_PAGE));
+  if (userPage > pages) userPage = pages;
+  const slice = filtered.slice((userPage - 1) * USERS_PER_PAGE, userPage * USERS_PER_PAGE);
+
+  const tbody = document.getElementById('usersTableBody');
+  if (!tbody) return;
+
+  if (slice.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;color:var(--gray-400);padding:32px">No users found.</td></tr>`;
+  } else {
+    tbody.innerHTML = slice.map(u => `
+      <tr>
+        <td><strong>${escHtml(u.name)}</strong></td>
+        <td style="color:var(--gray-500);font-size:13px">${escHtml(u.email)}</td>
+        <td>
+          <select class="mu-role-select" data-id="${u.id}" aria-label="Role for ${escHtml(u.name)}">
+            <option value="User"  ${u.role==='User'  ?'selected':''}>User</option>
+            <option value="Admin" ${u.role==='Admin' ?'selected':''}>Admin</option>
+          </select>
+        </td>
+        <td><span class="mu-status-badge ${u.status==='Active'?'active':'suspended'}">${u.status}</span></td>
+        <td>
+          <div class="mu-actions">
+            <button class="mu-btn view"    data-id="${u.id}" title="View">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+            <button class="mu-btn toggle ${u.status==='Active'?'suspend':'activate'}" data-id="${u.id}"
+              title="${u.status==='Active'?'Suspend':'Activate'}">
+              ${u.status==='Active'
+                ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>`
+                : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`
+              }
+            </button>
+            <button class="mu-btn delete" data-id="${u.id}" title="Delete">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  // Pagination
+  const info = document.getElementById('usersPagInfo');
+  const prev = document.getElementById('usersPrev');
+  const next = document.getElementById('usersNext');
+  if (info) info.textContent = `Page ${userPage} of ${pages}  (${total} user${total!==1?'s':''})`;
+  if (prev) prev.disabled = userPage <= 1;
+  if (next) next.disabled = userPage >= pages;
+
+  // Wire events
+  tbody.querySelectorAll('.mu-role-select').forEach(sel => {
+    sel.addEventListener('change', e => {
+      const uid = +e.target.dataset.id;
+      const u   = usersData.find(x => x.id === uid);
+      if (u) { u.role = e.target.value; showToast(`${u.name}'s role updated to ${u.role}.`); }
+    });
+  });
+  tbody.querySelectorAll('.mu-btn.view').forEach(btn => {
+    btn.addEventListener('click', () => openUserDetail(+btn.dataset.id));
+  });
+  tbody.querySelectorAll('.mu-btn.toggle').forEach(btn => {
+    btn.addEventListener('click', () => toggleUserStatus(+btn.dataset.id));
+  });
+  tbody.querySelectorAll('.mu-btn.delete').forEach(btn => {
+    btn.addEventListener('click', () => confirmDeleteUser(+btn.dataset.id));
+  });
+}
+
+function toggleUserStatus(id) {
+  const u = usersData.find(x => x.id === id);
+  if (!u) return;
+  u.status = u.status === 'Active' ? 'Suspended' : 'Active';
+  showToast(`${u.name} is now ${u.status}.`, u.status === 'Active' ? 'success' : 'warning');
+  renderUsersTable();
+}
+
+function confirmDeleteUser(id) {
+  const u = usersData.find(x => x.id === id);
+  if (!u) return;
+  document.getElementById('deleteUserName').textContent = u.name;
+  document.getElementById('confirmDeleteUserBtn').dataset.id = id;
+  openModal('deleteConfirmModal');
+}
+
+function openUserDetail(id) {
+  const u = usersData.find(x => x.id === id);
+  if (!u) return;
+  viewUserId = id;
+  document.getElementById('detailName').textContent   = u.name;
+  document.getElementById('detailEmail').textContent  = u.email;
+  document.getElementById('detailRole').textContent   = u.role;
+  document.getElementById('detailStatus').textContent = u.status;
+  document.getElementById('detailStatus').className   = `mu-status-badge ${u.status==='Active'?'active':'suspended'}`;
+  openModal('userDetailModal');
+}
+
+/* ─────────────────────────────────────────────
+   ADMIN CONTROLS MODAL
+───────────────────────────────────────────── */
+function renderAdminsTable() {
+  const tbody = document.getElementById('adminsTableBody');
+  if (!tbody) return;
+  tbody.innerHTML = adminsData.map(a => `
+    <tr>
+      <td><strong>${escHtml(a.name)}</strong></td>
+      <td style="color:var(--gray-500);font-size:13px">${escHtml(a.email)}</td>
+      <td><span class="ac-role-badge ${roleBadgeClass(a.role)}">${a.role}</span></td>
+      <td>
+        <div class="ac-perms">
+          ${['users','bookings','reports','settings'].map(p => `
+            <label class="ac-perm-toggle" title="${capitalize(p)}">
+              <input type="checkbox" ${a.perms[p]?'checked':''} data-admin="${a.id}" data-perm="${p}">
+              <span>${capitalize(p)}</span>
+            </label>
+          `).join('')}
+        </div>
+      </td>
+      <td>
+        <button class="mu-btn delete" data-id="${a.id}" title="Remove Admin">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        </button>
+      </td>
+    </tr>
+  `).join('');
+
+  // Wire permission checkboxes
+  tbody.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    cb.addEventListener('change', e => {
+      const aid  = +e.target.dataset.admin;
+      const perm =  e.target.dataset.perm;
+      const adm  = adminsData.find(x => x.id === aid);
+      if (adm) { adm.perms[perm] = e.target.checked; showToast(`${adm.name}'s ${perm} permission ${e.target.checked?'granted':'revoked'}.`); }
+    });
+  });
+
+  // Wire delete buttons
+  tbody.querySelectorAll('.mu-btn.delete').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const aid = +btn.dataset.id;
+      const adm = adminsData.find(x => x.id === aid);
+      if (!adm) return;
+      if (confirm(`Remove ${adm.name} as admin?`)) {
+        adminsData = adminsData.filter(x => x.id !== aid);
+        renderAdminsTable();
+        showToast(`${adm.name} removed from admin list.`, 'warning');
+      }
+    });
+  });
+}
+
+function roleBadgeClass(role) {
+  if (role === 'HR Admin')         return 'hr';
+  if (role === 'Operations Admin') return 'ops';
+  if (role === 'Platform Admin')   return 'platform';
+  return '';
+}
+
+/* ─────────────────────────────────────────────
+   SYSTEM SETTINGS MODAL
+───────────────────────────────────────────── */
+function loadSystemSettings() {
+  const nameInput = document.getElementById('settingPlatformName');
+  const maintToggle = document.getElementById('settingMaintenance');
+  const emailToggle = document.getElementById('settingEmailNotifs');
+  const backupSelect = document.getElementById('settingBackupFreq');
+  if (nameInput)    nameInput.value   = systemSettings.platformName;
+  if (maintToggle)  maintToggle.checked = systemSettings.maintenanceMode;
+  if (emailToggle)  emailToggle.checked = systemSettings.emailNotifs;
+  if (backupSelect) backupSelect.value = systemSettings.backupFrequency;
+}
+
+function saveSystemSettings() {
+  systemSettings.platformName    = document.getElementById('settingPlatformName').value.trim() || systemSettings.platformName;
+  systemSettings.maintenanceMode = document.getElementById('settingMaintenance').checked;
+  systemSettings.emailNotifs     = document.getElementById('settingEmailNotifs').checked;
+  systemSettings.backupFrequency = document.getElementById('settingBackupFreq').value;
+
+  const feedback = document.getElementById('settingsFeedback');
+  feedback.textContent = '✓ Settings saved successfully!';
+  feedback.className   = 'settings-feedback visible';
+  setTimeout(() => feedback.classList.remove('visible'), 3000);
+  showToast('System settings saved.');
+}
+
+/* ─────────────────────────────────────────────
+   HELPERS
+───────────────────────────────────────────── */
+function escHtml(str) {
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function capitalize(str) { return str.charAt(0).toUpperCase() + str.slice(1); }
+
+/* ─────────────────────────────────────────────
+   INIT — wire all triggers after DOM ready
+───────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* ── Overlay clicks close modal ── */
+  document.querySelectorAll('.modal-overlay').forEach(ov => {
+    ov.addEventListener('click', e => {
+      if (e.target === ov) closeModal(ov.id);
+    });
+  });
+
+  /* ── Close buttons ── */
+  document.querySelectorAll('.modal-close').forEach(btn => {
+    btn.addEventListener('click', () => closeModal(btn.closest('.modal-overlay').id));
+  });
+
+  /* ── Action cards ── */
+  const manageUsersCard   = document.getElementById('manageUsersCard');
+  const adminControlsCard = document.getElementById('adminControlsCard');
+  const systemSettingsCard= document.getElementById('systemSettingsCard');
+
+  if (manageUsersCard) {
+    manageUsersCard.addEventListener('click', () => {
+      userFilter = ''; userPage = 1;
+      document.getElementById('userSearchInput').value = '';
+      renderUsersTable();
+      openModal('manageUsersModal');
+    });
+  }
+
+  if (adminControlsCard) {
+    adminControlsCard.addEventListener('click', () => {
+      renderAdminsTable();
+      openModal('adminControlsModal');
+    });
+  }
+
+  if (systemSettingsCard) {
+    systemSettingsCard.addEventListener('click', () => {
+      loadSystemSettings();
+      openModal('systemSettingsModal');
+    });
+  }
+
+  /* ── Users search ── */
+  const searchInput = document.getElementById('userSearchInput');
+  if (searchInput) {
+    searchInput.addEventListener('input', e => {
+      userFilter = e.target.value.toLowerCase();
+      userPage = 1;
+      renderUsersTable();
+    });
+  }
+
+  /* ── Pagination ── */
+  const prevBtn = document.getElementById('usersPrev');
+  const nextBtn = document.getElementById('usersNext');
+  if (prevBtn) prevBtn.addEventListener('click', () => { userPage--; renderUsersTable(); });
+  if (nextBtn) nextBtn.addEventListener('click', () => { userPage++; renderUsersTable(); });
+
+  /* ── Delete confirm ── */
+  const confirmDeleteBtn = document.getElementById('confirmDeleteUserBtn');
+  if (confirmDeleteBtn) {
+    confirmDeleteBtn.addEventListener('click', () => {
+      const id = +confirmDeleteBtn.dataset.id;
+      const u  = usersData.find(x => x.id === id);
+      if (u) {
+        usersData = usersData.filter(x => x.id !== id);
+        closeModal('deleteConfirmModal');
+        renderUsersTable();
+        showToast(`${u.name} deleted.`, 'warning');
+      }
+    });
+  }
+  document.getElementById('cancelDeleteBtn')?.addEventListener('click', () => closeModal('deleteConfirmModal'));
+
+  /* ── User detail close ── */
+  document.getElementById('closeDetailBtn')?.addEventListener('click', () => closeModal('userDetailModal'));
+
+  /* ── Add Admin form ── */
+  document.getElementById('addAdminForm')?.addEventListener('submit', e => {
+    e.preventDefault();
+    const name  = document.getElementById('newAdminName').value.trim();
+    const email = document.getElementById('newAdminEmail').value.trim();
+    const role  = document.getElementById('newAdminRole').value;
+    if (!name || !email) return;
+    const newId = adminsData.length ? Math.max(...adminsData.map(a=>a.id)) + 1 : 1;
+    adminsData.push({ id: newId, name, email, role, perms: { users: false, bookings: false, reports: false, settings: false } });
+    renderAdminsTable();
+    e.target.reset();
+    document.getElementById('addAdminFormWrap').classList.add('hidden');
+    showToast(`${name} added as ${role}.`);
+  });
+
+  document.getElementById('showAddAdminFormBtn')?.addEventListener('click', () => {
+    document.getElementById('addAdminFormWrap').classList.toggle('hidden');
+  });
+
+  document.getElementById('cancelAddAdminBtn')?.addEventListener('click', () => {
+    document.getElementById('addAdminForm').reset();
+    document.getElementById('addAdminFormWrap').classList.add('hidden');
+  });
+
+  /* ── System Settings save ── */
+  document.getElementById('saveSettingsBtn')?.addEventListener('click', saveSystemSettings);
+});

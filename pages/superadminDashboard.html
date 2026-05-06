@@ -182,28 +182,219 @@
  
       <!-- QUICK ACTIONS -->
       <div class="actions-grid">
-        <div class="action-card" onclick="alert('Opening User Management...')">
+        <div class="action-card" id="manageUsersCard" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Open Manage Users">
           <div class="action-card-icon blue">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </div>
           <h4>Manage Users</h4>
           <p>View and manage all user accounts</p>
         </div>
- 
-        <div class="action-card" onclick="alert('Opening Admin Controls...')">
+        <div class="action-card" id="adminControlsCard" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Open Admin Controls">
           <div class="action-card-icon purple">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           </div>
           <h4>Admin Controls</h4>
           <p>Manage admin roles and permissions</p>
         </div>
- 
-        <div class="action-card" onclick="alert('Opening System Settings...')">
+        <div class="action-card" id="systemSettingsCard" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Open System Settings">
           <div class="action-card-icon gray">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 1.41 14.14L12 12"/><path d="M12 2a10 10 0 0 1 7.07 17.07L12 12"/><path d="M12 22a10 10 0 0 1-7.07-17.07L12 12"/></svg>
           </div>
           <h4>System Settings</h4>
           <p>Configure platform settings</p>
+        </div>
+      </div>
+      <!-- ═══════════════════════════════════════
+           MANAGE USERS MODAL
+      ════════════════════════════════════════ -->
+      <div id="manageUsersModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="muModalTitle" aria-hidden="true">
+        <div class="modal-box modal-wide">
+          <div class="modal-header">
+            <div class="modal-header-icon blue">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div>
+              <h2 id="muModalTitle" class="modal-title">Manage Users</h2>
+              <p class="modal-subtitle">View and control all user accounts</p>
+            </div>
+            <button class="modal-close" aria-label="Close modal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="modal-toolbar">
+              <div class="modal-search-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="search" id="userSearchInput" placeholder="Search users..." class="modal-search" aria-label="Search users">
+              </div>
+            </div>
+            <div class="table-scroll-wrap">
+              <table class="modal-table" role="table" aria-label="Users list">
+                <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead>
+                <tbody id="usersTableBody"></tbody>
+              </table>
+            </div>
+            <div class="modal-pagination" aria-live="polite">
+              <button id="usersPrev" class="pag-btn" aria-label="Previous page">&larr; Prev</button>
+              <span id="usersPagInfo" class="pag-info"></span>
+              <button id="usersNext" class="pag-btn" aria-label="Next page">Next &rarr;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="deleteConfirmModal" class="modal-overlay modal-sm-overlay" role="dialog" aria-modal="true" aria-labelledby="delConfirmTitle" aria-hidden="true">
+        <div class="modal-box modal-confirm">
+          <div class="confirm-icon warn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+          <h3 id="delConfirmTitle">Delete User?</h3>
+          <p>Are you sure you want to permanently delete <strong id="deleteUserName"></strong>? This cannot be undone.</p>
+          <div class="confirm-actions">
+            <button id="cancelDeleteBtn" class="btn-modal btn-secondary">Cancel</button>
+            <button id="confirmDeleteUserBtn" class="btn-modal btn-danger">Delete</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="userDetailModal" class="modal-overlay modal-sm-overlay" role="dialog" aria-modal="true" aria-labelledby="userDetailTitle" aria-hidden="true">
+        <div class="modal-box modal-confirm">
+          <h3 id="userDetailTitle" class="modal-title" style="margin-bottom:18px">User Details</h3>
+          <div class="detail-grid">
+            <div class="detail-row"><span class="detail-label">Name</span>   <span id="detailName"   class="detail-val"></span></div>
+            <div class="detail-row"><span class="detail-label">Email</span>  <span id="detailEmail"  class="detail-val"></span></div>
+            <div class="detail-row"><span class="detail-label">Role</span>   <span id="detailRole"   class="detail-val"></span></div>
+            <div class="detail-row"><span class="detail-label">Status</span> <span id="detailStatus" class="detail-val mu-status-badge"></span></div>
+          </div>
+          <div class="confirm-actions" style="margin-top:24px">
+            <button id="closeDetailBtn" class="btn-modal btn-secondary">Close</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════
+           ADMIN CONTROLS MODAL
+      ════════════════════════════════════════ -->
+      <div id="adminControlsModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="acModalTitle" aria-hidden="true">
+        <div class="modal-box modal-wide">
+          <div class="modal-header">
+            <div class="modal-header-icon purple">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+              <h2 id="acModalTitle" class="modal-title">Admin Controls</h2>
+              <p class="modal-subtitle">Manage admin roles and permissions</p>
+            </div>
+            <button class="modal-close" aria-label="Close modal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="modal-toolbar">
+              <button id="showAddAdminFormBtn" class="btn-modal btn-primary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Add New Admin
+              </button>
+            </div>
+            <div id="addAdminFormWrap" class="add-admin-form hidden">
+              <form id="addAdminForm" novalidate>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label for="newAdminName">Full Name</label>
+                    <input type="text" id="newAdminName" placeholder="e.g. Juan dela Cruz" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="newAdminEmail">Email</label>
+                    <input type="email" id="newAdminEmail" placeholder="admin@example.com" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="newAdminRole">Role</label>
+                    <select id="newAdminRole">
+                      <option value="HR Admin">HR Admin</option>
+                      <option value="Operations Admin">Operations Admin</option>
+                      <option value="Platform Admin">Platform Admin</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-actions">
+                  <button type="button" id="cancelAddAdminBtn" class="btn-modal btn-secondary">Cancel</button>
+                  <button type="submit" class="btn-modal btn-primary">Add Admin</button>
+                </div>
+              </form>
+            </div>
+            <div class="table-scroll-wrap">
+              <table class="modal-table" role="table" aria-label="Admins list">
+                <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Permissions</th><th>Actions</th></tr></thead>
+                <tbody id="adminsTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════
+           SYSTEM SETTINGS MODAL
+      ════════════════════════════════════════ -->
+      <div id="systemSettingsModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="ssModalTitle" aria-hidden="true">
+        <div class="modal-box">
+          <div class="modal-header">
+            <div class="modal-header-icon gray">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 1.41 14.14L12 12"/><path d="M12 2a10 10 0 0 1 7.07 17.07L12 12"/><path d="M12 22a10 10 0 0 1-7.07-17.07L12 12"/></svg>
+            </div>
+            <div>
+              <h2 id="ssModalTitle" class="modal-title">System Settings</h2>
+              <p class="modal-subtitle">Configure platform-wide settings</p>
+            </div>
+            <button class="modal-close" aria-label="Close modal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="settings-group">
+              <label class="settings-label" for="settingPlatformName">Platform Name</label>
+              <input type="text" id="settingPlatformName" class="settings-input" placeholder="Platform name">
+            </div>
+            <div class="settings-group">
+              <div class="settings-toggle-row">
+                <div>
+                  <div class="settings-label">Maintenance Mode</div>
+                  <div class="settings-desc">Temporarily disable public access to the platform</div>
+                </div>
+                <label class="toggle-switch" aria-label="Toggle Maintenance Mode">
+                  <input type="checkbox" id="settingMaintenance" role="switch">
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+              </div>
+            </div>
+            <div class="settings-group">
+              <div class="settings-toggle-row">
+                <div>
+                  <div class="settings-label">Email Notifications</div>
+                  <div class="settings-desc">Send automated system emails to all admins</div>
+                </div>
+                <label class="toggle-switch" aria-label="Toggle Email Notifications">
+                  <input type="checkbox" id="settingEmailNotifs" role="switch">
+                  <span class="toggle-track"><span class="toggle-thumb"></span></span>
+                </label>
+              </div>
+            </div>
+            <div class="settings-group">
+              <label class="settings-label" for="settingBackupFreq">Backup Frequency</label>
+              <select id="settingBackupFreq" class="settings-input">
+                <option value="hourly">Every Hour</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="manual">Manual Only</option>
+              </select>
+            </div>
+            <div id="settingsFeedback" class="settings-feedback" aria-live="polite"></div>
+            <div class="modal-footer">
+              <button id="saveSettingsBtn" class="btn-modal btn-primary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                Save Settings
+              </button>
+            </div>
+          </div>
         </div>
       </div>
  
