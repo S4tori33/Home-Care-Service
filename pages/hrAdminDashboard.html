@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HR Admin Dashboard - Home Care Service</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/dashboard.css">
+  <link rel="stylesheet" href="../styles/adminDashboard.css">
+  <style>
+    .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 32px; }
+    .admin-card { background: white; border: 1px solid #e5e7eb; padding: 24px; border-radius: 12px; transition: all 0.3s ease; }
+    .admin-card:hover { border-color: #059669; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.1); }
+    .admin-card h3 { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 16px; }
+    .admin-card .stat { font-size: 28px; font-weight: 700; color: #059669; margin-bottom: 8px; }
+    .admin-card p { font-size: 13px; color: #6b7280; }
+    .admin-btn { padding: 10px 16px; border: 1px solid #059669; background: white; color: #059669; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-top: 16px; }
+    .admin-btn:hover { background: #059669; color: white; }
+    .admin-btn.primary { background: #059669; color: white; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <button class="sidebar-toggle" id="sidebarToggle"><span></span><span></span><span></span></button>
+    <a href="#" class="navbar-brand">
+      <div class="navbar-logo">HCS</div>
+      <div class="navbar-brand-text">
+        <h1>Home Care Service</h1>
+        <p>HR Administration</p>
+      </div>
+    </a>
+    <div class="navbar-links">
+      <a href="../home.html">Home</a>
+      <a href="#" id="logoutLink">Logout</a>
+    </div>
+  </nav>
+
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Syne:wght@600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f0f2f8;
+    --card: #ffffff;
+    --primary: #5046e4;
+    --primary-light: #ede9fe;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+
+    --pending-bg: #fff7ed;
+    --pending-border: #fed7aa;
+    --pending-text: #c2410c;
+    --pending-icon: #f97316;
+
+    --review-bg: #f5f3ff;
+    --review-border: #ddd6fe;
+    --review-text: #6d28d9;
+    --review-icon: #7c3aed;
+
+    --approved-bg: #f0fdf4;
+    --approved-border: #bbf7d0;
+    --approved-text: #15803d;
+    --approved-icon: #16a34a;
+
+    --rejected-bg: #fff1f2;
+    --rejected-border: #fecdd3;
+    --rejected-text: #be123c;
+    --rejected-icon: #e11d48;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 88px 24px 24px 24px;
+  }
+
+  /* Header Card */
+  .header-card {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 28px 32px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  .brand-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .logo {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, #5046e4, #7c3aed);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: white;
+    letter-spacing: 0.5px;
+  }
+
+  .brand-text h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .brand-text p {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .welcome-banner {
+    background: linear-gradient(120deg, #ede9fe 0%, #f0f2ff 100%);
+    border-radius: 14px;
+    padding: 18px 24px;
+  }
+
+  .welcome-banner h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .welcome-banner p {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* Stat Cards */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .stat-card {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 20px 24px;
+    border: 1.5px solid;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .stat-card.pending   { background: var(--pending-bg);  border-color: var(--pending-border);  }
+  .stat-card.review    { background: var(--review-bg);   border-color: var(--review-border);   }
+  .stat-card.approved  { background: var(--approved-bg); border-color: var(--approved-border); }
+  .stat-card.rejected  { background: var(--rejected-bg); border-color: var(--rejected-border); }
+
+  .stat-label {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 600; margin-bottom: 10px;
+  }
+  .stat-label .icon { font-size: 16px; }
+
+  .stat-card.pending  .stat-label { color: var(--pending-text);  }
+  .stat-card.review   .stat-label { color: var(--review-text);   }
+  .stat-card.approved .stat-label { color: var(--approved-text); }
+  .stat-card.rejected .stat-label { color: var(--rejected-text); }
+
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+  }
+  .stat-card.pending  .stat-num { color: var(--pending-text);  }
+  .stat-card.review   .stat-num { color: var(--review-text);   }
+  .stat-card.approved .stat-num { color: var(--approved-text); }
+  .stat-card.rejected .stat-num { color: var(--rejected-text); }
+
+  /* Table Section */
+  .table-section {
+    background: var(--card);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  .table-toolbar {
+    display: flex;
+    gap: 12px;
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .search-wrap {
+    flex: 1;
+    position: relative;
+    min-width: 200px;
+  }
+
+  .search-wrap input {
+    width: 100%;
+    padding: 10px 16px 10px 40px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    background: #fafafa;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-wrap input:focus { border-color: var(--primary); }
+
+  .search-icon {
+    position: absolute;
+    left: 12px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted); font-size: 14px;
+  }
+
+  .filter-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 18px;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    background: #fafafa;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--text);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .filter-btn:hover { border-color: var(--primary); }
+
+  select.filter-btn {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 28px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+  }
+
+  .export-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 22px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+
+  .export-btn:hover { background: #3730c8; }
+
+  table { width: 100%; border-collapse: collapse; }
+
+  thead tr { background: #fafafa; }
+
+  th {
+    text-align: left;
+    padding: 12px 20px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+
+  td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    vertical-align: middle;
+  }
+
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #fafbff; }
+
+  .hidden-row { display: none; }
+
+  .name-cell { display: flex; align-items: center; gap: 12px; }
+
+  .avatar {
+    width: 38px; height: 38px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 13px; color: white;
+    flex-shrink: 0;
+  }
+
+  .name-info strong { display: block; font-weight: 600; font-size: 14px; }
+  .name-info small  { color: var(--muted); font-size: 12px; }
+
+  .email-cell { color: var(--muted); font-size: 13px; }
+  .type-cell  { font-weight: 600; font-size: 13px; }
+  .date-cell  { color: var(--muted); font-size: 13px; }
+
+  /* Status Badges */
+  .badge {
+    display: inline-flex; align-items: center;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .badge-review   { background: var(--review-bg);   color: var(--review-text);   border: 1px solid var(--review-border);   }
+  .badge-approved { background: var(--approved-bg); color: var(--approved-text); border: 1px solid var(--approved-border); }
+  .badge-pending  { background: var(--pending-bg);  color: var(--pending-text);  border: 1px solid var(--pending-border);  }
+  .badge-rejected { background: var(--rejected-bg); color: var(--rejected-text); border: 1px solid var(--rejected-border); }
+
+  /* Action Icons */
+  .actions { display: flex; align-items: center; gap: 8px; }
+
+  .action-icon {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    transition: background 0.15s;
+  }
+  .action-icon:hover { background: var(--border); }
+  .action-icon.view    { color: var(--review-icon);   }
+  .action-icon.approve { color: var(--approved-icon); }
+  .action-icon.reject  { color: var(--rejected-icon); }
+  .action-icon.more    { color: var(--muted);         }
+
+  /* No results */
+  .no-results {
+    text-align: center;
+    padding: 40px;
+    color: var(--muted);
+    font-size: 14px;
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    th:nth-child(3), td:nth-child(3),
+    th:nth-child(5), td:nth-child(5) { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    body { padding: 12px; }
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- Stats -->
+<div class="stats-grid">
+  <div class="stat-card pending">
+    <div class="stat-label"><span class="icon">🕐</span> Pending</div>
+    <div class="stat-num" id="count-pending">0</div>
+  </div>
+  <div class="stat-card review">
+    <div class="stat-label"><span class="icon">👁</span> Under Review</div>
+    <div class="stat-num" id="count-review">0</div>
+  </div>
+  <div class="stat-card approved">
+    <div class="stat-label"><span class="icon">✅</span> Approved</div>
+    <div class="stat-num" id="count-approved">0</div>
+  </div>
+  <div class="stat-card rejected">
+    <div class="stat-label"><span class="icon">⊗</span> Rejected</div>
+    <div class="stat-num" id="count-rejected">0</div>
+  </div>
+</div>
+
+<!-- Table -->
+<div class="table-section">
+  <div class="table-toolbar">
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="searchInput" placeholder="Search by name or email..." />
+    </div>
+    <select class="filter-btn" id="statusFilter">
+      <option value="">All Status</option>
+      <option value="Under Review">Under Review</option>
+      <option value="Approved">Approved</option>
+      <option value="Pending">Pending</option>
+      <option value="Rejected">Rejected</option>
+    </select>
+    <select class="filter-btn" id="typeFilter">
+      <option value="">All Types</option>
+      <option value="Caregiver">Caregiver</option>
+      <option value="Personal Care">Personal Care</option>
+      <option value="Garden Maintenance">Garden Maintenance</option>
+      <option value="House Cleaning">House Cleaning</option>
+    </select>
+    <button class="export-btn" onclick="exportCSV()">⬇ Export</button>
+  </div>
+
+  <table id="providerTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Type</th>
+        <th>Status</th>
+        <th>Applied Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      <!-- Rows injected by JavaScript -->
+    </tbody>
+  </table>
+  <div class="no-results" id="noResults">No matching records found.</div>
+</div>
+
+<script>
+  // ─── Data ────
+  const providers = [
+    { initials: "SJ", colorClass: "av-sj", color: "linear-gradient(135deg,#5046e4,#7c3aed)",
+      name: "Sarah Johnson",    phone: "(555) 123-4567", email: "sarah.johnson@email.com",
+      type: "Caregiver",           status: "Under Review", date: "2026-05-01" },
+    { initials: "MC", colorClass: "av-mc", color: "linear-gradient(135deg,#0ea5e9,#2563eb)",
+      name: "Michael Chen",     phone: "(555) 234-5678", email: "michael.chen@email.com",
+      type: "Personal Care",       status: "Approved",     date: "2026-04-28" },
+    { initials: "ER", colorClass: "av-er", color: "linear-gradient(135deg,#f97316,#ef4444)",
+      name: "Emily Rodriguez",  phone: "(555) 345-6789", email: "emily.r@email.com",
+      type: "Garden Maintenance",  status: "Pending",      date: "2026-05-05" },
+    { initials: "DK", colorClass: "av-dk", color: "linear-gradient(135deg,#10b981,#0d9488)",
+      name: "David Kim",        phone: "(555) 456-7890", email: "david.kim@email.com",
+      type: "House Cleaning",      status: "Approved",     date: "2026-04-25" },
+    { initials: "JM", colorClass: "av-jm", color: "linear-gradient(135deg,#8b5cf6,#6d28d9)",
+      name: "Jessica Martinez", phone: "(555) 567-8901", email: "j.martinez@email.com",
+      type: "Caregiver",           status: "Under Review", date: "2026-05-03" },
+    { initials: "RT", colorClass: "av-rt", color: "linear-gradient(135deg,#f43f5e,#be123c)",
+      name: "Robert Taylor",    phone: "(555) 678-9012", email: "robert.t@email.com",
+      type: "Personal Care",       status: "Rejected",     date: "2026-04-20" },
+    { initials: "AM", colorClass: "av-am", color: "linear-gradient(135deg,#f59e0b,#d97706)",
+      name: "Anna Mitchell",    phone: "(555) 789-0123", email: "anna.m@email.com",
+      type: "Garden Maintenance",  status: "Approved",     date: "2026-04-18" },
+    { initials: "LW", colorClass: "av-lw", color: "linear-gradient(135deg,#06b6d4,#0284c7)",
+      name: "Liam Wilson",      phone: "(555) 890-1234", email: "liam.w@email.com",
+      type: "House Cleaning",      status: "Pending",      date: "2026-05-04" },
+  ];
+
+  // ─── Badge helper ──
+  function badgeClass(status) {
+    const map = {
+      "Under Review": "badge-review",
+      "Approved":     "badge-approved",
+      "Pending":      "badge-pending",
+      "Rejected":     "badge-rejected",
+    };
+    return map[status] || "badge-pending";
+  }
+
+  // ─── Render table ──
+  function renderTable(data) {
+    const tbody = document.getElementById("tableBody");
+    tbody.innerHTML = "";
+
+    if (data.length === 0) {
+      document.getElementById("noResults").style.display = "block";
+    } else {
+      document.getElementById("noResults").style.display = "none";
+    }
+
+    data.forEach((p, i) => {
+      const tr = document.createElement("tr");
+      tr.dataset.index = i;
+      tr.innerHTML = `
+        <td>
+          <div class="name-cell">
+            <div class="avatar" style="background:${p.color}">${p.initials}</div>
+            <div class="name-info">
+              <strong>${p.name}</strong>
+              <small>${p.phone}</small>
+            </div>
+          </div>
+        </td>
+        <td class="email-cell">${p.email}</td>
+        <td class="type-cell">${p.type}</td>
+        <td><span class="badge ${badgeClass(p.status)}">${p.status}</span></td>
+        <td class="date-cell">${p.date}</td>
+        <td>
+          <div class="actions">
+            <button class="action-icon view"    title="View"    onclick="viewProvider(${i})">👁</button>
+            <button class="action-icon approve" title="Approve" onclick="changeStatus(${i},'Approved')">✅</button>
+            <button class="action-icon reject"  title="Reject"  onclick="changeStatus(${i},'Rejected')">⊗</button>
+            <button class="action-icon more"    title="More">⋯</button>
+          </div>
+        </td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    updateCounts(data);
+  }
+
+  // ─── Update stat counters ───
+  function updateCounts(data) {
+    document.getElementById("count-pending").textContent  = data.filter(p => p.status === "Pending").length;
+    document.getElementById("count-review").textContent   = data.filter(p => p.status === "Under Review").length;
+    document.getElementById("count-approved").textContent = data.filter(p => p.status === "Approved").length;
+    document.getElementById("count-rejected").textContent = data.filter(p => p.status === "Rejected").length;
+  }
+
+  // ─── Filter logic ──────
+  function getFiltered() {
+    const search = document.getElementById("searchInput").value.toLowerCase();
+    const status = document.getElementById("statusFilter").value;
+    const type   = document.getElementById("typeFilter").value;
+
+    return providers.filter(p => {
+      const matchSearch = p.name.toLowerCase().includes(search) || p.email.toLowerCase().includes(search);
+      const matchStatus = !status || p.status === status;
+      const matchType   = !type   || p.type   === type;
+      return matchSearch && matchStatus && matchType;
+    });
+  }
+
+  function applyFilters() { renderTable(getFiltered()); }
+
+  document.getElementById("searchInput").addEventListener("input", applyFilters);
+  document.getElementById("statusFilter").addEventListener("change", applyFilters);
+  document.getElementById("typeFilter").addEventListener("change", applyFilters);
+
+  // ─── Actions ──
+  function viewProvider(index) {
+    const p = providers[index];
+    alert(`👤 ${p.name}\n📧 ${p.email}\n📞 ${p.phone}\n🏷 ${p.type}\n📌 ${p.status}\n📅 Applied: ${p.date}`);
+  }
+
+  function changeStatus(index, newStatus) {
+    providers[index].status = newStatus;
+    applyFilters();
+  }
+
+  // ─── Export CSV ───
+  function exportCSV() {
+    const data = getFiltered();
+    const headers = ["Name", "Phone", "Email", "Type", "Status", "Applied Date"];
+    const rows = data.map(p => [p.name, p.phone, p.email, p.type, p.status, p.date]);
+    const csvContent = [headers, ...rows].map(r => r.join(",")).join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement("a");
+    a.href     = url;
+    a.download = "hr_providers.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // ─── Initial render ──
+  renderTable(providers);
+</script> 
+</body>
+</html>

@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operations Dashboard - Home Care Service</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles/dashboard.css">
+<link rel="stylesheet" href="/styles/adminDashboard.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#f0f2f8;
+  --card:#ffffff;
+  --primary:#5046e4;
+  --primary-light:#ede9fe;
+  --text:#1a1a2e;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+
+  --elderly-color:#5046e4;
+  --elderly-bg:#ede9fe;
+  --elderly-border:#c4b5fd;
+
+  --pet-color:#e91e8c;
+  --pet-bg:#fce7f3;
+  --pet-border:#f9a8d4;
+
+  --garden-color:#16a34a;
+  --garden-bg:#f0fdf4;
+  --garden-border:#86efac;
+
+  --cleaning-color:#d97706;
+  --cleaning-bg:#fffbeb;
+  --cleaning-border:#fcd34d;
+}
+
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+}
+
+/* ── Navbar ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:var(--card);
+  border-bottom:1px solid var(--border);
+  height:64px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 28px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.06);
+}
+.nav-logo{
+  display:flex;align-items:center;gap:12px;
+}
+.logo-box{
+  width:42px;height:42px;
+  background:linear-gradient(135deg,#5046e4,#7c3aed);
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;
+  font-weight:700;font-size:13px;
+  color:#fff;letter-spacing:0.5px;
+}
+.nav-brand h1{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text);}
+.nav-brand p{font-size:12px;color:var(--muted);}
+.nav-links{display:flex;align-items:center;gap:6px;}
+.nav-links a{
+  padding:8px 16px;border-radius:8px;
+  font-size:13px;font-weight:500;color:var(--muted);
+  text-decoration:none;transition:all 0.2s;
+}
+.nav-links a:hover{background:var(--primary-light);color:var(--primary);}
+.nav-links a.active{background:var(--primary-light);color:var(--primary);}
+
+/* ── Main Layout ── */
+main{
+  padding:80px 28px 28px;
+  max-width:1400px;margin:0 auto;
+}
+
+/* ── Header Card ── */
+.header-card{
+  background:var(--card);
+  border-radius:20px;
+  padding:24px 28px;
+  margin-bottom:24px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.06);
+}
+.brand-row{display:flex;align-items:center;gap:14px;margin-bottom:18px;}
+.brand-logo{
+  width:52px;height:52px;
+  background:linear-gradient(135deg,#5046e4,#7c3aed);
+  border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-weight:700;font-size:14px;
+  color:#fff;
+}
+.brand-text h2{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;}
+.brand-text p{font-size:13px;color:var(--muted);margin-top:2px;}
+.welcome-banner{
+  background:linear-gradient(120deg,#ede9fe 0%,#f0f2ff 100%);
+  border-radius:14px;padding:16px 22px;
+}
+.welcome-banner h3{font-size:16px;font-weight:700;}
+.welcome-banner p{font-size:13px;color:var(--muted);margin-top:3px;}
+
+/* ── Service Cards Grid ── */
+.section-label{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:14px;color:var(--text);}
+.service-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:16px;
+  margin-bottom:24px;
+}
+.service-card{
+  background:var(--card);
+  border-radius:16px;
+  padding:20px;
+  border:1.5px solid var(--border);
+  position:relative;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.service-card:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,0,0,0.08);}
+.pending-badge{
+  position:absolute;top:14px;right:14px;
+  padding:4px 10px;border-radius:20px;
+  font-size:11px;font-weight:700;color:#fff;
+}
+.svc-icon{
+  width:44px;height:44px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:20px;margin-bottom:14px;
+}
+.svc-name{font-size:15px;font-weight:700;margin-bottom:8px;}
+.svc-jobs{font-size:13px;color:var(--muted);}
+.svc-jobs strong{font-size:22px;font-weight:700;margin-right:4px;}
+
+.card-elderly .svc-icon{background:var(--elderly-bg);}
+.card-elderly .svc-name{color:var(--elderly-color);}
+.card-elderly .svc-jobs strong{color:var(--elderly-color);}
+.card-elderly .pending-badge{background:var(--elderly-color);}
+
+.card-pet .svc-icon{background:var(--pet-bg);}
+.card-pet .svc-name{color:var(--pet-color);}
+.card-pet .svc-jobs strong{color:var(--pet-color);}
+.card-pet .pending-badge{background:var(--pet-color);}
+
+.card-garden .svc-icon{background:var(--garden-bg);}
+.card-garden .svc-name{color:var(--garden-color);}
+.card-garden .svc-jobs strong{color:var(--garden-color);}
+.card-garden .pending-badge{background:var(--garden-color);}
+
+.card-cleaning .svc-icon{background:var(--cleaning-bg);}
+.card-cleaning .svc-name{color:var(--cleaning-color);}
+.card-cleaning .svc-jobs strong{color:var(--cleaning-color);}
+.card-cleaning .pending-badge{background:var(--cleaning-color);}
+
+/* ── Middle Row: Metrics + Chart + Staff ── */
+.mid-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:24px;}
+
+/* Metric Cards */
+.metric-stack{display:flex;flex-direction:column;gap:16px;}
+.metric-card{
+  background:var(--card);border-radius:16px;padding:20px;
+  border:1.5px solid var(--border);
+  box-shadow:0 1px 3px rgba(0,0,0,0.04);
+}
+.metric-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.metric-icon{
+  width:38px;height:38px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:18px;
+}
+.metric-badge{font-size:11px;font-weight:700;padding:4px 9px;border-radius:20px;}
+.metric-label{font-size:13px;color:var(--muted);margin-bottom:4px;}
+.metric-value{font-family:'Syne',sans-serif;font-size:28px;font-weight:700;}
+.metric-sub{font-size:12px;color:var(--muted);margin-top:3px;}
+
+.metric-revenue .metric-icon{background:#f0fdf4;}
+.metric-revenue .metric-value{color:#15803d;}
+.metric-revenue .metric-badge{background:#dcfce7;color:#15803d;}
+.metric-scheduled .metric-icon{background:#f5f3ff;}
+.metric-scheduled .metric-value{color:#6d28d9;}
+.metric-scheduled .metric-badge{background:var(--primary-light);color:var(--primary);}
+.metric-rate .metric-icon{background:#eff6ff;}
+.metric-rate .metric-value{color:#1d4ed8;}
+.metric-rate .metric-badge{background:#dbeafe;color:#1d4ed8;}
+
+/* Chart */
+.chart-card{
+  background:var(--card);border-radius:20px;
+  padding:22px 24px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.06);
+}
+.chart-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:18px;}
+.chart-wrap{position:relative;height:180px;}
+
+/* Staff Availability */
+.staff-card{
+  background:var(--card);border-radius:20px;padding:22px 20px;
+  box-shadow:0 1px 4px rgba(0,0,0,0.06);
+}
+.staff-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.staff-title{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;}
+.staff-icon{font-size:18px;color:var(--muted);}
+.staff-counts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:16px;}
+.scount{
+  padding:10px 8px;border-radius:12px;text-align:center;
+  border:1.5px solid var(--border);
+}
+.scount strong{display:block;font-family:'Syne',sans-serif;font-size:22px;font-weight:700;margin-bottom:2px;}
+.scount span{font-size:11px;color:var(--muted);}
+.scount.available{border-color:#bbf7d0;}
+.scount.available strong{color:#15803d;}
+.scount.onjob{border-color:var(--border);}
+.scount.onjob strong{color:var(--primary);}
+.staff-list{display:flex;flex-direction:column;gap:10px;}
+.staff-item{display:flex;align-items:center;gap:10px;}
+.s-avatar{
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.s-info{flex:1;}
+.s-info strong{display:block;font-size:13px;font-weight:600;}
+.s-info small{font-size:11px;color:var(--muted);}
+.s-status{font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;white-space:nowrap;}
+.s-status.on-job{background:#eff6ff;color:#1d4ed8;}
+.s-status.available{background:#f0fdf4;color:#15803d;}
+.s-status.off-duty{background:#f9fafb;color:#6b7280;}
+
+/* ── Jobs Table ── */
+.jobs-card{
+  background:var(--card);border-radius:20px;overflow:hidden;
+  box-shadow:0 1px 4px rgba(0,0,0,0.06);
+}
+.jobs-toolbar{
+  display:flex;align-items:center;gap:12px;
+  padding:18px 22px;border-bottom:1px solid var(--border);
+  flex-wrap:wrap;
+}
+.jobs-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:700;flex:none;}
+.search-wrap{flex:1;position:relative;min-width:220px;}
+.search-wrap input{
+  width:100%;padding:9px 14px 9px 38px;
+  border:1.5px solid var(--border);border-radius:10px;
+  font-family:'DM Sans',sans-serif;font-size:13px;
+  color:var(--text);background:#fafafa;outline:none;
+  transition:border-color 0.2s;
+}
+.search-wrap input:focus{border-color:var(--primary);}
+.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:14px;}
+.filter-select{
+  padding:9px 28px 9px 14px;
+  border:1.5px solid var(--border);border-radius:10px;
+  font-family:'DM Sans',sans-serif;font-size:13px;
+  color:var(--text);background:#fafafa;outline:none;cursor:pointer;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center;
+}
+.filter-select:focus{border-color:var(--primary);}
+
+table{width:100%;border-collapse:collapse;}
+thead tr{background:#fafafa;}
+th{
+  text-align:left;padding:11px 20px;
+  font-size:11px;font-weight:700;letter-spacing:0.07em;
+  color:var(--muted);text-transform:uppercase;
+  border-bottom:1px solid var(--border);
+}
+td{padding:14px 20px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tbody tr:hover td{background:#fafbff;}
+
+.client-cell{display:flex;align-items:center;gap:12px;}
+.c-avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;color:#fff;flex-shrink:0;}
+.c-info strong{display:block;font-weight:600;font-size:14px;}
+.c-info small{color:var(--muted);font-size:12px;}
+
+.svc-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600;}
+.svc-badge.elderly{background:var(--elderly-bg);color:var(--elderly-color);}
+.svc-badge.pet{background:var(--pet-bg);color:var(--pet-color);}
+.svc-badge.garden{background:var(--garden-bg);color:var(--garden-color);}
+.svc-badge.cleaning{background:var(--cleaning-bg);color:var(--cleaning-color);}
+
+.status-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;
+}
+.status-badge.in-progress{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;}
+.status-badge.scheduled{background:#f5f3ff;color:#6d28d9;border:1px solid #ddd6fe;}
+.status-badge.completed{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;}
+.status-badge.urgent{background:#fff1f2;color:#be123c;border:1px solid #fecdd3;}
+
+.time-cell{color:var(--muted);font-size:13px;}
+.loc-cell{display:flex;align-items:center;gap:5px;color:var(--muted);font-size:13px;}
+.loc-icon{font-size:13px;color:#9ca3af;}
+
+.act-btns{display:flex;align-items:center;gap:6px;}
+.act-btn{
+  width:30px;height:30px;border:none;background:transparent;
+  border-radius:8px;cursor:pointer;font-size:15px;
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.15s;color:var(--muted);
+}
+.act-btn:hover{background:var(--border);}
+.act-btn.complete{color:#15803d;}
+.act-btn.urgent{color:#be123c;}
+
+/* ── Pagination ── */
+.pagination{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 22px;border-top:1px solid var(--border);
+}
+.page-info{font-size:13px;color:var(--muted);}
+.page-btns{display:flex;gap:8px;}
+.page-btn{
+  padding:8px 20px;border-radius:9px;font-size:13px;font-weight:600;
+  cursor:pointer;transition:all 0.2s;border:1.5px solid var(--border);
+  background:white;color:var(--text);
+}
+.page-btn.primary{background:var(--primary);color:#fff;border-color:var(--primary);}
+.page-btn:hover:not(.primary){background:#f5f5f5;}
+.page-btn.primary:hover{background:#3730c8;}
+
+/* No results */
+.no-results{text-align:center;padding:40px;color:var(--muted);font-size:14px;display:none;}
+
+@media(max-width:1100px){
+  .service-grid{grid-template-columns:repeat(3,1fr);}
+  .mid-row{grid-template-columns:1fr 1fr;}
+  .staff-card{display:none;}
+}
+@media(max-width:800px){
+  .service-grid{grid-template-columns:repeat(2,1fr);}
+  .mid-row{grid-template-columns:1fr;}
+  th:nth-child(4),td:nth-child(4),
+  th:nth-child(5),td:nth-child(5){display:none;}
+}
+@media(max-width:600px){main{padding:72px 12px 12px;}  .service-grid{grid-template-columns:repeat(2,1fr);}}
+</style>
+</head>
+<body>
+
+
+<main>
+
+    <nav class="navbar">
+    <button class="sidebar-toggle" id="sidebarToggle"><span></span><span></span><span></span></button>
+    <a href="#" class="navbar-brand">
+      <div class="navbar-logo">HCS</div>
+      <div class="navbar-brand-text">
+        <h1>Home Care Service</h1>
+        <p>HR Administration</p>
+      </div>
+    </a>
+    <div class="navbar-links">
+      <a href="../home.html">Home</a>
+      <a href="#" id="logoutLink">Logout</a>
+    </div>
+  </nav>
+
+  <!-- Header Card -->
+  <div class="header-card">
+    <div class="welcome-banner">
+      <h3>Welcome, Operations Manager! 🏠</h3>
+      <p>Monitor and manage all service operations in real-time</p>
+    </div>
+  </div>
+
+  <!-- Service Cards -->
+  <p class="section-label">Active Service Categories</p>
+  <div class="service-grid" id="serviceGrid">
+    <!-- Rendered by JS -->
+  </div>
+
+  <!-- Middle Row -->
+  <div class="mid-row">
+    <!-- Metrics -->
+    <div class="metric-stack">
+      <div class="metric-card metric-revenue">
+        <div class="metric-top">
+          <div class="metric-icon">📈</div>
+          <span class="metric-badge">+12%</span>
+        </div>
+        <div class="metric-label">Total Revenue</div>
+        <div class="metric-value">$24,580</div>
+        <div class="metric-sub">This month</div>
+      </div>
+      <div class="metric-card metric-scheduled">
+        <div class="metric-top">
+          <div class="metric-icon">📅</div>
+          <span class="metric-badge" style="background:var(--primary-light);color:var(--primary);">Today</span>
+        </div>
+        <div class="metric-label">Scheduled Jobs</div>
+        <div class="metric-value" id="scheduledCount">18</div>
+        <div class="metric-sub" id="scheduledSub">8 completed, 10 pending</div>
+      </div>
+      <div class="metric-card metric-rate">
+        <div class="metric-top">
+          <div class="metric-icon">💲</div>
+          <span class="metric-badge">Avg</span>
+        </div>
+        <div class="metric-label">Service Rate</div>
+        <div class="metric-value">$85</div>
+        <div class="metric-sub">Per hour</div>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-card">
+      <div class="chart-title">Weekly Service Distribution</div>
+      <div class="chart-wrap">
+        <canvas id="weeklyChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Staff -->
+    <div class="staff-card">
+      <div class="staff-header">
+        <span class="staff-title">Staff Availability</span>
+        <span class="staff-icon">👥</span>
+      </div>
+      <div class="staff-counts">
+        <div class="scount available">
+          <strong id="avail-count">3</strong>
+          <span>Available</span>
+        </div>
+        <div class="scount onjob">
+          <strong id="onjob-count">4</strong>
+          <span>On Job</span>
+        </div>
+        <div class="scount">
+          <strong id="off-count">1</strong>
+          <span>Off Duty</span>
+        </div>
+      </div>
+      <div class="staff-list" id="staffList">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Jobs Table -->
+  <div class="jobs-card">
+    <div class="jobs-toolbar">
+      <span class="jobs-title">Today's Jobs &amp; Assignments</span>
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="jobSearch" placeholder="Search by client, staff, or location...">
+      </div>
+      <select class="filter-select" id="statusFilter">
+        <option value="">All Status</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Scheduled">Scheduled</option>
+        <option value="Completed">Completed</option>
+        <option value="Urgent">Urgent</option>
+      </select>
+      <select class="filter-select" id="svcFilter">
+        <option value="">All Services</option>
+        <option value="Elderly Care">Elderly Care</option>
+        <option value="Pet Care">Pet Care</option>
+        <option value="Garden Work">Garden Work</option>
+        <option value="House Cleaning">House Cleaning</option>
+      </select>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Service</th>
+          <th>Assigned To</th>
+          <th>Location</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="jobsBody"></tbody>
+    </table>
+    <div class="no-results" id="noResults">No matching jobs found.</div>
+    <div class="pagination">
+      <span class="page-info" id="pageInfo">Showing 8 of 8 jobs today</span>
+      <div class="page-btns">
+        <button class="page-btn" id="prevBtn" onclick="changePage(-1)">Previous</button>
+        <button class="page-btn primary" id="nextBtn" onclick="changePage(1)">Next</button>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// ── Data ─────────────────────────────────────────────────────────────────────
+
+const services = [
+  { cls:"elderly", icon:"🤍", name:"Elderly Care",       active:5, pending:3 },
+  { cls:"pet",     icon:"🐾", name:"Pet Care",           active:4, pending:2 },
+  { cls:"garden",  icon:"🌿", name:"Garden Work",        active:3, pending:1 },
+  { cls:"cleaning",icon:"✨", name:"House Cleaning",     active:6, pending:4 },
+];
+
+const staff = [
+  { initials:"SJ", color:"linear-gradient(135deg,#5046e4,#7c3aed)", name:"Sarah Johnson",    sub:"Elderly Care - Margaret T.", status:"on-job",   statusLabel:"On Job"   },
+  { initials:"MC", color:"linear-gradient(135deg,#0ea5e9,#2563eb)", name:"Michael Chen",     sub:"",                           status:"available", statusLabel:"Available"},
+  { initials:"ER", color:"linear-gradient(135deg,#f97316,#ef4444)", name:"Emily Rodriguez",  sub:"House Cleaning - Lisa D.",   status:"on-job",   statusLabel:"On Job"   },
+  { initials:"DK", color:"linear-gradient(135deg,#10b981,#0d9488)", name:"David Martinez",   sub:"Garden Work - Robert W.",    status:"on-job",   statusLabel:"On Job"   },
+  { initials:"JM", color:"linear-gradient(135deg,#8b5cf6,#6d28d9)", name:"Jessica Martinez", sub:"Elderly Care - George P.",   status:"on-job",   statusLabel:"On Job"   },
+  { initials:"RT", color:"linear-gradient(135deg,#f43f5e,#be123c)", name:"Robert Taylor",    sub:"",                           status:"off-duty",  statusLabel:"Off Duty" },
+  { initials:"AM", color:"linear-gradient(135deg,#f59e0b,#d97706)", name:"Amanda White",     sub:"",                           status:"available", statusLabel:"Available"},
+];
+
+const jobs = [
+  { cInitials:"MT", cColor:"linear-gradient(135deg,#5046e4,#7c3aed)", client:"Margaret Thompson", phone:"(555) 123-4567", service:"Elderly Care",    svcCls:"elderly",  staff:"Sarah Johnson",    location:"123 Oak Street",   time:"09:00 AM - 02:00 PM", status:"In Progress" },
+  { cInitials:"TA", cColor:"linear-gradient(135deg,#e91e8c,#be185d)", client:"The Andersons",      phone:"(555) 234-5678", service:"Pet Care",         svcCls:"pet",      staff:"Michael Chen",     location:"456 Maple Ave",    time:"10:00 AM - 11:30 AM", status:"Scheduled"   },
+  { cInitials:"RW", cColor:"linear-gradient(135deg,#16a34a,#0d9488)", client:"Robert Wilson",      phone:"(555) 345-6789", service:"Garden Work",      svcCls:"garden",   staff:"David Martinez",   location:"789 Pine Road",    time:"08:00 AM - 12:00 PM", status:"In Progress" },
+  { cInitials:"LD", cColor:"linear-gradient(135deg,#d97706,#b45309)", client:"Lisa Davis",         phone:"(555) 456-7890", service:"House Cleaning",   svcCls:"cleaning", staff:"Emily Rodriguez",   location:"321 Elm Street",   time:"01:00 PM - 04:00 PM", status:"Scheduled"   },
+  { cInitials:"GP", cColor:"linear-gradient(135deg,#7c3aed,#5046e4)", client:"George Patterson",   phone:"(555) 567-8901", service:"Elderly Care",     svcCls:"elderly",  staff:"Jessica Martinez",  location:"654 Birch Lane",   time:"07:00 AM - 03:00 PM", status:"Urgent"      },
+  { cInitials:"TJ", cColor:"linear-gradient(135deg,#f59e0b,#ef4444)", client:"The Johnsons",       phone:"(555) 678-9012", service:"House Cleaning",   svcCls:"cleaning", staff:"Amanda White",      location:"987 Cedar Court",  time:"02:00 PM - 05:00 PM", status:"Completed"   },
+  { cInitials:"PB", cColor:"linear-gradient(135deg,#e91e8c,#9d174d)", client:"Patricia Brown",     phone:"(555) 789-0123", service:"Pet Care",         svcCls:"pet",      staff:"Christopher Lee",   location:"147 Spruce Dr",    time:"03:00 PM - 04:00 PM", status:"Scheduled"   },
+  { cInitials:"TM", cColor:"linear-gradient(135deg,#0891b2,#0d9488)", client:"The Millers",        phone:"(555) 890-1234", service:"Garden Work",      svcCls:"garden",   staff:"Robert Taylor",     location:"258 Willow Way",   time:"09:00 AM - 01:00 PM", status:"In Progress" },
+];
+
+// ── Page state ──────────────────────────────────────────────────────────────
+let currentPage = 1;
+const PAGE_SIZE = 8;
+
+// ── Service Cards ───────────────────────────────────────────────────────────
+function renderServiceCards() {
+  const grid = document.getElementById("serviceGrid");
+  grid.innerHTML = services.map(s => `
+    <div class="service-card card-${s.cls}">
+      ${s.pending ? `<span class="pending-badge">${s.pending} pending</span>` : ""}
+      <div class="svc-icon">${s.icon}</div>
+      <div class="svc-name">${s.name}</div>
+      <div class="svc-jobs"><strong>${s.active}</strong> active jobs</div>
+    </div>
+  `).join("");
+}
+
+// ── Staff List ──────────────────────────────────────────────────────────────
+function renderStaff() {
+  const list = document.getElementById("staffList");
+  list.innerHTML = staff.map(s => `
+    <div class="staff-item">
+      <div class="s-avatar" style="background:${s.color}">${s.initials}</div>
+      <div class="s-info">
+        <strong>${s.name}</strong>
+        <small>${s.sub || "&nbsp;"}</small>
+      </div>
+      <span class="s-status ${s.status}">${s.statusLabel}</span>
+    </div>
+  `).join("");
+
+  document.getElementById("avail-count").textContent = staff.filter(s=>s.status==="available").length;
+  document.getElementById("onjob-count").textContent  = staff.filter(s=>s.status==="on-job").length;
+  document.getElementById("off-count").textContent    = staff.filter(s=>s.status==="off-duty").length;
+}
+
+// ── Badge helpers ───────────────────────────────────────────────────────────
+function statusClass(s) {
+  return {
+    "In Progress":"in-progress",
+    "Scheduled":"scheduled",
+    "Completed":"completed",
+    "Urgent":"urgent"
+  }[s] || "scheduled";
+}
+
+function statusDot(s) {
+  const dots = {"In Progress":"🔵","Scheduled":"🟣","Completed":"🟢","Urgent":"🔴"};
+  return dots[s] || "";
+}
+
+// ── Jobs Table ──────────────────────────────────────────────────────────────
+function getFiltered() {
+  const q = document.getElementById("jobSearch").value.toLowerCase();
+  const st = document.getElementById("statusFilter").value;
+  const sv = document.getElementById("svcFilter").value;
+  return jobs.filter(j =>
+    (!q || j.client.toLowerCase().includes(q) || j.staff.toLowerCase().includes(q) || j.location.toLowerCase().includes(q)) &&
+    (!st || j.status === st) &&
+    (!sv || j.service === sv)
+  );
+}
+
+function renderJobs() {
+  const filtered = getFiltered();
+  const tbody = document.getElementById("jobsBody");
+  const noRes = document.getElementById("noResults");
+  const pageInfo = document.getElementById("pageInfo");
+
+  const total = filtered.length;
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const slice = filtered.slice(start, start + PAGE_SIZE);
+
+  if (total === 0) {
+    tbody.innerHTML = "";
+    noRes.style.display = "block";
+    pageInfo.textContent = "No jobs found";
+  } else {
+    noRes.style.display = "none";
+    pageInfo.textContent = `Showing ${Math.min(start + PAGE_SIZE, total)} of ${total} jobs today`;
+    tbody.innerHTML = slice.map((j, i) => {
+      const realIndex = jobs.indexOf(j);
+      return `
+      <tr>
+        <td>
+          <div class="client-cell">
+            <div class="c-avatar" style="background:${j.cColor}">${j.cInitials}</div>
+            <div class="c-info">
+              <strong>${j.client}</strong>
+              <small>📞 ${j.phone}</small>
+            </div>
+          </div>
+        </td>
+        <td><span class="svc-badge ${j.svcCls}">${j.service}</span></td>
+        <td style="font-weight:600;font-size:13px;">${j.staff}</td>
+        <td class="loc-cell"><span class="loc-icon">📍</span>${j.location}</td>
+        <td class="time-cell">🕐 ${j.time}</td>
+        <td><span class="status-badge ${statusClass(j.status)}">${j.status}</span></td>
+        <td>
+          <div class="act-btns">
+            <button class="act-btn complete" onclick="changeJobStatus(${realIndex},'Completed')" title="Complete">✅</button>
+            <button class="act-btn urgent"   onclick="changeJobStatus(${realIndex},'Urgent')"    title="Mark Urgent">⚠️</button>
+            <button class="act-btn"          onclick="viewJob(${realIndex})" title="More">⋯</button>
+          </div>
+        </td>
+      </tr>`;
+    }).join("");
+  }
+
+  document.getElementById("prevBtn").disabled = currentPage === 1;
+  document.getElementById("nextBtn").disabled = start + PAGE_SIZE >= total;
+  document.getElementById("prevBtn").style.opacity = currentPage === 1 ? "0.4" : "1";
+  document.getElementById("nextBtn").style.opacity = (start + PAGE_SIZE >= total) ? "0.4" : "1";
+
+  // Update scheduled metric
+  document.getElementById("scheduledCount").textContent = jobs.length;
+  const comp = jobs.filter(j=>j.status==="Completed").length;
+  const pend = jobs.length - comp;
+  document.getElementById("scheduledSub").textContent = `${comp} completed, ${pend} pending`;
+}
+
+function changeJobStatus(index, newStatus) {
+  jobs[index].status = newStatus;
+  renderJobs();
+}
+
+function viewJob(index) {
+  const j = jobs[index];
+  alert(`📋 Job Details\n\n👤 Client: ${j.client}\n📞 ${j.phone}\n🏷 Service: ${j.service}\n👷 Staff: ${j.staff}\n📍 ${j.location}\n🕐 ${j.time}\n📌 Status: ${j.status}`);
+}
+
+function changePage(dir) {
+  const filtered = getFiltered();
+  const maxPage = Math.ceil(filtered.length / PAGE_SIZE);
+  currentPage = Math.max(1, Math.min(currentPage + dir, maxPage));
+  renderJobs();
+}
+
+document.getElementById("jobSearch").addEventListener("input", () => { currentPage = 1; renderJobs(); });
+document.getElementById("statusFilter").addEventListener("change", () => { currentPage = 1; renderJobs(); });
+document.getElementById("svcFilter").addEventListener("change", () => { currentPage = 1; renderJobs(); });
+
+// ── Weekly Chart ────────────────────────────────────────────────────────────
+function renderChart() {
+  const ctx = document.getElementById("weeklyChart").getContext("2d");
+  new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+      datasets: [
+        { label:"Elderly Care",   backgroundColor:"#5046e4", data:[12,15,10,14,13,8,6]  },
+        { label:"Pet Care",       backgroundColor:"#e91e8c", data:[8,10,12,9,11,15,14]  },
+        { label:"Garden Work",    backgroundColor:"#16a34a", data:[5,7,6,8,9,12,4]       },
+        { label:"House Cleaning", backgroundColor:"#f59e0b", data:[15,12,14,16,13,18,10] },
+      ]
+    },
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins:{ legend:{ position:"bottom", labels:{ boxWidth:10, font:{ size:11, family:"DM Sans" }, padding:12 } } },
+      scales:{
+        x:{ grid:{ display:false }, ticks:{ font:{ size:11 } } },
+        y:{ grid:{ color:"#f0f0f0" }, ticks:{ font:{ size:11 } }, beginAtZero:true }
+      },
+      barPercentage:0.7, categoryPercentage:0.8,
+    }
+  });
+}
+
+// ── Init ─────────────────────────────────────────────────────────────────────
+renderServiceCards();
+renderStaff();
+renderJobs();
+renderChart();
+</script>
+</body>
+</html>
