@@ -117,7 +117,7 @@ html, body {
 
 /* ── FORM CONTAINER ───────────────────────────────────────── */
 .form-container {
-    background: rgba(255,255,255,0.1);
+    background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255,255,255,0.2);
     border-radius: 20px;
@@ -390,3 +390,190 @@ footer {
     color: var(--muted);
     text-align: center;
 }
+
+/* ── Step indicator ──────────────────────────────── */
+        .steps {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 28px;
+        }
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        .step-dot {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1.5px solid rgba(255,255,255,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.4);
+            transition: all 0.3s;
+        }
+        .step.active .step-dot {
+            background: rgba(255,255,255,0.25);
+            border-color: rgba(255,255,255,0.7);
+            color: #fff;
+            box-shadow: 0 0 14px rgba(255,255,255,0.2);
+        }
+        .step.done .step-dot {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.8);
+        }
+        .step-label {
+            font-size: 10.5px;
+            color: rgba(255,255,255,0.3);
+            white-space: nowrap;
+        }
+        .step.active .step-label { color: rgba(255,255,255,0.8); }
+        .step.done  .step-label  { color: rgba(255,255,255,0.55); }
+        .step-line {
+            flex: 1;
+            height: 1px;
+            background: rgba(255,255,255,0.15);
+            margin: 0 8px 16px;
+            min-width: 36px;
+            transition: background 0.3s;
+        }
+        .step-line.done { background: rgba(255,255,255,0.4); }
+
+        /* ── Multi-step panels ───────────────────────────── */
+        .form-steps { position: relative; overflow: hidden; }
+        .form-step  { display: none; animation: fadeUp 0.3s ease both; }
+        .form-step.active { display: block; }
+
+        /* ── Password strength ───────────────────────────── */
+        .strength-bar {
+            display: flex;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .strength-seg {
+            flex: 1; height: 3px;
+            border-radius: 2px;
+            background: rgba(255,255,255,0.12);
+            transition: background 0.3s;
+        }
+        .strength-hint {
+            font-size: 11px;
+            color: rgba(255,255,255,0.4);
+            margin-top: 4px;
+        }
+
+        /* ── Terms ───────────────────────────────────────── */
+        .terms-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .terms-row input[type="checkbox"] {
+            appearance: none; -webkit-appearance: none;
+            width: 18px; height: 18px;
+            border-radius: 5px;
+            border: 1.5px solid rgba(255,255,255,0.3);
+            background: var(--input-bg);
+            cursor: pointer;
+            flex-shrink: 0;
+            margin-top: 1px;
+            position: relative;
+            transition: all 0.2s;
+        }
+        .terms-row input[type="checkbox"]:checked {
+            background: rgba(255,255,255,0.25);
+            border-color: rgba(255,255,255,0.7);
+        }
+        .terms-row input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%,-50%);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+        }
+        .terms-row label {
+            font-size: 12.5px;
+            color: rgba(255,255,255,0.55);
+            line-height: 1.5;
+            cursor: pointer;
+        }
+        .terms-row label a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: underline;
+        }
+
+        /* ── Success screen ──────────────────────────────── */
+        .success-screen {
+            display: none;
+            text-align: center;
+            padding: 1rem 0 0.5rem;
+            animation: fadeUp 0.4s ease both;
+        }
+        .success-icon {
+            width: 68px; height: 68px;
+            background: rgba(255,255,255,0.18);
+            border: 2px solid rgba(255,255,255,0.45);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: #fff;
+            margin: 0 auto 1.25rem;
+        }
+        .success-screen h3 {
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--white);
+            margin-bottom: 8px;
+        }
+        .success-screen p {
+            font-size: 13.5px;
+            color: var(--text-muted);
+            line-height: 1.65;
+            margin-bottom: 1.75rem;
+        }
+
+        /* ── Back nav button ─────────────────────────────── */
+        .btn-back {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 1.5px solid rgba(255,255,255,0.25);
+            border-radius: 10px;
+            color: rgba(255,255,255,0.65);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+        }
+        .btn-back:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.4);
+            color: var(--white);
+        }
+
+        /* ── Login link ──────────────────────────────────── */
+        .login-link {
+            text-align: center;
+            margin-top: 1.25rem;
+            font-size: 13px;
+            color: rgba(255,255,255,0.5);
+        }
+        .login-link a {
+            color: var(--white);
+            font-weight: 500;
+            text-decoration: underline;
+        }

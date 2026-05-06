@@ -51,12 +51,12 @@ function redirectToDashboard() {
     'pet_care': 'petCareDashboard.html',
     'garden_maintenance': 'gardenDashboard.html',
     'house_cleaning': 'cleaningDashboard.html',
-    'regular_user': 'customerDashboard.html',
+    'regular_user': 'dashboard.html',
     'customer_support': 'supportDashboard.html',
     'moderator': 'moderatorDashboard.html'
   };
 
-  const dashboard = dashboardMap[user.role] || 'customerDashboard.html';
+  const dashboard = dashboardMap[user.role] || 'dashboard.html';
 
   // Show loading state
   const nextBtn = document.getElementById('nextBtn');
