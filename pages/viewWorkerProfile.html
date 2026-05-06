@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Profile - Home Care Service</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/profile.css">
+    <style>
+        /* Worker Profile View Styles */
+        .profile-container {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem;
+            background-color: #f5f7fa;
+            min-height: 100vh;
+        }
+
+        .profile-main {
+            flex: 1;
+            max-width: 1000px;
+        }
+
+        .profile-sidebar {
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Page Header */
+        .profile-page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding: 1rem 0;
+        }
+
+        .profile-page-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-page-title button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #333;
+            padding: 0.5rem;
+        }
+
+        .profile-page-title div h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0;
+            color: #1a1a1a;
+        }
+
+        .profile-page-title div p {
+            font-size: 0.875rem;
+            color: #666;
+            margin: 0.25rem 0 0;
+        }
+
+        .profile-page-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        /* Hero Card */
+        .profile-hero {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .hero-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-left {
+            display: flex;
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        .hero-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .hero-info h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0 0 0.25rem;
+            color: #1a1a1a;
+        }
+
+        .hero-info p {
+            font-size: 1rem;
+            color: #666;
+            margin: 0;
+        }
+
+        .hero-badges {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.4rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .badge-info {
+            background-color: #e0f2f1;
+            color: #00897b;
+        }
+
+        .hero-right {
+            text-align: right;
+        }
+
+        .hero-rate {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4CAF50;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-rating {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #666;
+        }
+
+        .hero-rating .stars {
+            color: #FFB800;
+        }
+
+        .hero-bio {
+            background-color: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #555;
+            margin-top: 1rem;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            padding: 1.25rem;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+        }
+
+        .stat-card h3 {
+            font-size: 0.8rem;
+            margin: 0 0 0.5rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .stat-card p {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .stat-card.blue { background: linear-gradient(135deg, #2196F3, #1976D2); }
+        .stat-card.green { background: linear-gradient(135deg, #4CAF50, #388E3C); }
+        .stat-card.purple { background: linear-gradient(135deg, #9C27B0, #7B1FA2); }
+        .stat-card.orange { background: linear-gradient(135deg, #FF9800, #F57C00); }
+
+        /* Card Section */
+        .card-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-section h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0;
+            color: #1a1a1a;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #1a1a1a;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #333;
+        }
+
+        .btn-success {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #45a049;
+        }
+
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .skill-card {
+            padding: 1.5rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover {
+            border-color: #4CAF50;
+            box-shadow: 0 2px 8px rgba(76, 175, 80, 0.1);
+        }
+
+        .skill-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .skill-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem;
+            color: #1a1a1a;
+        }
+
+        .skill-card .proficiency {
+            display: inline-block;
+            padding: 0.3rem 0.75rem;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #e0e0e0;
+        }
+
+        .timeline-entry {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+        }
+
+        .timeline-entry::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #2196F3;
+        }
+
+        .timeline-entry h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0 0 0.25rem;
+            color: #1a1a1a;
+        }
+
+        .timeline-entry .company {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+        }
+
+        .timeline-entry .date {
+            font-size: 0.8rem;
+            color: #999;
+            margin: 0.25rem 0;
+        }
+
+        .timeline-entry p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #555;
+            margin: 0.75rem 0 0;
+        }
+
+        /* Certifications */
+        .cert-card {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            padding: 1.25rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .cert-icon {
+            font-size: 2rem;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .cert-info h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin: 0;
+            color: #1a1a1a;
+        }
+
+        .cert-info p {
+            font-size: 0.85rem;
+            color: #666;
+            margin: 0.25rem 0 0;
+        }
+
+        .cert-year {
+            margin-left: auto;
+            font-weight: 600;
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        /* Review Cards */
+        .review-card {
+            padding: 1.25rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .review-header h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin: 0;
+            color: #1a1a1a;
+        }
+
+        .review-date {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .review-rating {
+            margin-bottom: 0.5rem;
+            color: #FFB800;
+        }
+
+        .review-tag {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            background-color: #f0f0f0;
+            color: #666;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .review-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #555;
+            margin: 0;
+        }
+
+        /* Leave Review Section */
+        .leave-review-section {
+            background-color: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            border: 1px solid #e0e0e0;
+        }
+
+        .leave-review-section h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0 0 1rem;
+            color: #1a1a1a;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .star-rating {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .star-rating button {
+            background: none;
+            border: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #ddd;
+            transition: color 0.3s ease;
+            padding: 0;
+        }
+
+        .star-rating button:hover,
+        .star-rating button.active {
+            color: #FFB800;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-row .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-submit {
+            background-color: #4CAF50;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #45a049;
+        }
+
+        .btn-cancel {
+            background-color: #f0f0f0;
+            color: #333;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cancel:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Sidebar Cards */
+        .sidebar-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .sidebar-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0 0 1rem;
+            color: #1a1a1a;
+        }
+
+        .contact-item {
+            margin-bottom: 1.25rem;
+        }
+
+        .contact-item label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #999;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+
+        .contact-item p {
+            font-size: 0.9rem;
+            color: #333;
+            margin: 0;
+        }
+
+        /* Availability */
+        .availability-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .availability-item:last-child {
+            border-bottom: none;
+        }
+
+        .availability-item label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .availability-badge {
+            display: inline-block;
+            padding: 0.3rem 0.75rem;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .availability-badge.unavailable {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .hours-display {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #f0f0f0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Documents */
+        .document-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .document-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .document-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .document-icon {
+            font-size: 1.5rem;
+        }
+
+        .document-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #333;
+            flex: 1;
+        }
+
+        .document-download {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        /* Quick Actions */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .action-buttons .btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .profile-container {
+                flex-direction: column;
+            }
+
+            .profile-sidebar {
+                width: 100%;
+            }
+
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .profile-page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .hero-header {
+                flex-direction: column;
+            }
+
+            .hero-right {
+                text-align: left;
+                margin-top: 1rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Header -->
+    <div class="profile-page-header">
+        <div class="profile-page-title">
+            <button onclick="goBack()" aria-label="Go back">←</button>
+            <div>
+                <h1>Worker Profile</h1>
+                <p>View professional profile and share your experience</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="profile-container">
+        <!-- Main Content Area -->
+        <div class="profile-main">
+            <!-- Hero Card -->
+            <div class="profile-hero">
+                <div class="hero-header">
+                    <div class="hero-left">
+                        <div class="hero-avatar">SJ</div>
+                        <div class="hero-info">
+                            <h1 id="workerName">Sarah Johnson</h1>
+                            <p id="workerTitle">Senior Home Care Specialist</p>
+                            <div class="hero-badges">
+                                <span class="badge badge-success">✓ Verified Professional</span>
+                                <span class="badge badge-info">Available for Work</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-right">
+                        <div class="hero-rate">$25-45 <span style="font-size: 0.9rem; color: #999;">/hour</span></div>
+                        <div class="hero-rating">
+                            <span class="stars">★ 4.9</span>
+                            <span>(64 reviews)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-bio" id="workerBio">
+                    Experienced home care professional with 8+ years of expertise in elderly care, house cleaning, and pet care. Dedicated to providing compassionate, reliable service to families and seniors. I prioritize client comfort and maintain the highest standards of professionalism.
+                </div>
+                <div class="stats-row">
+                    <div class="stat-card blue">
+                        <h3>Jobs Completed</h3>
+                        <p>127</p>
+                    </div>
+                    <div class="stat-card green">
+                        <h3>Average Rating</h3>
+                        <p>4.9</p>
+                    </div>
+                    <div class="stat-card purple">
+                        <h3>Client Reviews</h3>
+                        <p>87</p>
+                    </div>
+                    <div class="stat-card orange">
+                        <h3>Response Rate</h3>
+                        <p>98%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills & Expertise Section -->
+            <div class="card-section">
+                <div class="card-section-header">
+                    <h2>Skills & Expertise</h2>
+                </div>
+                <div class="skills-grid" id="skillsContainer">
+                    <div class="skill-card">
+                        <div class="skill-icon">🧹</div>
+                        <h3>House Cleaning</h3>
+                        <span class="proficiency">Expert</span>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">👵</div>
+                        <h3>Elderly Care</h3>
+                        <span class="proficiency">Expert</span>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">🐾</div>
+                        <h3>Pet Care</h3>
+                        <span class="proficiency">Advanced</span>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">🌿</div>
+                        <h3>Garden Maintenance</h3>
+                        <span class="proficiency">Intermediate</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Work Experience Section -->
+            <div class="card-section">
+                <div class="card-section-header">
+                    <h2>Work Experience</h2>
+                </div>
+                <div class="timeline" id="experienceContainer">
+                    <div class="timeline-entry">
+                        <h3>Senior Care Provider</h3>
+                        <p class="company">Home Care Plus</p>
+                        <p class="date">2021 - 2023</p>
+                        <p>Provided comprehensive care services for elderly clients including personal care, meal preparation, and companionship. Maintained detailed client records and coordinated with family members.</p>
+                    </div>
+                    <div class="timeline-entry">
+                        <h3>Professional Cleaner</h3>
+                        <p class="company">Sparkle Clean Co</p>
+                        <p class="date">2019 - 2021</p>
+                        <p>Specialized in residential deep cleaning and post-construction cleaning. Managed client relationships and maintained high quality standards across multiple properties.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certifications & Licenses Section -->
+            <div class="card-section">
+                <div class="card-section-header">
+                    <h2>Certifications & Licenses</h2>
+                </div>
+                <div id="certificationsContainer">
+                    <div class="cert-card">
+                        <div class="cert-icon">🏥</div>
+                        <div class="cert-info">
+                            <h3>CPR & First Aid Certified</h3>
+                            <p>Red Cross</p>
+                        </div>
+                        <div class="cert-year">2025</div>
+                    </div>
+                    <div class="cert-card">
+                        <div class="cert-icon">📜</div>
+                        <div class="cert-info">
+                            <h3>Professional Cleaning Certification</h3>
+                            <p>ISSA (International Sanitary Supply Association)</p>
+                        </div>
+                        <div class="cert-year">2024</div>
+                    </div>
+                    <div class="cert-card">
+                        <div class="cert-icon">🐕</div>
+                        <div class="cert-info">
+                            <h3>Pet Care Professional</h3>
+                            <p>NAPPS (National Association of Professional Pet Sitters)</p>
+                        </div>
+                        <div class="cert-year">2023</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Client Reviews Section -->
+            <div class="card-section">
+                <h2>Client Reviews</h2>
+                <div id="reviewsContainer">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <h3>Michael R.</h3>
+                            <span class="review-date">March 15, 2026</span>
+                        </div>
+                        <div class="review-rating">★★★★★</div>
+                        <span class="review-tag">Elderly Care</span>
+                        <p class="review-text">"Sarah was exceptional! She took great care of my mother with compassion and professionalism. We highly recommend her services."</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header">
+                            <h3>Jennifer L.</h3>
+                            <span class="review-date">March 10, 2026</span>
+                        </div>
+                        <div class="review-rating">★★★★★</div>
+                        <span class="review-tag">House Cleaning</span>
+                        <p class="review-text">"Fantastic cleaning service! Sarah is thorough, reliable, and always goes the extra mile. Our home has never looked better."</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header">
+                            <h3>David K.</h3>
+                            <span class="review-date">March 5, 2026</span>
+                        </div>
+                        <div class="review-rating">★★★★☆</div>
+                        <span class="review-tag">Pet Care</span>
+                        <p class="review-text">"Great experience with Sarah taking care of our dog while we were away. She provided regular updates and our pet was very happy."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Leave Review Section -->
+            <div class="card-section">
+                <h2>Share Your Experience</h2>
+                <div class="leave-review-section">
+                    <h3>Leave a Review & Rating</h3>
+                    <form id="reviewForm" onsubmit="submitReview(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="reviewerName">Your Name *</label>
+                                <input type="text" id="reviewerName" placeholder="Enter your name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="serviceType">Service Type *</label>
+                                <select id="serviceType" required>
+                                    <option value="">Select a service...</option>
+                                    <option value="Elderly Care">Elderly Care</option>
+                                    <option value="House Cleaning">House Cleaning</option>
+                                    <option value="Pet Care">Pet Care</option>
+                                    <option value="Garden Maintenance">Garden Maintenance</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Rating *</label>
+                            <div class="star-rating" id="starRating">
+                                <button type="button" class="star" data-value="1">★</button>
+                                <button type="button" class="star" data-value="2">★</button>
+                                <button type="button" class="star" data-value="3">★</button>
+                                <button type="button" class="star" data-value="4">★</button>
+                                <button type="button" class="star" data-value="5">★</button>
+                            </div>
+                            <input type="hidden" id="ratingValue" value="0" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reviewText">Your Review *</label>
+                            <textarea id="reviewText" placeholder="Share your experience with this worker..." required></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn-cancel" onclick="clearReviewForm()">Clear</button>
+                            <button type="submit" class="btn-submit">Submit Review</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="profile-sidebar">
+            <!-- Contact Info -->
+            <div class="sidebar-card">
+                <h3>Contact Information</h3>
+                <div class="contact-item">
+                    <label>Email</label>
+                    <p>sarah.johnson@example.com</p>
+                </div>
+                <div class="contact-item">
+                    <label>Phone</label>
+                    <p>(555) 987-6543</p>
+                </div>
+                <div class="contact-item">
+                    <label>Location</label>
+                    <p>San Francisco, California</p>
+                </div>
+            </div>
+
+            <!-- Availability -->
+            <div class="sidebar-card">
+                <h3>Availability</h3>
+                <div id="availabilityContainer">
+                    <div class="availability-item">
+                        <label>Monday</label>
+                        <span class="availability-badge">Available</span>
+                    </div>
+                    <div class="availability-item">
+                        <label>Tuesday</label>
+                        <span class="availability-badge">Available</span>
+                    </div>
+                    <div class="availability-item">
+                        <label>Wednesday</label>
+                        <span class="availability-badge">Available</span>
+                    </div>
+                    <div class="availability-item">
+                        <label>Thursday</label>
+                        <span class="availability-badge">Available</span>
+                    </div>
+                    <div class="availability-item">
+                        <label>Friday</label>
+                        <span class="availability-badge">Available</span>
+                    </div>
+                    <div class="availability-item">
+                        <label>Saturday</label>
+                        <span class="availability-badge">Available</span>
+                    </div>
+                    <div class="availability-item">
+                        <label>Sunday</label>
+                        <span class="availability-badge unavailable">Not Available</span>
+                    </div>
+                </div>
+                <div class="hours-display">
+                    Preferred Hours: 8:00 AM – 6:00 PM
+                </div>
+            </div>
+
+            <!-- Documents -->
+            <div class="sidebar-card">
+                <h3>Documents</h3>
+                <div class="document-list">
+                    <div class="document-item" onclick="downloadDocument('Resume')">
+                        <span class="document-icon">📄</span>
+                        <span class="document-name">Resume.pdf</span>
+                        <span class="document-download">↓</span>
+                    </div>
+                    <div class="document-item" onclick="downloadDocument('Background Check')">
+                        <span class="document-icon">✓</span>
+                        <span class="document-name">Background Check</span>
+                        <span class="document-download">↓</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="sidebar-card">
+                <h3>Quick Actions</h3>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="navigateTo('browseJobs')">Browse Jobs</button>
+                    <button class="btn btn-secondary" onclick="navigateTo('contactWorker')">Contact Worker</button>
+                    <button class="btn btn-secondary" onclick="navigateTo('bookService')">Book Service</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Star Rating Functionality
+        const starRatingContainer = document.getElementById('starRating');
+        const ratingValueInput = document.getElementById('ratingValue');
+        let selectedRating = 0;
+
+        starRatingContainer.addEventListener('click', function(e) {
+            if (e.target.classList.contains('star')) {
+                selectedRating = e.target.getAttribute('data-value');
+                ratingValueInput.value = selectedRating;
+                updateStarDisplay();
+            }
+        });
+
+        starRatingContainer.addEventListener('mouseover', function(e) {
+            if (e.target.classList.contains('star')) {
+                const hoverValue = e.target.getAttribute('data-value');
+                document.querySelectorAll('.star').forEach((star, index) => {
+                    if (index < hoverValue) {
+                        star.style.color = '#FFB800';
+                    } else {
+                        star.style.color = '#ddd';
+                    }
+                });
+            }
+        });
+
+        starRatingContainer.addEventListener('mouseout', function() {
+            updateStarDisplay();
+        });
+
+        function updateStarDisplay() {
+            document.querySelectorAll('.star').forEach((star, index) => {
+                if (index < selectedRating) {
+                    star.classList.add('active');
+                    star.style.color = '#FFB800';
+                } else {
+                    star.classList.remove('active');
+                    star.style.color = '#ddd';
+                }
+            });
+        }
+
+        // Submit Review
+        function submitReview(event) {
+            event.preventDefault();
+
+            const reviewData = {
+                name: document.getElementById('reviewerName').value,
+                serviceType: document.getElementById('serviceType').value,
+                rating: document.getElementById('ratingValue').value,
+                review: document.getElementById('reviewText').value
+            };
+
+            if (reviewData.rating === '0') {
+                alert('Please select a rating');
+                return;
+            }
+
+            console.log('Review submitted:', reviewData);
+            alert('Thank you for your review! Your feedback has been submitted successfully.');
+            clearReviewForm();
+        }
+
+        // Clear Review Form
+        function clearReviewForm() {
+            document.getElementById('reviewForm').reset();
+            selectedRating = 0;
+            ratingValueInput.value = '0';
+            document.querySelectorAll('.star').forEach(star => {
+                star.classList.remove('active');
+                star.style.color = '#ddd';
+            });
+        }
+
+        // Download Document
+        function downloadDocument(docName) {
+            alert(`Downloading ${docName}...`);
+        }
+
+        // Navigation
+        function goBack() {
+            window.history.back();
+        }
+
+        function navigateTo(page) {
+            const pages = {
+                'browseJobs': 'jobSeekerApplication.html',
+                'contactWorker': 'messageWorker.html',
+                'bookService': 'booking.html'
+            };
+            
+            if (pages[page]) {
+                window.location.href = pages[page];
+            }
+        }
+    </script>
+</body>
+</html>

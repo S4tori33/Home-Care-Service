@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Profile</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/profile.css">
+</head>
+<body>
+    <div class="main-wrap">
+        <section class="profile-header-section">
+            <div class="profile-header-copy">
+                <h1>Jobseeker Profile</h1>
+                <p>Manage your personal information and preferences</p>
+            </div>
+            <button class="btn btn-primary header-action">Edit Profile</button>
+        </section>
+        <section class="profile-grid">
+            <aside class="profile-panel">
+                <div class="profile-summary-card card">
+                    <div class="profile-summary-top">
+                        <div class="profile-avatar-large">JD</div>
+                        <div>
+                            <h2>John Doe</h2>
+                            <p class="role-pill">Premium Member</p>
+                            <span class="member-since">Member since January 2024</span>
+                        </div>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card stat-bookings">
+                            <span>Total Bookings</span>
+                            <strong>12</strong>
+                        </div>
+                        <div class="stat-card stat-points">
+                            <span>Loyalty Points</span>
+                            <strong>450</strong>
+                        </div>
+                        <div class="stat-card stat-rating">
+                            <span>Rating</span>
+                            <strong>5.0</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="quick-actions card">
+                    <h3>Quick Actions</h3>
+                    <a href="dashboard.html" class="action-item">
+                        <span class="action-icon">🏠</span>
+                        Go to Dashboard
+                    </a>
+                    <a href="booking.html" class="action-item">
+                        <span class="action-icon">📅</span>
+                        Book a Service
+                    </a>
+                    <a href="jobseekerProfile.html" class="action-item">
+                        <span class="action-icon">❤️</span>
+                        Favorite Providers
+                    </a>
+                </div>
+            </aside>
+            <div class="profile-content">
+                <div class="card section-card">
+                    <div class="card-header">
+                        <h2>User Details</h2>
+                    </div>
+                    <div class="form-grid two-column">
+                        <div class="field-group">
+                            <label for="firstName">First Name</label>
+                            <input id="firstName" type="text" value="John">
+                        </div>
+                        <div class="field-group">
+                            <label for="lastName">Last Name</label>
+                            <input id="lastName" type="text" value="Doe">
+                        </div>
+                        <div class="field-group full-width">
+                            <label for="email">Email Address</label>
+                            <input id="email" type="email" value="john.doe@example.com">
+                        </div>
+                        <div class="field-group full-width">
+                            <label for="phone">Phone Number</label>
+                            <input id="phone" type="tel" value="(555) 123-4567">
+                        </div>
+                    </div>
+                </div>
+                <div class="card section-card">
+                    <div class="card-header">
+                        <h2>Service Address</h2>
+                    </div>
+                    <div class="form-grid two-column">
+                        <div class="field-group full-width">
+                            <label for="street">Street Address</label>
+                            <input id="street" type="text" value="123 Main Street, Apt 4B">
+                        </div>
+                        <div class="field-group">
+                            <label for="city">City</label>
+                            <input id="city" type="text" value="New York">
+                        </div>
+                        <div class="field-group">
+                            <label for="state">State</label>
+                            <input id="state" type="text" value="NY">
+                        </div>
+                        <div class="field-group">
+                            <label for="zip">ZIP Code</label>
+                            <input id="zip" type="text" value="10001">
+                        </div>
+                    </div>
+                </div>
+                <div class="card section-card">
+                    <div class="card-header">
+                        <h2>Notification Preferences</h2>
+                    </div>
+                    <div class="preference-list">
+                        <label class="preference-row">
+                            <div>
+                                <span>Email Notifications</span>
+                                <small>Receive booking confirmations and updates via email</small>
+                            </div>
+                            <div class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </div>
+                        </label>
+                        <label class="preference-row">
+                            <div>
+                                <span>SMS Notifications</span>
+                                <small>Get text messages for important updates</small>
+                            </div>
+                            <div class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </div>
+                        </label>
+                        <label class="preference-row">
+                            <div>
+                                <span>Promotional Emails</span>
+                                <small>Receive special offers and promotions</small>
+                            </div>
+                            <div class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="card section-card">
+                    <div class="card-header card-header-row">
+                        <h2>Payment Methods</h2>
+                        <button class="btn btn-secondary small">Add New</button>
+                    </div>
+                    <div class="payment-list">
+                        <div class="payment-card">
+                            <div class="payment-icon">💳</div>
+                            <div>
+                                <strong>Visa •••• 4242</strong>
+                                <span class="payment-note default">Default</span>
+                            </div>
+                            <button class="btn btn-link">Edit</button>
+                        </div>
+                        <div class="payment-card">
+                            <div class="payment-icon">💳</div>
+                            <div>
+                                <strong>Mastercard •••• 8888</strong>
+                            </div>
+                            <button class="btn btn-link">Edit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card section-card">
+                    <div class="card-header">
+                        <h2>Security & Privacy</h2>
+                    </div>
+                    <div class="security-list">
+                        <a href="#" class="security-item">
+                            <span>Change Password</span>
+                            <span class="security-arrow">›</span>
+                        </a>
+                        <a href="#" class="security-item">
+                            <span>Two-Factor Authentication</span>
+                            <span class="security-arrow">›</span>
+                        </a>
+                        <a href="#" class="security-item">
+                            <span>Login History</span>
+                            <span class="security-arrow">›</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <footer>
+            <p>© 2026 Home Care Service (HCS). All Rights Reserved.</p>
+        </footer>
+    </div>
+    <script src="../js/script.js"></script>
+    <script>
+        if (typeof initializeProfileTabs === 'function') {
+            initializeProfileTabs();
+        }
+    </script>
+</body>
+</html>

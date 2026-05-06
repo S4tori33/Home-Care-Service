@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jobseeker Profile - Home Care Service</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/profile.css">
+    <style>
+        /* Jobseeker Profile Specific Styles */
+        .profile-container {
+            display: flex;
+            gap: 2rem;
+            padding: 2rem;
+            background-color: #f5f7fa;
+            min-height: 100vh;
+        }
+
+        .profile-main {
+            flex: 1;
+            max-width: 1000px;
+        }
+
+        .profile-sidebar {
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Page Header */
+        .profile-page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            padding: 1rem 0;
+        }
+
+        .profile-page-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-page-title button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #333;
+            padding: 0.5rem;
+        }
+
+        .profile-page-title div h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0;
+            color: #1a1a1a;
+        }
+
+        .profile-page-title div p {
+            font-size: 0.875rem;
+            color: #666;
+            margin: 0.25rem 0 0;
+        }
+
+        .profile-page-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        /* Hero Card */
+        .profile-hero {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .hero-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-left {
+            display: flex;
+            gap: 1.5rem;
+            flex: 1;
+        }
+
+        .hero-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .hero-info h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0 0 0.25rem;
+            color: #1a1a1a;
+        }
+
+        .hero-info p {
+            font-size: 1rem;
+            color: #666;
+            margin: 0;
+        }
+
+        .hero-badges {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.4rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .badge-info {
+            background-color: #e0f2f1;
+            color: #00897b;
+        }
+
+        .hero-right {
+            text-align: right;
+        }
+
+        .hero-rate {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4CAF50;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-rating {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #666;
+        }
+
+        .hero-rating .stars {
+            color: #FFB800;
+        }
+
+        .hero-bio {
+            background-color: #f9f9f9;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #555;
+            margin-top: 1rem;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .stat-card {
+            padding: 1.25rem;
+            border-radius: 8px;
+            text-align: center;
+            color: white;
+        }
+
+        .stat-card h3 {
+            font-size: 0.8rem;
+            margin: 0 0 0.5rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+
+        .stat-card p {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .stat-card.blue { background: linear-gradient(135deg, #2196F3, #1976D2); }
+        .stat-card.green { background: linear-gradient(135deg, #4CAF50, #388E3C); }
+        .stat-card.purple { background: linear-gradient(135deg, #9C27B0, #7B1FA2); }
+        .stat-card.orange { background: linear-gradient(135deg, #FF9800, #F57C00); }
+
+        /* Card Section */
+        .card-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .card-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .card-section h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin: 0;
+            color: #1a1a1a;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #1a1a1a;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #333;
+        }
+
+        .btn-success {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #45a049;
+        }
+
+        .btn-secondary {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background-color: #e0e0e0;
+        }
+
+        .btn-text {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-weight: 600;
+            padding: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .btn-text:hover {
+            color: #333;
+        }
+
+        .btn-add {
+            background-color: transparent;
+            border: 1px solid #ddd;
+            color: #4CAF50;
+            padding: 0.6rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-add:hover {
+            background-color: #f9f9f9;
+            border-color: #4CAF50;
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .skill-card {
+            padding: 1.5rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover {
+            border-color: #4CAF50;
+            box-shadow: 0 2px 8px rgba(76, 175, 80, 0.1);
+        }
+
+        .skill-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .skill-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0 0 0.5rem;
+            color: #1a1a1a;
+        }
+
+        .skill-card .proficiency {
+            display: inline-block;
+            padding: 0.3rem 0.75rem;
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: #e0e0e0;
+        }
+
+        .timeline-entry {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+        }
+
+        .timeline-entry::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #2196F3;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #2196F3;
+        }
+
+        .timeline-entry h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0 0 0.25rem;
+            color: #1a1a1a;
+        }
+
+        .timeline-entry .company {
+            font-size: 0.9rem;
+            color: #666;
+            margin: 0;
+        }
+
+        .timeline-entry .date {
+            font-size: 0.8rem;
+            color: #999;
+            margin: 0.25rem 0;
+        }
+
+        .timeline-entry p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #555;
+            margin: 0.75rem 0 0;
+        }
+
+        /* Certifications */
+        .cert-card {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            padding: 1.25rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .cert-icon {
+            font-size: 2rem;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .cert-info h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin: 0;
+            color: #1a1a1a;
+        }
+
+        .cert-info p {
+            font-size: 0.85rem;
+            color: #666;
+            margin: 0.25rem 0 0;
+        }
+
+        .cert-year {
+            margin-left: auto;
+            font-weight: 600;
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        /* Review Cards */
+        .review-card {
+            padding: 1.25rem;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.75rem;
+        }
+
+        .review-header h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin: 0;
+            color: #1a1a1a;
+        }
+
+        .review-date {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        .review-rating {
+            margin-bottom: 0.5rem;
+            color: #FFB800;
+        }
+
+        .review-tag {
+            display: inline-block;
+            padding: 0.3rem 0.6rem;
+            background-color: #f0f0f0;
+            color: #666;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .review-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #555;
+            margin: 0;
+        }
+
+        /* Sidebar Cards */
+        .sidebar-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .sidebar-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0 0 1rem;
+            color: #1a1a1a;
+        }
+
+        .contact-item {
+            margin-bottom: 1.25rem;
+        }
+
+        .contact-item label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #999;
+            margin-bottom: 0.25rem;
+            text-transform: uppercase;
+        }
+
+        .contact-item input {
+            width: 100%;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 0.6rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .contact-item input.edit-mode {
+            display: block;
+        }
+
+        .contact-item p {
+            font-size: 0.9rem;
+            color: #333;
+            margin: 0;
+        }
+
+        .contact-item p.edit-mode {
+            display: none;
+        }
+
+        /* Availability */
+        .availability-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .availability-item:last-child {
+            border-bottom: none;
+        }
+
+        .availability-item label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .toggle-switch {
+            width: 40px;
+            height: 24px;
+            border-radius: 12px;
+            background-color: #ddd;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            padding: 0;
+        }
+
+        .toggle-switch.active {
+            background-color: #4CAF50;
+        }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: white;
+            top: 2px;
+            left: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.active::after {
+            left: 18px;
+        }
+
+        .hours-display {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #f0f0f0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        /* Documents */
+        .document-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .document-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background-color: #f9f9f9;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .document-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        .document-icon {
+            font-size: 1.5rem;
+        }
+
+        .document-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #333;
+            flex: 1;
+        }
+
+        .document-download {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .upload-btn {
+            width: 100%;
+            margin-top: 0.75rem;
+            justify-content: center;
+        }
+
+        /* Quick Actions */
+        .action-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .action-buttons .btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        /* Mode Toggle */
+        .view-mode .edit-only {
+            display: none;
+        }
+
+        .edit-mode .view-only {
+            display: none;
+        }
+
+        .edit-mode .toggle-switch {
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .profile-container {
+                flex-direction: column;
+            }
+
+            .profile-sidebar {
+                width: 100%;
+            }
+
+            .stats-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .profile-page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .hero-header {
+                flex-direction: column;
+            }
+
+            .hero-right {
+                text-align: left;
+                margin-top: 1rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Page Header -->
+    <div class="profile-page-header">
+        <div class="profile-page-title">
+            <button onclick="goBack()" aria-label="Go back">←</button>
+            <div>
+                <h1>Jobseeker Profile</h1>
+                <p>Manage your professional profile and availability</p>
+            </div>
+        </div>
+        <div class="profile-page-actions view-mode" id="viewModeActions">
+            <button class="btn btn-primary" onclick="switchToEditMode()">Edit Profile</button>
+        </div>
+        <div class="profile-page-actions edit-mode" id="editModeActions">
+            <button class="btn btn-text" onclick="switchToViewMode()">Cancel</button>
+            <button class="btn btn-success" onclick="saveChanges()">Save Changes</button>
+        </div>
+    </div>
+
+    <!-- Main Content Container -->
+    <div class="profile-container">
+        <!-- Main Content Area -->
+        <div class="profile-main">
+            <!-- Hero Card -->
+            <div class="profile-hero">
+                <div class="hero-header">
+                    <div class="hero-left">
+                        <div class="hero-avatar">SJ</div>
+                        <div class="hero-info">
+                            <h1 id="jobseekerName">Sarah Johnson</h1>
+                            <p id="jobseekerTitle">Senior Home Care Specialist</p>
+                            <div class="hero-badges">
+                                <span class="badge badge-success">✓ Verified Professional</span>
+                                <span class="badge badge-info">Available for Work</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hero-right">
+                        <div class="hero-rate">$25-45 <span style="font-size: 0.9rem; color: #999;">/hour</span></div>
+                        <div class="hero-rating">
+                            <span class="stars">★ 4.9</span>
+                            <span>(64 reviews)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-bio" id="jobseekerBio">
+                    Experienced home care professional with 8+ years of expertise in elderly care, house cleaning, and pet care. Dedicated to providing compassionate, reliable service to families and seniors. I prioritize client comfort and maintain the highest standards of professionalism.
+                </div>
+                <div class="stats-row">
+                    <div class="stat-card blue">
+                        <h3>Jobs Completed</h3>
+                        <p>127</p>
+                    </div>
+                    <div class="stat-card green">
+                        <h3>Average Rating</h3>
+                        <p>4.9</p>
+                    </div>
+                    <div class="stat-card purple">
+                        <h3>Client Reviews</h3>
+                        <p>87</p>
+                    </div>
+                    <div class="stat-card orange">
+                        <h3>Response Rate</h3>
+                        <p>98%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Skills & Expertise Section -->
+            <div class="card-section">
+                <div class="card-section-header">
+                    <h2>Skills & Expertise</h2>
+                    <button class="btn btn-add edit-only" onclick="addSkill()">+ Add Skill</button>
+                </div>
+                <div class="skills-grid" id="skillsContainer">
+                    <div class="skill-card">
+                        <div class="skill-icon">🧹</div>
+                        <h3>House Cleaning</h3>
+                        <span class="proficiency">Expert</span>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">👵</div>
+                        <h3>Elderly Care</h3>
+                        <span class="proficiency">Expert</span>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">🐾</div>
+                        <h3>Pet Care</h3>
+                        <span class="proficiency">Advanced</span>
+                    </div>
+                    <div class="skill-card">
+                        <div class="skill-icon">🌿</div>
+                        <h3>Garden Maintenance</h3>
+                        <span class="proficiency">Intermediate</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Work Experience Section -->
+            <div class="card-section">
+                <div class="card-section-header">
+                    <h2>Work Experience</h2>
+                    <button class="btn btn-add edit-only" onclick="addExperience()">+ Add Experience</button>
+                </div>
+                <div class="timeline" id="experienceContainer">
+                    <div class="timeline-entry">
+                        <h3>Senior Care Provider</h3>
+                        <p class="company">Home Care Plus</p>
+                        <p class="date">2021 - 2023</p>
+                        <p>Provided comprehensive care services for elderly clients including personal care, meal preparation, and companionship. Maintained detailed client records and coordinated with family members.</p>
+                    </div>
+                    <div class="timeline-entry">
+                        <h3>Professional Cleaner</h3>
+                        <p class="company">Sparkle Clean Co</p>
+                        <p class="date">2019 - 2021</p>
+                        <p>Specialized in residential deep cleaning and post-construction cleaning. Managed client relationships and maintained high quality standards across multiple properties.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certifications & Licenses Section -->
+            <div class="card-section">
+                <div class="card-section-header">
+                    <h2>Certifications & Licenses</h2>
+                    <button class="btn btn-add edit-only" onclick="addCertification()">+ Add Certification</button>
+                </div>
+                <div id="certificationsContainer">
+                    <div class="cert-card">
+                        <div class="cert-icon">🏥</div>
+                        <div class="cert-info">
+                            <h3>CPR & First Aid Certified</h3>
+                            <p>Red Cross</p>
+                        </div>
+                        <div class="cert-year">2025</div>
+                    </div>
+                    <div class="cert-card">
+                        <div class="cert-icon">📜</div>
+                        <div class="cert-info">
+                            <h3>Professional Cleaning Certification</h3>
+                            <p>ISSA (International Sanitary Supply Association)</p>
+                        </div>
+                        <div class="cert-year">2024</div>
+                    </div>
+                    <div class="cert-card">
+                        <div class="cert-icon">🐕</div>
+                        <div class="cert-info">
+                            <h3>Pet Care Professional</h3>
+                            <p>NAPPS (National Association of Professional Pet Sitters)</p>
+                        </div>
+                        <div class="cert-year">2023</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Client Reviews Section (Read-Only) -->
+            <div class="card-section">
+                <h2>Client Reviews</h2>
+                <div id="reviewsContainer">
+                    <div class="review-card">
+                        <div class="review-header">
+                            <h3>Michael R.</h3>
+                            <span class="review-date">March 15, 2026</span>
+                        </div>
+                        <div class="review-rating">★★★★★</div>
+                        <span class="review-tag">Elderly Care</span>
+                        <p class="review-text">"Sarah was exceptional! She took great care of my mother with compassion and professionalism. We highly recommend her services."</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header">
+                            <h3>Jennifer L.</h3>
+                            <span class="review-date">March 10, 2026</span>
+                        </div>
+                        <div class="review-rating">★★★★★</div>
+                        <span class="review-tag">House Cleaning</span>
+                        <p class="review-text">"Fantastic cleaning service! Sarah is thorough, reliable, and always goes the extra mile. Our home has never looked better."</p>
+                    </div>
+                    <div class="review-card">
+                        <div class="review-header">
+                            <h3>David K.</h3>
+                            <span class="review-date">March 5, 2026</span>
+                        </div>
+                        <div class="review-rating">★★★★☆</div>
+                        <span class="review-tag">Pet Care</span>
+                        <p class="review-text">"Great experience with Sarah taking care of our dog while we were away. She provided regular updates and our pet was very happy."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar -->
+        <div class="profile-sidebar">
+            <!-- Contact Info -->
+            <div class="sidebar-card">
+                <h3>Contact Information</h3>
+                <div class="contact-item">
+                    <label>Email</label>
+                    <p id="emailDisplay">sarah.johnson@example.com</p>
+                    <input type="email" id="emailInput" value="sarah.johnson@example.com" class="edit-mode">
+                </div>
+                <div class="contact-item">
+                    <label>Phone</label>
+                    <p id="phoneDisplay">(555) 987-6543</p>
+                    <input type="tel" id="phoneInput" value="(555) 987-6543" class="edit-mode">
+                </div>
+                <div class="contact-item">
+                    <label>Location</label>
+                    <p id="locationDisplay">San Francisco, California</p>
+                    <input type="text" id="locationInput" value="San Francisco, California" class="edit-mode">
+                </div>
+            </div>
+
+            <!-- Availability -->
+            <div class="sidebar-card">
+                <h3>Availability</h3>
+                <div id="availabilityContainer">
+                    <div class="availability-item">
+                        <label>Monday</label>
+                        <button class="toggle-switch active" onclick="toggleAvailability(this)"></button>
+                    </div>
+                    <div class="availability-item">
+                        <label>Tuesday</label>
+                        <button class="toggle-switch active" onclick="toggleAvailability(this)"></button>
+                    </div>
+                    <div class="availability-item">
+                        <label>Wednesday</label>
+                        <button class="toggle-switch active" onclick="toggleAvailability(this)"></button>
+                    </div>
+                    <div class="availability-item">
+                        <label>Thursday</label>
+                        <button class="toggle-switch active" onclick="toggleAvailability(this)"></button>
+                    </div>
+                    <div class="availability-item">
+                        <label>Friday</label>
+                        <button class="toggle-switch active" onclick="toggleAvailability(this)"></button>
+                    </div>
+                    <div class="availability-item">
+                        <label>Saturday</label>
+                        <button class="toggle-switch active" onclick="toggleAvailability(this)"></button>
+                    </div>
+                    <div class="availability-item">
+                        <label>Sunday</label>
+                        <button class="toggle-switch" onclick="toggleAvailability(this)"></button>
+                    </div>
+                </div>
+                <div class="hours-display" id="hoursDisplay">
+                    Preferred Hours: 8:00 AM – 6:00 PM
+                </div>
+            </div>
+
+            <!-- Documents -->
+            <div class="sidebar-card">
+                <h3>Documents</h3>
+                <div class="document-list">
+                    <div class="document-item" onclick="downloadDocument('Resume')">
+                        <span class="document-icon">📄</span>
+                        <span class="document-name">Resume.pdf</span>
+                        <span class="document-download">↓</span>
+                    </div>
+                    <div class="document-item" onclick="downloadDocument('Background Check')">
+                        <span class="document-icon">✓</span>
+                        <span class="document-name">Background Check</span>
+                        <span class="document-download">↓</span>
+                    </div>
+                    <button class="btn btn-add upload-btn edit-only" onclick="uploadDocument()">⬆ Upload Document</button>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="sidebar-card">
+                <h3>Quick Actions</h3>
+                <div class="action-buttons">
+                    <button class="btn btn-primary" onclick="navigateTo('browseJobs')">Browse Jobs</button>
+                    <button class="btn btn-secondary" onclick="navigateTo('analytics')">View Analytics</button>
+                    <button class="btn btn-secondary" onclick="navigateTo('settings')">Account Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global state
+        let isEditMode = false;
+        const pageContainer = document.querySelector('body');
+
+        // Initialize page in view mode
+        function initializePage() {
+            setViewMode();
+        }
+
+        // Switch to Edit Mode
+        function switchToEditMode() {
+            isEditMode = true;
+            updatePageMode();
+            
+            // Show input fields and hide text displays
+            document.querySelectorAll('.contact-item input').forEach(input => {
+                input.classList.add('edit-mode');
+            });
+            document.querySelectorAll('.contact-item p').forEach(p => {
+                p.classList.add('edit-mode');
+            });
+
+            // Enable toggle switches
+            document.querySelectorAll('.toggle-switch').forEach(toggle => {
+                toggle.style.cursor = 'pointer';
+            });
+        }
+
+        // Switch to View Mode
+        function switchToViewMode() {
+            // Ask for confirmation if there are unsaved changes
+            if (!confirm('Discard all unsaved changes?')) {
+                return;
+            }
+            
+            isEditMode = false;
+            updatePageMode();
+            
+            // Hide input fields and show text displays
+            document.querySelectorAll('.contact-item input').forEach(input => {
+                input.classList.remove('edit-mode');
+            });
+            document.querySelectorAll('.contact-item p').forEach(p => {
+                p.classList.remove('edit-mode');
+            });
+
+            // Disable toggle switches visual feedback
+            document.querySelectorAll('.toggle-switch').forEach(toggle => {
+                toggle.style.cursor = 'default';
+            });
+        }
+
+        // Update page mode
+        function updatePageMode() {
+            const viewModeElements = document.querySelectorAll('.view-mode');
+            const editModeElements = document.querySelectorAll('.edit-mode');
+            const viewOnlyElements = document.querySelectorAll('.view-only');
+            const editOnlyElements = document.querySelectorAll('.edit-only');
+
+            if (isEditMode) {
+                viewModeElements.forEach(el => el.style.display = 'none');
+                editModeElements.forEach(el => el.style.display = 'flex');
+                editOnlyElements.forEach(el => el.style.display = 'block');
+            } else {
+                viewModeElements.forEach(el => el.style.display = 'flex');
+                editModeElements.forEach(el => el.style.display = 'none');
+                editOnlyElements.forEach(el => el.style.display = 'none');
+            }
+        }
+
+        // Set View Mode (initial)
+        function setViewMode() {
+            isEditMode = false;
+            updatePageMode();
+        }
+
+        // Toggle availability
+        function toggleAvailability(button) {
+            if (!isEditMode) return; // Only in edit mode
+            button.classList.toggle('active');
+        }
+
+        // Add Skill
+        function addSkill() {
+            const skillName = prompt('Enter skill name:');
+            if (skillName) {
+                const proficiency = prompt('Enter proficiency level (Expert/Advanced/Intermediate):', 'Intermediate');
+                const emoji = prompt('Enter emoji (optional):', '⭐');
+                
+                const skillCard = document.createElement('div');
+                skillCard.className = 'skill-card';
+                skillCard.innerHTML = `
+                    <div class="skill-icon">${emoji}</div>
+                    <h3>${skillName}</h3>
+                    <span class="proficiency">${proficiency}</span>
+                `;
+                
+                document.getElementById('skillsContainer').appendChild(skillCard);
+            }
+        }
+
+        // Add Experience
+        function addExperience() {
+            const jobTitle = prompt('Enter job title:');
+            if (jobTitle) {
+                const company = prompt('Enter company name:');
+                const dateRange = prompt('Enter date range (e.g., 2022 - 2024):');
+                const description = prompt('Enter job description:');
+                
+                const entry = document.createElement('div');
+                entry.className = 'timeline-entry';
+                entry.innerHTML = `
+                    <h3>${jobTitle}</h3>
+                    <p class="company">${company}</p>
+                    <p class="date">${dateRange}</p>
+                    <p>${description}</p>
+                `;
+                
+                document.getElementById('experienceContainer').appendChild(entry);
+            }
+        }
+
+        // Add Certification
+        function addCertification() {
+            const certName = prompt('Enter certification name:');
+            if (certName) {
+                const organization = prompt('Enter issuing organization:');
+                const year = prompt('Enter year:', new Date().getFullYear());
+                
+                const cert = document.createElement('div');
+                cert.className = 'cert-card';
+                cert.innerHTML = `
+                    <div class="cert-icon">📜</div>
+                    <div class="cert-info">
+                        <h3>${certName}</h3>
+                        <p>${organization}</p>
+                    </div>
+                    <div class="cert-year">${year}</div>
+                `;
+                
+                document.getElementById('certificationsContainer').appendChild(cert);
+            }
+        }
+
+        // Upload Document
+        function uploadDocument() {
+            const fileName = prompt('Enter document name:');
+            if (fileName) {
+                alert(`Document "${fileName}" uploaded successfully!`);
+            }
+        }
+
+        // Download Document
+        function downloadDocument(docName) {
+            alert(`Downloading ${docName}...`);
+        }
+
+        // Save Changes
+        function saveChanges() {
+            // Collect form data
+            const profileData = {
+                email: document.getElementById('emailInput').value,
+                phone: document.getElementById('phoneInput').value,
+                location: document.getElementById('locationInput').value,
+                availability: Array.from(document.querySelectorAll('.toggle-switch')).map(t => t.classList.contains('active'))
+            };
+
+            // TODO: Send to API
+            console.log('Saving profile:', profileData);
+            alert('Changes saved successfully!');
+            
+            // Switch back to view mode
+            switchToViewMode();
+        }
+
+        // Navigation
+        function goBack() {
+            window.history.back();
+        }
+
+        function navigateTo(page) {
+            const pages = {
+                'browseJobs': 'jobSeekerApplication.html',
+                'analytics': 'workerDashboard.html',
+                'settings': 'userLogin.html'
+            };
+            
+            if (pages[page]) {
+                window.location.href = pages[page];
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', initializePage);
+    </script>
+</body>
+</html>
