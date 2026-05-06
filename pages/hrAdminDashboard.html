@@ -6,164 +6,169 @@
   <title>HR Admin Dashboard - Home Care Service</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles/dashboard.css">
-  <link rel="stylesheet" href="../styles/adminDashboard.css">
-  <style>
-    .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 32px; }
-    .admin-card { background: white; border: 1px solid #e5e7eb; padding: 24px; border-radius: 12px; transition: all 0.3s ease; }
-    .admin-card:hover { border-color: #059669; box-shadow: 0 4px 12px rgba(5, 150, 105, 0.1); }
-    .admin-card h3 { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 16px; }
-    .admin-card .stat { font-size: 28px; font-weight: 700; color: #059669; margin-bottom: 8px; }
-    .admin-card p { font-size: 13px; color: #6b7280; }
-    .admin-btn { padding: 10px 16px; border: 1px solid #059669; background: white; color: #059669; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-top: 16px; }
-    .admin-btn:hover { background: #059669; color: white; }
-    .admin-btn.primary { background: #059669; color: white; }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.383.0/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../styles/hrStyling.css">
 </head>
+
 <body>
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-icon"><svg class="icon-xl" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+  <div class="nav-brand">
+    <h1>HR Admin Dashboard</h1>
+    <p>Application Review &amp; Provider Management</p>
+  </div>
+  <div class="nav-links">
+    <a href="../home.html">Home</a>
+    <a href="#" id="logoutLink">Logout</a>
+  </div>
+  <div class="nav-user-pill">
+    <div class="nav-user-dot"></div>
+    HR Admin
+  </div>
+</nav>
 
-  <nav class="navbar">
-    <button class="sidebar-toggle" id="sidebarToggle"><span></span><span></span><span></span></button>
-    <a href="#" class="navbar-brand">
-      <div class="navbar-logo">HCS</div>
-      <div class="navbar-brand-text">
-        <h1>Home Care Service</h1>
-        <p>HR Administration</p>
-      </div>
-    </a>
-    <div class="navbar-links">
-      <a href="home.html">Home</a>
-      <a href="../index.html" id="logoutLink">Logout</a>
+<!-- MAIN -->
+<div class="main">
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <h2>Application Review <svg class="icon-xl" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#7c3aed;vertical-align:middle"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="15" y2="16"/><line x1="9" y1="8" x2="11" y2="8"/></svg></h2>
+    <p>Review and approve service provider applications</p>
+  </div>
+
+  <!-- STAT CARDS -->
+  <div class="stats-grid">
+    <div class="stat-card s-pending">
+      <div class="stat-icon-wrap"><svg class="icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <div class="stat-label">Pending Review</div>
+      <div class="stat-num" id="count-pending">0</div>
+      <div class="stat-sub">Requires attention</div>
     </div>
-  </nav>
-
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-profile">
-      <div class="avatar-wrap">
-        <div class="avatar" id="avatarEl">HA</div>
-        <div class="avatar-badge"></div>
-      </div>
-      <div class="sidebar-user-name" id="userName">HR Admin</div>
-      <div class="sidebar-user-role" id="userRole">Administrator</div>
+    <div class="stat-card s-approved">
+      <div class="stat-icon-wrap"><svg class="icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+      <div class="stat-label">Approved This Month</div>
+      <div class="stat-num" id="count-approved">0</div>
+      <div class="stat-sub">New providers onboarded</div>
     </div>
-    <nav class="sidebar-nav" id="sidebarNav"></nav>
-  </aside>
-
-  <div class="main-wrap">
-    <div class="dashboard-shell">
-      <div class="shell-topbar">
-        <div class="shell-brand">
-          <div class="shell-logo">HCS</div>
-          <div class="shell-brand-text">
-            <h2>HR Admin Dashboard</h2>
-            <p>Provider Verification & Applications</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="dashboard-header">
-        <h1>Welcome, <span id="headerName">HR Admin</span>! 👥</h1>
-        <p class="dashboard-subtitle">Manage service provider applications and verifications</p>
-      </div>
-
-      <div class="admin-grid">
-        <div class="admin-card">
-          <h3>📋 Pending Applications</h3>
-          <div class="stat" id="pendingApps">0</div>
-          <p>Awaiting review and approval</p>
-          <button class="admin-btn primary" onclick="viewPending()">Review</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>✅ Approved</h3>
-          <div class="stat" id="approvedCount">0</div>
-          <p>Active service providers</p>
-          <button class="admin-btn" onclick="viewApproved()">View</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>❌ Rejected</h3>
-          <div class="stat" id="rejectedCount">0</div>
-          <p>Applications declined</p>
-          <button class="admin-btn" onclick="viewRejected()">View</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>🔍 Under Review</h3>
-          <div class="stat" id="underReview">0</div>
-          <p>Being verified now</p>
-          <button class="admin-btn" onclick="viewReview()">View</button>
-        </div>
-      </div>
-
-      <div class="section-title" style="font-size: 18px; margin-bottom: 16px;">Provider Type Distribution</div>
-      <div class="admin-grid">
-        <div class="admin-card">
-          <h3>🏥 Caregivers</h3>
-          <div class="stat" id="caregiverCount">0</div>
-          <button class="admin-btn" onclick="viewProviderType('caregiver')">Manage</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>🐾 Pet Care</h3>
-          <div class="stat" id="petcareCount">0</div>
-          <button class="admin-btn" onclick="viewProviderType('pet_care')">Manage</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>🌿 Garden Maintenance</h3>
-          <div class="stat" id="gardenCount">0</div>
-          <button class="admin-btn" onclick="viewProviderType('garden_maintenance')">Manage</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>🧹 House Cleaning</h3>
-          <div class="stat" id="cleaningCount">0</div>
-          <button class="admin-btn" onclick="viewProviderType('house_cleaning')">Manage</button>
-        </div>
-      </div>
-
+    <div class="stat-card s-rejected">
+      <div class="stat-icon-wrap"><svg class="icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg></div>
+      <div class="stat-label">Rejected This Month</div>
+      <div class="stat-num" id="count-rejected">0</div>
+      <div class="stat-sub">Did not meet criteria</div>
+    </div>
+    <div class="stat-card s-total">
+      <div class="stat-icon-wrap"><svg class="icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+      <div class="stat-label">Total Providers</div>
+      <div class="stat-num" id="count-total">0</div>
+      <div class="stat-sub" id="count-total-sub">+0 this month</div>
+      <div class="stat-trend"><svg class="icon-lg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
     </div>
   </div>
 
-  <script src="../js/auth.js"></script>
-  <script src="../js/dashboard.js"></script>
-  <script>
-    if (!dashboard.checkAccess('hr_admin')) {
-      window.location.href = '../index.html';
-    }
-    dashboard.initializeDashboard();
+  <!-- TABLE SECTION -->
+  <div class="table-section">
 
-    function updateStats() {
-      const users = auth.getAllUsers();
-      const providers = users.filter(u => ['caregiver', 'pet_care', 'garden_maintenance', 'house_cleaning'].includes(u.role));
-      
-      document.getElementById('pendingApps').textContent = providers.filter(u => !u.verified).length;
-      document.getElementById('approvedCount').textContent = providers.filter(u => u.verified && u.status === 'active').length;
-      document.getElementById('rejectedCount').textContent = providers.filter(u => u.status === 'rejected').length;
-      document.getElementById('underReview').textContent = providers.filter(u => u.status === 'reviewing').length;
-      
-      document.getElementById('caregiverCount').textContent = providers.filter(u => u.role === 'caregiver').length;
-      document.getElementById('petcareCount').textContent = providers.filter(u => u.role === 'pet_care').length;
-      document.getElementById('gardenCount').textContent = providers.filter(u => u.role === 'garden_maintenance').length;
-      document.getElementById('cleaningCount').textContent = providers.filter(u => u.role === 'house_cleaning').length;
-    }
+    <!-- TABS -->
+    <div class="tabs-bar">
+      <button class="tab-btn active" data-tab="all">All (<span id="tab-all-count">0</span>)</button>
+      <button class="tab-btn" data-tab="Pending">Pending (<span id="tab-pending-count">0</span>)</button>
+      <button class="tab-btn" data-tab="Approved">Approved (<span id="tab-approved-count">0</span>)</button>
+      <button class="tab-btn" data-tab="Rejected">Rejected (<span id="tab-rejected-count">0</span>)</button>
+    </div>
 
-    function viewPending() { alert('Showing pending applications...'); }
-    function viewApproved() { alert('Showing approved providers...'); }
-    function viewRejected() { alert('Showing rejected applications...'); }
-    function viewReview() { alert('Showing under review applications...'); }
-    function viewProviderType(type) { alert(`Showing ${type} providers...`); }
+    <!-- TOOLBAR -->
+    <div class="table-toolbar">
+      <div class="toolbar-left">
+        <span class="toolbar-title">Applications</span>
+        <span class="toolbar-count" id="toolbar-count">(0)</span>
+      </div>
+      <button class="export-btn" onclick="exportCSV()">
+        <svg class="icon-sm" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export
+      </button>
+    </div>
 
-    document.getElementById('logoutLink').addEventListener('click', (e) => {
-      e.preventDefault();
-      dashboard.logout();
-    });
+    <!-- TABLE -->
+    <table id="providerTable">
+      <thead>
+        <tr>
+          <th>Applicant</th>
+          <th>Contact</th>
+          <th>Service Type</th>
+          <th>Experience</th>
+          <th>Applied Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+    <div class="no-results" id="noResults">No matching records found.</div>
+  </div>
 
-    updateStats();
-    setInterval(updateStats, 10000);
-  </script>
+</div>
+
+<!-- REVIEW MODAL -->
+<div class="modal-overlay" id="reviewModal" onclick="closeModalOutside(event)">
+  <div class="modal" id="modalBox">
+    <div class="modal-header">
+      <div class="modal-avatar" id="modal-avatar"></div>
+      <div class="modal-header-info">
+        <h3 id="modal-name"></h3>
+        <p id="modal-type"></p>
+      </div>
+      <button class="modal-close" onclick="closeModal()"><svg class="icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-status-bar">
+        <span class="modal-status-label">Current Status</span>
+        <span class="badge" id="modal-status-badge"></span>
+      </div>
+      <div class="modal-grid">
+        <div class="modal-field">
+          <label>Email</label>
+          <span id="modal-email"></span>
+        </div>
+        <div class="modal-field">
+          <label>Phone</label>
+          <span id="modal-phone"></span>
+        </div>
+        <div class="modal-field">
+          <label>Service Type</label>
+          <span id="modal-service"></span>
+        </div>
+        <div class="modal-field">
+          <label>Experience</label>
+          <span id="modal-experience"></span>
+        </div>
+        <div class="modal-field full">
+          <label>Applied Date</label>
+          <span id="modal-date"></span>
+        </div>
+      </div>
+      <div class="modal-section-divider"></div>
+      <div class="modal-credentials">
+        <div class="modal-credentials-header">
+          <div class="modal-credentials-title"><svg class="icon-md" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#7c3aed"><path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> Uploaded Documents &amp; Credentials</div>
+          <div class="cred-summary-pills" id="modal-cred-summary"></div>
+        </div>
+        <div class="cred-list" id="modal-cred-list"></div>
+      </div>
+      <div class="modal-section-divider"></div>
+      <div style="padding: 22px 28px 0;">
+      <div class="modal-decision" id="modal-decision">
+        <!-- Injected by JS -->
+      </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+<script src="../js/hrlogic.js"></script>
+
 </body>
 </html>
-
