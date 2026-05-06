@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Dashboard - Home Care Service</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg: #f4f7fb;
+        --surface: white;
+        --text: #1d1f26;
+        --muted: #6f7587;
+        --primary: #1b1f3a;
+        --secondary: #4f63ff;
+        --success: #2d9c6c;
+        --warning: #f59f1f;
+        --danger: #dc3545;
+        --border: #e6e8ef;
+        --radius: 18px;
+        --shadow: 0 18px 40px rgba(17, 24, 39, 0.08);
+    }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+    .page-shell { min-height: 100vh; }
+    .topbar { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1.35rem 2rem; background:#fff; box-shadow:0 1px 18px rgba(15,23,42,0.08); position:sticky; top:0; z-index:10; }
+    .brand { display:flex; gap:1rem; align-items:center; }
+    .brand-logo { width:52px; height:52px; border-radius:16px; background: linear-gradient(135deg,#4f63ff,#5850ec); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.2rem; }
+    .brand-copy h1 { margin:0; font-size:1.2rem; letter-spacing:-0.02em; }
+    .brand-copy p { margin:0; color:var(--muted); font-size:0.93rem; }
+    .topbar-actions { display:flex; gap:.75rem; align-items:center; }
+    .btn { border:none; border-radius:999px; cursor:pointer; transition:all .2s ease; }
+    .btn-primary { background:#14182b; color:#fff; padding:.9rem 1.35rem; font-weight:700; }
+    .btn-primary:hover { transform:translateY(-1px); }
+    .icon-btn { width:44px; height:44px; display:flex; align-items:center; justify-content:center; border-radius:14px; background:#f4f7fb; color:var(--muted); font-size:1.1rem; }
+    .main { padding:2rem; max-width:1240px; margin:0 auto; }
+    .welcome-card { background: linear-gradient(132deg,#4f63ff,#6d7dff); border-radius:24px; color:#fff; padding:2rem; display:flex; justify-content:space-between; align-items:center; gap:1rem; box-shadow:var(--shadow); }
+    .welcome-copy h2 { margin:0; font-size:2rem; }
+    .welcome-copy p { margin:.75rem 0 0; color:rgba(255,255,255,.85); font-size:1rem; }
+    .tabbar { margin-top:1.75rem; display:flex; gap:1rem; border-bottom:1px solid #e8ecf4; }
+    .tab-button { background:transparent; border:none; padding:.95rem 1rem; color:var(--secondary); font-weight:700; cursor:pointer; position:relative; border-radius:999px; transition:color .2s ease, background .2s ease; }
+    .tab-button:hover { background:rgba(79,99,255,.08); color:var(--primary); }
+    .tab-button.active { color:var(--primary); background:rgba(79,99,255,.12); }
+    .tab-button.active::after { content:''; position:absolute; bottom:-1px; left:0; right:0; height:3px; background:linear-gradient(90deg,#4f63ff,#3ae6b0); border-radius:999px; }
+    .tab-panel { display:none; margin-top:2rem; }
+    .tab-panel.active { display:block; }
+    .panel-placeholder { margin-top:2rem; padding:2rem; border:1px dashed #d6d9e6; border-radius:20px; background:rgba(244,247,251,.9); color:var(--muted); text-align:center; font-size:1rem; }
+    .stats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin-top:1rem; }
+    .stat-card { background:var(--surface); border:1px solid #eff0f6; border-radius:20px; padding:1.5rem; box-shadow:0 8px 24px rgba(31,41,55,.04); }
+    .stat-card span { display:flex; align-items:center; gap:.75rem; color:var(--muted); font-size:.95rem; }
+    .stat-card strong { display:block; margin-top:.75rem; font-size:2rem; color:var(--primary); }
+    .stat-icon { width:34px; height:34px; border-radius:12px; display:flex; align-items:center; justify-content:center; background:#eef2ff; color:#4f63ff; }
+    .section-header { display:flex; justify-content:space-between; align-items:center; margin-top:2rem; gap:.75rem; }
+    .section-title { margin:0; font-size:1.15rem; font-weight:700; }
+    .section-link { color:var(--secondary); font-size:.95rem; font-weight:700; cursor:pointer; }
+    .booking-list { display:grid; gap:1rem; margin-top:1rem; }
+    .booking-card { background:var(--surface); border:1px solid #eff0f6; border-radius:20px; padding:1.5rem; display:grid; grid-template-columns:1fr auto; gap:1rem; align-items:center; }
+    .booking-main { display:grid; gap:.75rem; }
+    .booking-row { display:flex; align-items:center; gap:.75rem; flex-wrap:wrap; }
+    .service-pill { display:inline-flex; align-items:center; gap:.5rem; background:#eef4ff; color:#3b5bff; padding:.55rem .85rem; border-radius:999px; font-size:.95rem; }
+    .status-badge { color:#fff; padding:.45rem .75rem; border-radius:999px; font-size:.8rem; font-weight:700; display:inline-flex; align-items:center; gap:.4rem; }
+    .status-confirmed { background:#2d9c6c; }
+    .status-pending { background:#f59f1f; }
+    .booking-details { color:var(--muted); font-size:.95rem; }
+    .booking-price { text-align:right; font-weight:700; color:var(--primary); }
+    .booking-actions { display:flex; gap:.5rem; justify-content:flex-end; flex-wrap:wrap; }
+    .icon-action { width:38px; height:38px; border-radius:12px; border:1px solid #e2e5ef; background:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--muted); }
+    .icon-action.danger { border-color:#f5c2c7; color:#dc3545; }
+    .cta-banner { margin-top:2rem; border-radius:24px; overflow:hidden; background:linear-gradient(132deg,#3b5bff,#4ed6c6); color:#fff; display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:2rem; }
+    .cta-banner p { margin:0; font-size:1rem; opacity:.95; }
+    .cards-row { display:grid; gap:1rem; }
+    .bookings-section { display:grid; gap:1rem; }
+    .booking-card.large { grid-template-columns:1fr auto; }
+    .booking-card.large .booking-actions { gap:.75rem; margin-top:.75rem; }
+    .booking-card.large .details-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:.75rem; }
+    .booking-price.large { align-self:start; }
+    .text-btn { background:transparent; border:none; color:var(--secondary); font-weight:700; cursor:pointer; }
+    .text-btn.danger { color:var(--danger); }
+    .profile-summary { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1rem; }
+    .profile-card { background:var(--surface); border:1px solid #eff0f6; border-radius:20px; padding:1.5rem; }
+    .profile-avatar { width:72px; height:72px; border-radius:20px; background:#eef2ff; display:flex; align-items:center; justify-content:center; font-size:1.7rem; font-weight:700; color:#4f63ff; }
+    .profile-card h3 { margin:.5rem 0 .5rem; }
+    .profile-card p { margin:0; color:var(--muted); }
+    .info-grid { display:grid; gap:.8rem; margin-top:1rem; }
+    .info-row { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    .info-field { background:#f8f9ff; border-radius:14px; padding:1rem; }
+    .info-field.small { padding:.85rem; }
+    .settings-card .setting-item { display:flex; justify-content:space-between; align-items:center; gap:1rem; padding:1rem; border-radius:14px; background:#f8f9ff; margin-top:.75rem; }
+    .setting-item:hover { background:#eef2ff; }
+    .setting-item .danger { color:var(--danger); font-weight:700; }
+    .content-hidden { display:none; }
+    @media(max-width:1024px){ .stats-grid, .profile-summary, .info-row { grid-template-columns:1fr; } .topbar{flex-wrap:wrap;} }
+</style>
+</head>
+<body>
+<div class="page-shell">
+    <div id="sharedNav"></div>
+    <main class="main">
+        <section class="welcome-card">
+            <div class="welcome-copy">
+                <h2>Welcome back, John! 👋</h2>
+                <p>Manage your bookings and profile information.</p>
+            </div>
+            <div><button class="btn btn-primary" onclick="window.location.href='booking.html'">Book Now</button></div>
+        </section>
+        <div class="tabbar">
+            <button class="tab-button" data-tab="overview" onclick="navigateTab('overview')">Overview</button>
+            <button class="tab-button" data-tab="bookings" onclick="navigateTab('bookings')">My Bookings</button>
+            <button class="tab-button" data-tab="profile" onclick="navigateTab('profile')">Profile</button>
+        </div>
+
+        <div id="panelPlaceholder" class="panel-placeholder">
+            Click a tab above to view dashboard content.
+        </div>
+
+        <section id="overview" class="tab-panel">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span><span class="stat-icon">📅</span> Upcoming</span>
+                    <strong>2</strong>
+                </div>
+                <div class="stat-card">
+                    <span><span class="stat-icon">✅</span> Completed</span>
+                    <strong>3</strong>
+                </div>
+                <div class="stat-card">
+                    <span><span class="stat-icon">✨</span> Total Bookings</span>
+                    <strong>12</strong>
+                </div>
+            </div>
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Upcoming Bookings</h2>
+                    <p style="margin:0; color:var(--muted);">Your next confirmed and pending services.</p>
+                </div>
+                <span class="section-link" onclick="selectTab('bookings')">View All →</span>
+            </div>
+            <div class="booking-list">
+                <div class="booking-card">
+                    <div class="booking-main">
+                        <div class="booking-row">
+                            <span class="service-pill">🧼 House Cleaning</span>
+                            <span class="status-badge status-confirmed">Confirmed</span>
+                        </div>
+                        <div class="booking-details">June 12 · 9:00 AM – 12:00 PM</div>
+                        <div class="booking-details">123 Oak Street, San Francisco</div>
+                    </div>
+                    <div class="booking-price">
+                        $120
+                        <div class="booking-actions">
+                            <button class="icon-action" title="Edit booking" onclick="editBooking('BKG001')">✏️</button>
+                            <button class="icon-action danger" title="Delete booking" onclick="cancelBooking('BKG001')">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="booking-card">
+                    <div class="booking-main">
+                        <div class="booking-row">
+                            <span class="service-pill">👵 Elderly Care</span>
+                            <span class="status-badge status-pending">Pending</span>
+                        </div>
+                        <div class="booking-details">June 18 · 1:00 PM – 4:00 PM</div>
+                        <div class="booking-details">789 Pine Avenue, San Francisco</div>
+                    </div>
+                    <div class="booking-price">
+                        $95
+                        <div class="booking-actions">
+                            <button class="icon-action" title="Edit booking" onclick="editBooking('BKG002')">✏️</button>
+                            <button class="icon-action danger" title="Delete booking" onclick="cancelBooking('BKG002')">🗑️</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cta-banner">
+                <div>
+                    <h3 style="margin:0;">Need a Service?</h3>
+                    <p>Book a new service quickly with one click.</p>
+                </div>
+                <button class="btn btn-primary" onclick="window.location.href='booking.html'">Book Now</button>
+            </div>
+        </section>
+
+        <section id="bookings" class="tab-panel">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">All Bookings</h2>
+                    <p style="margin:0; color:var(--muted);">Upcoming services and booking history.</p>
+                </div>
+                <button class="btn btn-primary" onclick="window.location.href='booking.html'">+ New Booking</button>
+            </div>
+            <div class="bookings-section">
+                <div>
+                    <h3 style="margin-bottom:.75rem;">Upcoming</h3>
+                    <div class="booking-card large">
+                        <div>
+                            <div class="booking-row"><span class="service-pill">🧼 House Cleaning</span><span class="status-badge status-confirmed">Confirmed</span></div>
+                            <div class="details-grid">
+                                <div class="booking-details"><strong>Date</strong><br>June 12</div>
+                                <div class="booking-details"><strong>Time</strong><br>9:00 AM – 12:00 PM</div>
+                                <div class="booking-details"><strong>Address</strong><br>123 Oak Street, San Francisco</div>
+                            </div>
+                        </div>
+                        <div class="booking-price large">
+                            $120
+                            <div class="booking-actions">
+                                <button class="text-btn" onclick="editBooking('BKG001')">✏️ Edit</button>
+                                <button class="text-btn danger" onclick="cancelBooking('BKG001')">🗑️ Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="booking-card large">
+                        <div>
+                            <div class="booking-row"><span class="service-pill">👵 Elderly Care</span><span class="status-badge status-pending">Pending</span></div>
+                            <div class="details-grid">
+                                <div class="booking-details"><strong>Date</strong><br>June 18</div>
+                                <div class="booking-details"><strong>Time</strong><br>1:00 PM – 4:00 PM</div>
+                                <div class="booking-details"><strong>Address</strong><br>789 Pine Avenue, San Francisco</div>
+                            </div>
+                        </div>
+                        <div class="booking-price large">
+                            $95
+                            <div class="booking-actions">
+                                <button class="text-btn" onclick="editBooking('BKG002')">✏️ Edit</button>
+                                <button class="text-btn danger" onclick="cancelBooking('BKG002')">🗑️ Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 style="margin-bottom:.75rem;">History</h3>
+                    <div class="booking-card">
+                        <div class="booking-main">
+                            <div class="booking-row"><span class="service-pill">🧹 Deep Cleaning</span><span class="status-badge status-confirmed">Completed</span></div>
+                            <div class="booking-details">May 22 · 10:00 AM – 1:00 PM</div>
+                        </div>
+                        <div class="booking-price">
+                            $135
+                            <button class="text-btn" onclick="bookAgain('BKG010')">Book Again</button>
+                        </div>
+                    </div>
+                    <div class="booking-card">
+                        <div class="booking-main">
+                            <div class="booking-row"><span class="service-pill">🐾 Pet Care</span><span class="status-badge status-confirmed">Completed</span></div>
+                            <div class="booking-details">May 15 · 2:00 PM – 4:00 PM</div>
+                        </div>
+                        <div class="booking-price">
+                            $80
+                            <button class="text-btn" onclick="bookAgain('BKG011')">Book Again</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="profile" class="tab-panel">
+            <div class="section-header">
+                <div>
+                    <h2 class="section-title">Profile Summary</h2>
+                    <p style="margin:0; color:var(--muted);">View your contact details and account settings.</p>
+                </div>
+                <button class="btn btn-primary" onclick="window.location.href='profileUser.html'">Edit Profile</button>
+            </div>
+            <div class="profile-summary">
+                <div class="profile-card">
+                    <div class="profile-avatar">JD</div>
+                    <h3>John Doe</h3>
+                    <p>Member since January 2024</p>
+                    <button class="btn btn-primary" style="width:100%; margin-top:1rem;" onclick="window.location.href='profileUser.html'">Edit Profile</button>
+                </div>
+                <div class="profile-card">
+                    <h3>Contact Information</h3>
+                    <div class="info-grid">
+                        <div class="info-field"><strong>First Name</strong><div>John</div></div>
+                        <div class="info-field"><strong>Last Name</strong><div>Doe</div></div>
+                        <div class="info-field"><strong>Email</strong><div>john.doe@example.com</div></div>
+                        <div class="info-field"><strong>Phone</strong><div>(555) 123-4567</div></div>
+                    </div>
+                </div>
+                <div class="profile-card">
+                    <h3>Default Service Address</h3>
+                    <div class="info-grid">
+                        <div class="info-field full-width"><strong>Street</strong><div>123 Main Street, Apt 4B</div></div>
+                        <div class="info-field"><strong>City</strong><div>New York</div></div>
+                        <div class="info-field"><strong>ZIP</strong><div>10001</div></div>
+                    </div>
+                </div>
+                <div class="profile-card settings-card">
+                    <h3>Account Settings</h3>
+                    <div class="setting-item" onclick="changePassword()"><span>Change Password</span><span>›</span></div>
+                    <div class="setting-item" onclick="emailPreferences()"><span>Email Preferences</span><span>›</span></div>
+                    <div class="setting-item" onclick="deleteAccount()"><span class="danger">Delete Account</span><span class="danger">🗑️</span></div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+<script src="../js/shared-nav.js"></script>
+<script>
+    function navigateTab(tab){
+        window.location.hash = tab;
+    }
+    function selectTab(tab){
+        const placeholder = document.getElementById('panelPlaceholder');
+        if(placeholder) placeholder.style.display = 'none';
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tab));
+        document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.toggle('active', panel.id === tab));
+    }
+    function updateRoute(){
+        const hashTab = window.location.hash.replace('#', '') || 'overview';
+        selectTab(hashTab);
+    }
+    window.addEventListener('hashchange', updateRoute);
+    window.addEventListener('DOMContentLoaded', function(){
+        renderSharedNav('sharedNav', 'User Dashboard');
+        updateRoute();
+    });
+    function editBooking(id){ alert('Open edit booking form for '+id); }
+    function cancelBooking(id){ if(confirm('Cancel this booking?')) alert('Booking '+id+' canceled.'); }
+    function bookAgain(id){ alert('Rebooking from history '+id); window.location.href='booking.html'; }
+    function changePassword(){ alert('Open change password flow'); }
+    function emailPreferences(){ alert('Open email preferences settings'); }
+    function deleteAccount(){ const answer = prompt('Type DELETE to permanently delete your account'); if(answer === 'DELETE'){ alert('Account deleted'); window.location.href = 'userLogin.html'; }}
+</script>
+</body>
+</html>

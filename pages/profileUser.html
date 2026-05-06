@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Profile - Home Care Service</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --bg:#f4f7fb;
+        --surface:#fff;
+        --text:#1d1f26;
+        --muted:#6f7587;
+        --primary:#1b1f3a;
+        --secondary:#4f63ff;
+        --success:#2d9c6c;
+        --danger:#dc3545;
+        --border:#e6e8ef;
+        --radius:22px;
+    }
+    *{box-sizing:border-box;}
+    body{margin:0;font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);}
+    button,input,select,textarea{font:inherit;}
+    .page-shell{min-height:100vh;}
+    .topbar{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.25rem 2rem;background:#fff;box-shadow:0 1px 18px rgba(15,23,42,.08);position:sticky;top:0;z-index:10;}
+    .brand{display:flex;gap:1rem;align-items:center;}
+    .brand-logo{width:52px;height:52px;border-radius:18px;background:linear-gradient(135deg,#4f63ff,#5850ec);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2rem;}
+    .brand-copy h1{margin:0;font-size:1.2rem;}
+    .brand-copy p{margin:0;color:var(--muted);font-size:.95rem;}
+    .topbar-actions{display:flex;gap:.75rem;align-items:center;}
+    .btn{border:none;border-radius:999px;cursor:pointer;transition:all .2s ease;}
+    .btn-primary{padding:.9rem 1.35rem;background:#14182b;color:#fff;font-weight:700;}
+    .btn-primary:hover{transform:translateY(-1px);}
+    .btn-link{background:transparent;border:none;color:var(--secondary);font-weight:700;cursor:pointer;}
+    .icon-btn{width:44px;height:44px;border-radius:14px;background:#f4f7fb;color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+    .page-main{padding:2rem;max-width:1240px;margin:0 auto;display:grid;grid-template-columns:320px 1fr;gap:1.5rem;}
+    .page-header{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1.75rem;}
+    .page-title h1{margin:0;font-size:2rem;}
+    .page-title p{margin:.5rem 0 0;color:var(--muted);}
+    .header-actions{display:flex;gap:.75rem;flex-wrap:wrap;}
+    .sidebar{display:flex;flex-direction:column;gap:1.25rem;}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 14px 36px rgba(15,23,42,.06);padding:1.75rem;}
+    .profile-summary{display:flex;flex-direction:column;gap:1rem;}
+    .profile-summary-top{display:flex;align-items:center;gap:1rem;}
+    .avatar-large{width:72px;height:72px;border-radius:24px;background:#eef2ff;color:#4f63ff;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:800;}
+    .role-pill{display:inline-flex;padding:.35rem .85rem;border-radius:999px;background:#eef2ff;color:#4f63ff;font-weight:700;font-size:.85rem;margin:.55rem 0 0;}
+    .member-since{display:block;margin-top:.5rem;color:var(--muted);font-size:.9rem;}
+    .stats-grid{display:grid;gap:.9rem;margin-top:1rem;}
+    .stat-card{background:#f8f9ff;border-radius:18px;padding:1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;}
+    .stat-card strong{display:block;font-size:1.3rem;color:var(--primary);}
+    .quick-actions{display:flex;flex-direction:column;gap:.8rem;margin-top:1rem;}
+    .action-item{background:#f8f9ff;border-radius:16px;padding:1rem;display:flex;align-items:center;justify-content:space-between;color:var(--primary);font-weight:700;cursor:pointer;}
+    .content-area{display:grid;gap:1.5rem;}
+    .section-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem;}
+    .section-card h2{margin:0 0 1rem;font-size:1.15rem;}
+    .form-grid{display:grid;gap:1rem;}
+    .two-column{grid-template-columns:1fr 1fr;}
+    .three-column{grid-template-columns:1fr 1fr 1fr;}
+    .field-group{display:flex;flex-direction:column;gap:.45rem;}
+    .field-group label{font-size:.9rem;color:var(--muted);}
+    .field-group span{font-size:1rem;color:var(--text);font-weight:600;}
+    .field-group input{border:1px solid var(--border);border-radius:14px;padding:.95rem 1rem;background:#fafbff;}
+    .full-width{grid-column:1/-1;}
+    .edit-only{display:none;}
+    .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;border-bottom:1px solid #eff0f6;cursor:pointer;}
+    .toggle-row:last-child{border-bottom:none;}
+    .toggle-label{display:flex;flex-direction:column;gap:.25rem;}
+    .toggle-label small{color:var(--muted);font-size:.9rem;}
+    .switch{position:relative;width:52px;height:28px;border-radius:999px;background:#d8dde9;transition:background .2s ease;}
+    .switch::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .2s ease;}
+    .switch.active{background:#4f63ff;}
+    .switch.active::after{transform:translateX(24px);}
+    .payment-list{display:grid;gap:.85rem;}
+    .payment-card{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1rem;border-radius:16px;background:#f8f9ff;}
+    .payment-card strong{font-size:1rem;}
+    .payment-note{padding:.35rem .7rem;border-radius:999px;background:#e6f4ff;color:#3262d4;font-size:.8rem;font-weight:700;}
+    .security-list{display:grid;gap:.8rem;}
+    .security-item{display:flex;justify-content:space-between;align-items:center;padding:1rem;border-radius:16px;background:#f8f9ff;cursor:pointer;}
+    .security-item:hover{background:#eef2ff;}
+    .modal-overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);display:flex;align-items:center;justify-content:center;padding:1.5rem;z-index:20;}
+    .modal-card{background:#fff;border-radius:24px;max-width:520px;width:100%;padding:2rem;box-shadow:0 30px 80px rgba(15,23,42,.18);}
+    .modal-card h3{margin:0 0 .85rem;}
+    .modal-card p{margin:0 0 1.5rem;color:var(--muted);}
+    .modal-actions{display:flex;justify-content:flex-end;gap:.75rem;flex-wrap:wrap;}
+    .content-hidden{display:none;}
+    @media(max-width:1024px){.page-main{grid-template-columns:1fr;}.two-column,.three-column{grid-template-columns:1fr;}}    
+</style>
+</head>
+<body>
+<div class="page-shell">
+    <div id="sharedNav"></div>
+    <main class="page-main">
+        <section class="sidebar">
+            <div class="card profile-summary">
+                <div class="profile-summary-top">
+                    <div class="avatar-large">JD</div>
+                    <div>
+                        <h2>John Doe</h2>
+                        <span class="role-pill">Care Recipient</span>
+                        <span class="member-since">Member since January 2024</span>
+                    </div>
+                </div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span>Active Bookings</span>
+                        <strong>2</strong>
+                    </div>
+                    <div class="stat-card">
+                        <span>Saved Cards</span>
+                        <strong>3</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="card quick-actions">
+                <button class="action-item" type="button" onclick="openPaymentModal()">Manage Payment</button>
+                <button class="action-item" type="button" onclick="toggleEditMode(true)">Edit Information</button>
+                <button class="action-item" type="button" onclick="confirmDeleteAccount()">Delete Account</button>
+            </div>
+        </section>
+        <section class="content-area">
+            <div class="page-header">
+                <div class="page-title">
+                    <h1>User Profile</h1>
+                    <p>Manage your personal information, preferences, and security settings.</p>
+                </div>
+                <div class="header-actions">
+                    <button class="btn btn-link" id="cancelBtn" onclick="cancelEdit()" style="display:none;">✕ Cancel</button>
+                    <button class="btn btn-primary" id="editBtn" onclick="toggleEditMode(true)">✏️ Edit Profile</button>
+                    <button class="btn btn-primary" id="saveBtn" onclick="saveProfile()" style="display:none;">💾 Save Changes</button>
+                </div>
+            </div>
+            <div class="section-card">
+                <h2>Personal Information</h2>
+                <div class="form-grid two-column">
+                    <div class="field-group">
+                        <label for="firstName">First Name</label>
+                        <span class="view-only" id="displayFirstName">John</span>
+                        <input class="edit-only" id="firstName" type="text" value="John">
+                    </div>
+                    <div class="field-group">
+                        <label for="lastName">Last Name</label>
+                        <span class="view-only" id="displayLastName">Doe</span>
+                        <input class="edit-only" id="lastName" type="text" value="Doe">
+                    </div>
+                    <div class="field-group full-width">
+                        <label for="email">Email Address</label>
+                        <span class="view-only" id="displayEmail">john.doe@example.com</span>
+                        <input class="edit-only" id="email" type="email" value="john.doe@example.com">
+                    </div>
+                    <div class="field-group full-width">
+                        <label for="phone">Phone Number</label>
+                        <span class="view-only" id="displayPhone">(555) 123-4567</span>
+                        <input class="edit-only" id="phone" type="tel" value="(555) 123-4567">
+                    </div>
+                </div>
+            </div>
+            <div class="section-card">
+                <h2>Notification Preferences</h2>
+                <div class="toggle-row" onclick="togglePref('smsPref')">
+                    <div class="toggle-label">
+                        <strong>Receive SMS updates</strong>
+                        <small>Get booking reminders and status messages.</small>
+                    </div>
+                    <div class="switch active" id="smsPref"></div>
+                </div>
+                <div class="toggle-row" onclick="togglePref('emailPref')">
+                    <div class="toggle-label">
+                        <strong>Email notifications</strong>
+                        <small>Receive promotions and account alerts.</small>
+                    </div>
+                    <div class="switch active" id="emailPref"></div>
+                </div>
+            </div>
+            <div class="section-card">
+                <h2>Payment Methods</h2>
+                <div class="payment-list" id="paymentMethodList"></div>
+                <button class="btn btn-link" type="button" onclick="openPaymentModal()">+ Add new payment method</button>
+            </div>
+            <div class="section-card">
+                <h2>Security & Privacy</h2>
+                <div class="security-list">
+                    <div class="security-item" onclick="alert('Change password flow coming soon')">
+                        <span>Change password</span><span>›</span>
+                    </div>
+                    <div class="security-item" onclick="alert('Review your active sessions')">
+                        <span>Active sessions</span><span>›</span>
+                    </div>
+                    <div class="security-item" onclick="alert('Privacy settings coming soon')">
+                        <span>Privacy settings</span><span>›</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</div>
+<div id="paymentModal" class="modal-overlay content-hidden">
+    <div class="modal-card">
+        <h3>Add payment method</h3>
+        <p>Select the card you want to save for faster checkout.</p>
+        <div class="form-grid two-column">
+            <label><input type="radio" name="newPaymentMethod" value="Visa •••• 1123"> Visa •••• 1123</label>
+            <label><input type="radio" name="newPaymentMethod" value="Mastercard •••• 7699"> Mastercard •••• 7699</label>
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-link" type="button" onclick="closePaymentModal()">Cancel</button>
+            <button class="btn btn-primary" type="button" onclick="savePaymentMethod()">Save</button>
+        </div>
+    </div>
+</div>
+<div id="deleteModal" class="modal-overlay content-hidden">
+    <div class="modal-card">
+        <h3>Delete account</h3>
+        <p>This action cannot be undone. Confirm account deletion to proceed.</p>
+        <div class="modal-actions">
+            <button class="btn btn-link" type="button" onclick="closeDeleteModal()">Cancel</button>
+            <button class="btn btn-primary" type="button" onclick="confirmDeleteAccount(true)">Delete</button>
+        </div>
+    </div>
+</div>
+<script src="../js/shared-nav.js"></script>
+<script>
+    const profileState = {
+        firstName: 'John',
+        lastName: 'Doe',
+        email: 'john.doe@example.com',
+        phone: '(555) 123-4567',
+        preferences: {
+            smsPref: true,
+            emailPref: true,
+        },
+        paymentMethods: [
+            { label: 'Visa •••• 1123', status: 'Primary' },
+            { label: 'Mastercard •••• 7699', status: 'Backup' }
+        ]
+    };
+
+    function initProfile() {
+        renderSharedNav('sharedNav', 'User Profile');
+        renderPaymentMethods();
+        updatePrefUi('smsPref');
+        updatePrefUi('emailPref');
+    }
+
+    function toggleEditMode(editing) {
+        document.querySelectorAll('.view-only').forEach(el => el.style.display = editing ? 'none' : 'block');
+        document.querySelectorAll('.edit-only').forEach(el => el.style.display = editing ? 'block' : 'none');
+        document.getElementById('editBtn').style.display = editing ? 'none' : 'inline-flex';
+        document.getElementById('saveBtn').style.display = editing ? 'inline-flex' : 'none';
+        document.getElementById('cancelBtn').style.display = editing ? 'inline-flex' : 'none';
+    }
+
+    function cancelEdit() {
+        document.getElementById('firstName').value = profileState.firstName;
+        document.getElementById('lastName').value = profileState.lastName;
+        document.getElementById('email').value = profileState.email;
+        document.getElementById('phone').value = profileState.phone;
+        toggleEditMode(false);
+    }
+
+    function saveProfile() {
+        profileState.firstName = document.getElementById('firstName').value.trim() || profileState.firstName;
+        profileState.lastName = document.getElementById('lastName').value.trim() || profileState.lastName;
+        profileState.email = document.getElementById('email').value.trim() || profileState.email;
+        profileState.phone = document.getElementById('phone').value.trim() || profileState.phone;
+
+        document.getElementById('displayFirstName').textContent = profileState.firstName;
+        document.getElementById('displayLastName').textContent = profileState.lastName;
+        document.getElementById('displayEmail').textContent = profileState.email;
+        document.getElementById('displayPhone').textContent = profileState.phone;
+
+        toggleEditMode(false);
+        alert('Profile updated successfully.');
+    }
+
+    function togglePref(prefKey) {
+        profileState.preferences[prefKey] = !profileState.preferences[prefKey];
+        updatePrefUi(prefKey);
+    }
+
+    function updatePrefUi(prefKey) {
+        const element = document.getElementById(prefKey);
+        if (!element) return;
+        element.classList.toggle('active', profileState.preferences[prefKey]);
+        element.setAttribute('aria-checked', profileState.preferences[prefKey]);
+    }
+
+    function renderPaymentMethods() {
+        const list = document.getElementById('paymentMethodList');
+        list.innerHTML = profileState.paymentMethods.map(method => 
+            `<div class="payment-card"><strong>${method.label}</strong><span class="payment-note">${method.status}</span></div>`
+        ).join('');
+    }
+
+    function openPaymentModal() {
+        document.getElementById('paymentModal').classList.remove('content-hidden');
+    }
+
+    function closePaymentModal() {
+        document.getElementById('paymentModal').classList.add('content-hidden');
+    }
+
+    function savePaymentMethod() {
+        const selection = document.querySelector('input[name="newPaymentMethod"]:checked');
+        if (!selection) {
+            alert('Choose a payment method before saving.');
+            return;
+        }
+        profileState.paymentMethods.unshift({ label: selection.value, status: 'Primary' });
+        profileState.paymentMethods = profileState.paymentMethods.slice(0, 3);
+        renderPaymentMethods();
+        closePaymentModal();
+        alert('Payment method saved.');
+    }
+
+    function confirmDeleteAccount(confirmed = false) {
+        if (!confirmed) {
+            document.getElementById('deleteModal').classList.remove('content-hidden');
+            return;
+        }
+        document.getElementById('deleteModal').classList.add('content-hidden');
+        alert('Your account has been deleted.');
+        logout();
+    }
+
+    function closeDeleteModal() {
+        document.getElementById('deleteModal').classList.add('content-hidden');
+    }
+
+    window.toggleEditMode = toggleEditMode;
+    window.cancelEdit = cancelEdit;
+    window.saveProfile = saveProfile;
+    window.togglePref = togglePref;
+    window.openPaymentModal = openPaymentModal;
+    window.closePaymentModal = closePaymentModal;
+    window.savePaymentMethod = savePaymentMethod;
+    window.confirmDeleteAccount = confirmDeleteAccount;
+    window.closeDeleteModal = closeDeleteModal;
+
+    window.addEventListener('DOMContentLoaded', initProfile);
+</script>
+</body>
+</html>
