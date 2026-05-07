@@ -654,16 +654,16 @@ document.addEventListener('DOMContentLoaded', () => {
    MOCK DATA
 ───────────────────────────────────────────── */
 const MOCK_USERS = [
-  { id: 1, name: 'Alice Reyes',     email: 'alice.reyes@email.com',    role: 'User',   status: 'Active' },
-  { id: 2, name: 'Ben Navarro',     email: 'ben.navarro@email.com',    role: 'User',   status: 'Active' },
-  { id: 3, name: 'Clara Santos',    email: 'clara.santos@email.com',   role: 'Admin',  status: 'Active' },
-  { id: 4, name: 'Diego Mendoza',   email: 'diego.mendoza@email.com',  role: 'User',   status: 'Suspended' },
-  { id: 5, name: 'Eva Torres',      email: 'eva.torres@email.com',     role: 'User',   status: 'Active' },
-  { id: 6, name: 'Felix Cruz',      email: 'felix.cruz@email.com',     role: 'User',   status: 'Active' },
-  { id: 7, name: 'Grace Lim',       email: 'grace.lim@email.com',      role: 'Admin',  status: 'Active' },
-  { id: 8, name: 'Henry Tan',       email: 'henry.tan@email.com',      role: 'User',   status: 'Suspended' },
-  { id: 9, name: 'Iris Dela Cruz',  email: 'iris.delacruz@email.com',  role: 'User',   status: 'Active' },
-  { id: 10,'name': 'Jake Bautista', email: 'jake.bautista@email.com',  role: 'User',   status: 'Active' },
+  { id: 1, name: 'Alice Reyes',     email: 'alice.reyes@email.com',    role: 'Client',           status: 'Active' },
+  { id: 2, name: 'Ben Navarro',     email: 'ben.navarro@email.com',    role: 'Client',           status: 'Active' },
+  { id: 3, name: 'Clara Santos',    email: 'clara.santos@email.com',   role: 'Service Provider', status: 'Active' },
+  { id: 4, name: 'Diego Mendoza',   email: 'diego.mendoza@email.com',  role: 'Client',           status: 'Suspended' },
+  { id: 5, name: 'Eva Torres',      email: 'eva.torres@email.com',     role: 'Client',           status: 'Active' },
+  { id: 6, name: 'Felix Cruz',      email: 'felix.cruz@email.com',     role: 'Service Provider', status: 'Active' },
+  { id: 7, name: 'Grace Lim',       email: 'grace.lim@email.com',      role: 'Service Provider', status: 'Active' },
+  { id: 8, name: 'Henry Tan',       email: 'henry.tan@email.com',      role: 'Client',           status: 'Suspended' },
+  { id: 9, name: 'Iris Dela Cruz',  email: 'iris.delacruz@email.com',  role: 'Client',           status: 'Active' },
+  { id: 10,'name': 'Jake Bautista', email: 'jake.bautista@email.com',  role: 'Service Provider', status: 'Active' },
 ];
 
 const MOCK_ADMINS = [
@@ -784,8 +784,8 @@ function renderUsersTable() {
         <td style="color:var(--gray-500);font-size:13px">${escHtml(u.email)}</td>
         <td>
           <select class="mu-role-select" data-id="${u.id}" aria-label="Role for ${escHtml(u.name)}">
-            <option value="User"  ${u.role==='User'  ?'selected':''}>User</option>
-            <option value="Admin" ${u.role==='Admin' ?'selected':''}>Admin</option>
+            <option value="Client"           ${u.role==='Client'           ?'selected':''}>Client</option>
+            <option value="Service Provider" ${u.role==='Service Provider' ?'selected':''}>Service Provider</option>
           </select>
         </td>
         <td><span class="mu-status-badge ${u.status==='Active'?'active':'suspended'}">${u.status}</span></td>
