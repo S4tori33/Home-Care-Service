@@ -481,9 +481,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function switchTab(name, btn) {
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      btn.classList.add('active');
-      document.getElementById('tab-' + name).classList.add('active');
- 
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+
+      if (btn && typeof btn.classList !== 'undefined') {
+        btn.classList.add('active');
+      } else {
+        const defaultBtn = document.querySelector(`.tab-btn[data-tab="${name}"]`);
+        if (defaultBtn) defaultBtn.classList.add('active');
+      }
+
+      const panel = document.getElementById('tab-' + name) || document.getElementById(name);
+      if (panel) panel.classList.add('active');
+
       if (name === 'analytics') {
         setTimeout(initCharts, 50);
       }

@@ -206,18 +206,53 @@ function hideBookingModal() {
 
 // Finalize booking
 function finalizeBooking() {
-    // Here you would typically send the booking data to a server
-    // For now, we'll just show a success message and redirect
+    const serviceData = JSON.parse(localStorage.getItem('serviceData') || '{}');
+    const contactData = JSON.parse(localStorage.getItem('contactInfo') || '{}');
+    const locationData = JSON.parse(localStorage.getItem('locationInfo') || '{}');
+    const scheduleData = JSON.parse(localStorage.getItem('scheduleData') || '{}');
 
-    alert('🎉 Booking confirmed! Thank you for choosing Home Care Service. You will receive a confirmation email shortly.');
+    const currentUser = typeof appData !== 'undefined' ? appData.getCurrentUser() : null;
+    const customerId = currentUser?.id || 'u1';
+    const customerName = currentUser?.name || (contactData.email ? contactData.email.split('@')[0] : 'Guest Customer');
+
+    const locationParts = [
+        locationData.houseNumber,
+        locationData.blockNumber ? `Blk ${locationData.blockNumber}` : '',
+        locationData.lotNumber ? `Lot ${locationData.lotNumber}` : '',
+        locationData.barangay,
+        locationData.cityMunicipality,
+        locationData.zipCode,
+        locationData.country
+    ].filter(Boolean);
+    const bookingLocation = locationParts.join(', ');
+
+    const bookingDateTime = {
+        date: scheduleData.details?.startDate || '',
+        time: scheduleData.details?.time || 'TBD'
+    };
+
+    if (typeof appData !== 'undefined') {
+        appData.createBooking(
+            customerId,
+            serviceData.serviceName || 'Service',
+            bookingLocation,
+            bookingDateTime,
+            customerName,
+            contactData.email || '',
+            contactData.contactNumber || ''
+        );
+    }
+
+    alert('🎉 Booking confirmed! Thank you for choosing Home Care Service. Your booking has been saved and is awaiting operations approval.');
 
     // Clear booking data from localStorage
     localStorage.removeItem('serviceData');
     localStorage.removeItem('contactInfo');
     localStorage.removeItem('locationInfo');
+    localStorage.removeItem('scheduleData');
 
     // Redirect to home page or dashboard
-    window.location.href = '../../home.html';
+    window.location.href = '../dashboard.html';
 }
 
 // Generate HTML for booking details

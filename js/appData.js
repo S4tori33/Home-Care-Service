@@ -88,6 +88,12 @@ class AppData {
     // Create session user (without password)
     const sessionUser = { ...user };
     delete sessionUser.password;
+
+    const persistedUser = DEMO_USERS_LIST.find(u => u.email === email);
+    if (persistedUser) {
+      sessionUser.id = persistedUser.id;
+      sessionUser.role = persistedUser.role || sessionUser.role;
+    }
     
     localStorage.setItem(this.CURRENT_USER, JSON.stringify(sessionUser));
     return sessionUser;
@@ -179,19 +185,22 @@ class AppData {
   /**
    * Create a new booking
    */
-  createBooking(customerId, serviceType, location, dateTime) {
+  createBooking(customerId, serviceType, location, dateTime = {}, customerName = 'Customer', customerEmail = '', customerPhone = '') {
     const bookings = this.getAllBookings();
     const booking = {
       id: 'b' + (bookings.length + 1),
       customerId,
-      customerName: 'Customer',
+      customerName: customerName || 'Customer',
+      customerEmail,
+      customerPhone,
       providerId: null,
       providerName: 'Unassigned',
       serviceType,
-      date: dateTime.date,
-      time: dateTime.time,
+      date: dateTime.date || '',
+      time: dateTime.time || 'TBD',
       location,
-      status: 'Pending'
+      status: 'Pending',
+      createdAt: new Date().toISOString()
     };
     bookings.push(booking);
     localStorage.setItem(this.STORAGE_BOOKINGS, JSON.stringify(bookings));

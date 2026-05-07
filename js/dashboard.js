@@ -47,6 +47,9 @@ class DashboardManager {
 
     // Initialize permissioning
     this.applyPermissions(role);
+
+    // Render dashboard booking widgets for the current user
+    this.renderDashboardBookings();
   }
 
   /**
@@ -362,6 +365,161 @@ class DashboardManager {
     }
 
     return {};
+  }
+
+  renderDashboardBookings() {
+    const user = this.auth.getCurrentUser();
+    const role = this.auth.getUserRole();
+    if (!user || !role) return;
+
+    const bookings = this.auth.getUserBookings(user.id, role.id);
+    this.updateOverviewStats(bookings);
+    this.renderOverviewBookings(bookings);
+    this.renderBookingLists(bookings);
+  }
+
+  updateOverviewStats(bookings) {
+    const upcoming = bookings.filter(b =>
+      ['pending', 'assigned', 'accepted'].includes((b.status || '').toLowerCase())
+    ).length;
+    const completed = bookings.filter(b =>
+      (b.status || '').toLowerCase() === 'completed'
+    ).length;
+    const total = bookings.length;
+
+    const upcomingEl = document.getElementById('upcomingCount');
+    const completedEl = document.getElementById('completedCount');
+    const totalEl = document.getElementById('totalCount');
+
+    if (upcomingEl) upcomingEl.textContent = upcoming;
+    if (completedEl) completedEl.textContent = completed;
+    if (totalEl) totalEl.textContent = total;
+  }
+
+  renderOverviewBookings(bookings) {
+    const container = document.getElementById('overviewBookingsContainer');
+    if (!container) return;
+
+    const upcoming = bookings
+      .filter(b =>
+        ['pending', 'assigned', 'accepted'].includes((b.status || '').toLowerCase())
+      )
+      .slice(0, 3);
+
+    if (!upcoming.length) {
+      container.innerHTML = '<div class="empty-card">No upcoming bookings yet. Book a service to get started.</div>';
+      return;
+    }
+
+    container.innerHTML = upcoming.map(b => this._bookingCardHtml(b)).join('');
+  }
+
+  renderBookingLists(bookings) {
+    const upcomingEl = document.getElementById('bookingsUpcomingContainer');
+    const historyEl = document.getElementById('bookingsHistoryContainer');
+    if (!upcomingEl || !historyEl) return;
+
+    const upcoming = bookings.filter(b =>
+      ['pending', 'assigned', 'accepted'].includes((b.status || '').toLowerCase())
+    );
+    const history = bookings.filter(b =>
+      (b.status || '').toLowerCase() === 'completed'
+    );
+
+    upcomingEl.innerHTML = upcoming.length
+      ? upcoming.map(b => this._bookingCardHtml(b)).join('')
+      : '<div class="empty-card">No upcoming bookings. Place a request and it will appear here.</div>';
+
+    historyEl.innerHTML = history.length
+      ? history.map(b => this._bookingHistoryCardHtml(b)).join('')
+      : '<div class="empty-card">No completed bookings yet.</div>';
+  }
+
+  _bookingCardHtml(b) {
+    const status = this.formatBookingStatus(b.status);
+    const statusClass = this.bookingStatusClass(b.status);
+    return `
+      <div class="booking-item">
+        <div class="booking-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="booking-body">
+          <div class="booking-row">
+            <div class="booking-title">${b.serviceType || b.service || 'Service Request'}</div>
+            <span class="badge ${statusClass}">${status}</span>
+          </div>
+          <div class="booking-meta">
+            <strong>${this.formatBookingDate(b.date)}</strong>
+            ${b.time ? ` · ${this.formatBookingTime(b.time)}` : ''}
+          </div>
+          <div class="booking-meta">${b.location || 'Location not set'}</div>
+        </div>
+        <div class="booking-right">
+          <div class="booking-amount">${b.price ? '$' + b.price : ''}</div>
+        </div>
+      </div>`;
+  }
+
+  _bookingHistoryCardHtml(b) {
+    const status = this.formatBookingStatus(b.status);
+    const statusClass = this.bookingStatusClass(b.status);
+    return `
+      <div class="booking-item-full">
+        <div class="booking-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </div>
+        <div class="booking-body">
+          <div class="booking-row">
+            <div class="booking-title">${b.serviceType || b.service || 'Service Request'}</div>
+            <span class="badge ${statusClass}">${status}</span>
+          </div>
+          <div class="booking-full-meta">
+            <div class="booking-meta">${this.formatBookingDate(b.date)}</div>
+            ${b.time ? `<div class="booking-meta">${this.formatBookingTime(b.time)}</div>` : ''}
+          </div>
+        </div>
+        <div class="booking-full-right">
+          <div class="booking-full-amount">${b.price ? '$' + b.price : ''}</div>
+        </div>
+      </div>`;
+  }
+
+  formatBookingDate(rawDate) {
+    if (!rawDate) return 'Date TBD';
+    const parsed = new Date(rawDate);
+    if (Number.isNaN(parsed.getTime())) return rawDate;
+    return parsed.toLocaleDateString(undefined, {
+      weekday: 'short', month: 'short', day: 'numeric', year: 'numeric'
+    });
+  }
+
+  formatBookingTime(rawTime) {
+    if (!rawTime) return 'Time TBD';
+    return rawTime.replace(/^24:/, '00:');
+  }
+
+  formatBookingStatus(status) {
+    if (!status) return 'Pending';
+    const normalized = status.toString().toLowerCase();
+    if (normalized === 'assigned') return 'Assigned';
+    if (normalized === 'accepted') return 'Accepted';
+    if (normalized === 'completed') return 'Completed';
+    if (normalized === 'pending') return 'Pending';
+    return status.charAt(0).toUpperCase() + status.slice(1);
+  }
+
+  bookingStatusClass(status) {
+    const normalized = (status || '').toString().toLowerCase();
+    switch (normalized) {
+      case 'completed':
+        return 'badge badge-confirmed';
+      case 'assigned':
+      case 'accepted':
+        return 'badge badge-confirmed';
+      case 'pending':
+      default:
+        return 'badge badge-pending';
+    }
   }
 }
 

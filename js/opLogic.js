@@ -17,16 +17,53 @@ const staff = [
   { initials:"AM", color:"linear-gradient(135deg,#f59e0b,#d97706)", name:"Amanda White",     sub:"",                           status:"available", statusLabel:"Available"},
 ];
 
-const jobs = [
-  { cInitials:"MT", cColor:"linear-gradient(135deg,#5046e4,#7c3aed)", client:"Margaret Thompson", phone:"(555) 123-4567", service:"Elderly Care",    svcCls:"elderly",  staff:"Sarah Johnson",    location:"123 Oak Street",   time:"09:00 AM - 02:00 PM", status:"In Progress" },
-  { cInitials:"TA", cColor:"linear-gradient(135deg,#e91e8c,#be185d)", client:"The Andersons",      phone:"(555) 234-5678", service:"Pet Care",         svcCls:"pet",      staff:"Michael Chen",     location:"456 Maple Ave",    time:"10:00 AM - 11:30 AM", status:"Scheduled"   },
-  { cInitials:"RW", cColor:"linear-gradient(135deg,#16a34a,#0d9488)", client:"Robert Wilson",      phone:"(555) 345-6789", service:"Garden Work",      svcCls:"garden",   staff:"David Martinez",   location:"789 Pine Road",    time:"08:00 AM - 12:00 PM", status:"In Progress" },
-  { cInitials:"LD", cColor:"linear-gradient(135deg,#d97706,#b45309)", client:"Lisa Davis",         phone:"(555) 456-7890", service:"House Cleaning",   svcCls:"cleaning", staff:"Emily Rodriguez",   location:"321 Elm Street",   time:"01:00 PM - 04:00 PM", status:"Scheduled"   },
-  { cInitials:"GP", cColor:"linear-gradient(135deg,#7c3aed,#5046e4)", client:"George Patterson",   phone:"(555) 567-8901", service:"Elderly Care",     svcCls:"elderly",  staff:"Jessica Martinez",  location:"654 Birch Lane",   time:"07:00 AM - 03:00 PM", status:"Urgent"      },
-  { cInitials:"TJ", cColor:"linear-gradient(135deg,#f59e0b,#ef4444)", client:"The Johnsons",       phone:"(555) 678-9012", service:"House Cleaning",   svcCls:"cleaning", staff:"Amanda White",      location:"987 Cedar Court",  time:"02:00 PM - 05:00 PM", status:"Completed"   },
-  { cInitials:"PB", cColor:"linear-gradient(135deg,#e91e8c,#9d174d)", client:"Patricia Brown",     phone:"(555) 789-0123", service:"Pet Care",         svcCls:"pet",      staff:"Christopher Lee",   location:"147 Spruce Dr",    time:"03:00 PM - 04:00 PM", status:"Scheduled"   },
-  { cInitials:"TM", cColor:"linear-gradient(135deg,#0891b2,#0d9488)", client:"The Millers",        phone:"(555) 890-1234", service:"Garden Work",      svcCls:"garden",   staff:"Robert Taylor",     location:"258 Willow Way",   time:"09:00 AM - 01:00 PM", status:"In Progress" },
-];
+let jobs = [];
+const providerRoles = ['caregiver', 'pet_care', 'garden_maintenance', 'house_cleaning'];
+
+function serviceClassFromType(type) {
+  return {
+    'Elderly Care': 'elderly',
+    'Pet Care': 'pet',
+    'Garden Maintenance': 'garden',
+    'House Cleaning': 'cleaning'
+  }[type] || 'cleaning';
+}
+
+function capitalizeStatus(status) {
+  if (!status) return '';
+  return status.charAt(0).toUpperCase() + status.slice(1);
+}
+
+function getJobsFromBookings() {
+  const bookings = typeof appData !== 'undefined' ? appData.getAllBookings() : [];
+  return bookings.map(b => ({
+    id: b.id,
+    bookingId: b.id,
+    client: b.customerName || 'Customer',
+    phone: b.customerPhone || b.customerEmail || 'N/A',
+    service: b.serviceType || 'Service',
+    svcCls: serviceClassFromType(b.serviceType || ''),
+    staff: b.providerName || 'Unassigned',
+    location: b.location || 'To be determined',
+    time: b.date ? `${b.date}${b.time && b.time !== 'TBD' ? ' · ' + b.time : ''}` : (b.time || 'TBD'),
+    status: b.status === 'Active' ? 'In Progress' : b.status === 'Pending' ? 'Scheduled' : capitalizeStatus(b.status),
+    originalStatus: b.status,
+    booking: b
+  }));
+}
+
+function persistBookingChanges(bookingId, updates) {
+  if (typeof appData === 'undefined') return;
+  const bookings = appData.getAllBookings();
+  const booking = bookings.find(b => b.id === bookingId);
+  if (!booking) return;
+  Object.assign(booking, updates);
+  localStorage.setItem(appData.STORAGE_BOOKINGS, JSON.stringify(bookings));
+}
+
+function refreshJobData() {
+  jobs = getJobsFromBookings();
+}
 
 // ── Page state ──────────────────────────────────────────────────────────────
 let currentPage = 1;
@@ -97,6 +134,7 @@ function getFiltered() {
 }
 
 function renderJobs() {
+  refreshJobData();
   const filtered = getFiltered();
   const tbody = document.getElementById("jobsBody");
   const noRes = document.getElementById("noResults");
@@ -155,11 +193,16 @@ function renderJobs() {
 }
 
 function changeJobStatus(index, newStatus) {
-  jobs[index].status = newStatus;
+  const job = jobs[index];
+  if (!job) return;
+  job.status = newStatus;
+  const mappedStatus = newStatus === 'In Progress' ? 'Active' : newStatus === 'Scheduled' ? 'Pending' : newStatus;
+  persistBookingChanges(job.bookingId, { status: mappedStatus });
   renderJobs();
 }
 
 function viewJob(index) {
+  refreshJobData();
   openOpsModal(index);
 }
 
@@ -288,11 +331,13 @@ function selectProvider(name, cardId) {
 function confirmAssignment() {
   if (!opsSelectedProvider || opsModalJobIndex < 0) return;
   const j = jobs[opsModalJobIndex];
-  const oldStaff = j.staff;
-  j.staff = opsSelectedProvider;
+  const providerName = opsSelectedProvider;
+  j.staff = providerName;
+  j.status = 'In Progress';
+  persistBookingChanges(j.bookingId, { providerName, status: 'Active' });
   renderJobs();
-  document.getElementById("d-provider").textContent = opsSelectedProvider;
-  showOpsToast(`<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`, "Provider Assigned", `${opsSelectedProvider} has been assigned to ${j.client}.`, "t-green");
+  document.getElementById("d-provider").textContent = providerName;
+  showOpsToast(`<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`, "Provider Assigned", `${providerName} has been assigned to ${j.client}.`, "t-green");
   closeOpsModal();
 }
 

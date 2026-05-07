@@ -5,6 +5,34 @@
         // Initialize page in view mode
         function initializePage() {
             setViewMode();
+            renderUserBookings();
+        }
+
+        function getUserBookings() {
+            if (typeof appData === 'undefined') return [];
+            const currentUser = appData.getCurrentUser();
+            if (!currentUser) return [];
+            return appData.getAllBookings().filter(b => b.customerId === currentUser.id || b.customerEmail === currentUser.email || b.customerName === currentUser.name);
+        }
+
+        function renderUserBookings() {
+            const container = document.getElementById('userBookingsContainer');
+            if (!container) return;
+            const bookings = getUserBookings();
+
+            if (bookings.length === 0) {
+                container.innerHTML = `<div class="booking-summary empty-card"><p>No active service requests yet. Book a service to see it here.</p></div>`;
+                return;
+            }
+
+            container.innerHTML = bookings.map(booking => `
+                <div class="booking-summary-card">
+                    <div class="booking-summary-title">${booking.serviceType}</div>
+                    <div class="booking-summary-detail">${booking.location}</div>
+                    <div class="booking-summary-detail">${booking.date || 'TBD'} · ${booking.time || 'TBD'}</div>
+                    <div class="booking-summary-detail status ${booking.status.toLowerCase()}">Status: ${booking.status}</div>
+                </div>
+            `).join('');
         }
 
         // Switch to Edit Mode
