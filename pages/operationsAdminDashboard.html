@@ -167,6 +167,27 @@
     </div>
   </div>
 
+  <!-- Help & Support Issues Section -->
+  <div class="support-issues-card">
+    <div class="support-issues-header">
+      <span class="support-issues-title">Help &amp; Support Issues</span>
+      <span class="support-badge" id="supportIssueBadge">0</span>
+    </div>
+    <div class="support-issues-toolbar">
+      <input type="text" id="supportSearch" placeholder="Search issues by customer name or subject...">
+      <select class="filter-select" id="supportStatusFilter">
+        <option value="">All Status</option>
+        <option value="open">Open</option>
+        <option value="in-progress">In Progress</option>
+        <option value="resolved">Resolved</option>
+      </select>
+    </div>
+    <div class="support-issues-list" id="supportIssuesList">
+      <!-- Rendered by JS -->
+    </div>
+    <div class="no-results" id="noSupportIssues" style="display:none;">No support issues yet.</div>
+  </div>
+
 <!-- ═══ Operations Admin Job Details Modal ═══ -->
 <div class="ops-modal-overlay" id="opsModal" onclick="opsCloseOutside(event)">
   <div class="ops-modal">

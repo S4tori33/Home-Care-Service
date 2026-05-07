@@ -19,22 +19,33 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
 
             // Get form values
-            const formData = new FormData(this);
             const name = this.querySelector('input[type="text"]').value;
             const email = this.querySelector('input[type="email"]').value;
             const subject = this.querySelectorAll('input[type="text"]')[1].value;
             const message = this.querySelector('textarea').value;
 
-            // Store in localStorage (you can integrate with backend later)
-            const supportMessages = JSON.parse(localStorage.getItem('supportMessages')) || [];
-            supportMessages.push({
-                name,
-                email,
+            // Get current user info
+            const currentUser = typeof appData !== 'undefined' && appData.getCurrentUser ? appData.getCurrentUser() : null;
+
+            // Create support issue object
+            const supportIssue = {
+                id: 'issue-' + Date.now(),
+                userId: currentUser ? currentUser.id : null,
+                userName: name || (currentUser ? `${currentUser.firstName} ${currentUser.lastName}`.trim() : 'Guest'),
+                email: email || (currentUser ? currentUser.email : ''),
                 subject,
                 message,
-                timestamp: new Date().toISOString()
-            });
-            localStorage.setItem('supportMessages', JSON.stringify(supportMessages));
+                status: 'open',
+                priority: 'normal',
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                replies: []
+            };
+
+            // Store in localStorage
+            const supportIssues = JSON.parse(localStorage.getItem('supportIssues')) || [];
+            supportIssues.push(supportIssue);
+            localStorage.setItem('supportIssues', JSON.stringify(supportIssues));
 
             // Show success message
             const submitBtn = this.querySelector('.btn-submit');

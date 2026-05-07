@@ -140,7 +140,7 @@
               <h1>Welcome Back 👋</h1>
               <p class="dashboard-summary">Manage your assigned jobs and communicate with customers.</p>
             </div>
-            <button class="btn blue outline">View Schedule</button>
+            <button class="btn blue outline" onclick="openScheduleModal()">View Schedule</button>
           </div>
 
           <div class="stats-grid">
@@ -192,62 +192,13 @@
           </div>
 
           <div class="tab-bar">
-            <button class="tab-button active" data-tab="assigned">Assigned Jobs (2)</button>
-            <button class="tab-button" data-tab="completed">Completed Jobs (0)</button>
+            <button class="tab-button active" data-tab="all">All Jobs</button>
+            <button class="tab-button" data-tab="assigned">Assigned Jobs</button>
+            <button class="tab-button" data-tab="completed">Completed Jobs</button>
           </div>
 
-          <div class="jobs-list">
-            <article class="job-card">
-              <div class="job-meta">
-                <div class="job-card-top">
-                  <div class="job-avatar">E</div>
-                  <div class="job-info">
-                    <h3>Emily Davis</h3>
-                    <p>321 Elm St, Houston</p>
-                  </div>
-                </div>
+          <div class="jobs-list" id="jobsContainer">
 
-                <div class="job-info-small">
-                  <span>&#128197; Tuesday, May 5</span>
-                  <span>&#9200; 11:00 AM - 3:00 PM</span>
-                </div>
-              </div>
-
-              <div class="job-side">
-                <p class="job-price">$200</p>
-                <div class="job-actions">
-                  <button class="btn dark">Accept Job</button>
-                  <button class="btn red">Decline</button>
-                  <button class="btn light">Message</button>
-                </div>
-              </div>
-            </article>
-
-            <article class="job-card">
-              <div class="job-meta">
-                <div class="job-card-top">
-                  <div class="job-avatar">R</div>
-                  <div class="job-info">
-                    <h3>Robert Johnson</h3>
-                    <p>789 Oak Ave, Dallas</p>
-                  </div>
-                </div>
-
-                <div class="job-info-small">
-                  <span>&#128197; Wednesday, May 6</span>
-                  <span>&#9200; 9:00 AM - 1:00 PM</span>
-                </div>
-              </div>
-
-              <div class="job-side">
-                <p class="job-price">$180</p>
-                <div class="job-actions">
-                  <button class="btn dark">Accept Job</button>
-                  <button class="btn red">Decline</button>
-                  <button class="btn light">Message</button>
-                </div>
-              </div>
-            </article>
           </div>
         </section>
       </div>
@@ -326,6 +277,19 @@
 
     <div class="modal-actions">
       <button class="btn light" onclick="closeModal('inboxModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCHEDULE -->
+<div class="modal-overlay" id="scheduleModal">
+  <div class="modal" style="max-width: 600px;">
+    <h2>My Schedule</h2>
+    <div id="scheduleContent" style="max-height: 400px; overflow-y: auto;">
+      <!-- Populated by JS -->
+    </div>
+    <div class="modal-actions">
+      <button class="btn light" onclick="closeModal('scheduleModal')">Close</button>
     </div>
   </div>
 </div>

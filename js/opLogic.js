@@ -206,6 +206,104 @@ function viewJob(index) {
   openOpsModal(index);
 }
 
+// ──── SUPPORT ISSUES MANAGEMENT ─────────────────────────────────────
+let supportIssuesData = [];
+
+function getSupportIssues() {
+  if (typeof appData === 'undefined') return [];
+  const stored = localStorage.getItem('supportIssues');
+  return stored ? JSON.parse(stored) : [];
+}
+
+function renderSupportIssues() {
+  const container = document.getElementById('supportIssuesList');
+  const noIssuesMsg = document.getElementById('noSupportIssues');
+  const badge = document.getElementById('supportIssueBadge');
+  
+  if (!container) return;
+  
+  supportIssuesData = getSupportIssues();
+  const searchTerm = document.getElementById('supportSearch')?.value.toLowerCase() || '';
+  const statusFilter = document.getElementById('supportStatusFilter')?.value || '';
+  
+  let filtered = supportIssuesData.filter(issue => {
+    const matchesSearch = !searchTerm || 
+      issue.userName.toLowerCase().includes(searchTerm) || 
+      issue.subject.toLowerCase().includes(searchTerm) || 
+      issue.email.toLowerCase().includes(searchTerm);
+    const matchesStatus = !statusFilter || issue.status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+  
+  badge.textContent = supportIssuesData.length;
+  
+  if (filtered.length === 0) {
+    container.innerHTML = '';
+    noIssuesMsg.style.display = supportIssuesData.length === 0 ? 'block' : 'none';
+    return;
+  }
+  
+  noIssuesMsg.style.display = 'none';
+  container.innerHTML = filtered.map((issue, idx) => {
+    const createdDate = new Date(issue.createdAt);
+    const formattedDate = createdDate.toLocaleDateString(undefined, {
+      month: 'short', day: 'numeric', year: 'numeric'
+    });
+    const formattedTime = createdDate.toLocaleTimeString([], {
+      hour: '2-digit', minute: '2-digit'
+    });
+    
+    const statusClass = {
+      'open': 'support-status-open',
+      'in-progress': 'support-status-progress',
+      'resolved': 'support-status-resolved'
+    }[issue.status] || 'support-status-open';
+    
+    return `
+      <div class="support-issue-item" onclick="viewSupportIssue('${issue.id}')" style="cursor:pointer;">
+        <div class="support-issue-left">
+          <div class="support-issue-avatar">${(issue.userName?.substring(0, 2) || '?').toUpperCase()}</div>
+          <div class="support-issue-info">
+            <div class="support-issue-customer">${issue.userName}</div>
+            <div class="support-issue-subject">${issue.subject}</div>
+            <div class="support-issue-meta">${issue.email} · ${formattedDate} ${formattedTime}</div>
+          </div>
+        </div>
+        <div class="support-issue-right">
+          <span class="support-status-pill ${statusClass}">${issue.status.charAt(0).toUpperCase() + issue.status.slice(1)}</span>
+          <button class="support-action-btn" onclick="event.stopPropagation();updateSupportStatus('${issue.id}')" title="Update Status">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5 12 3"/><polyline points="12 12 20 7.5"/><polyline points="12 21 12 12"/><polyline points="4 7.5 12 12"/></svg>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function viewSupportIssue(issueId) {
+  const issue = supportIssuesData.find(i => i.id === issueId);
+  if (!issue) return;
+  
+  alert(`Support Issue: ${issue.subject}\n\nCustomer: ${issue.userName}\nEmail: ${issue.email}\n\nMessage:\n${issue.message}\n\nStatus: ${issue.status}`);
+}
+
+function updateSupportStatus(issueId) {
+  const issues = getSupportIssues();
+  const issueIdx = issues.findIndex(i => i.id === issueId);
+  if (issueIdx === -1) return;
+  
+  const issue = issues[issueIdx];
+  const statuses = ['open', 'in-progress', 'resolved'];
+  const currentIdx = statuses.indexOf(issue.status);
+  const nextStatus = statuses[(currentIdx + 1) % statuses.length];
+  
+  issue.status = nextStatus;
+  issue.updatedAt = new Date().toISOString();
+  
+  localStorage.setItem('supportIssues', JSON.stringify(issues));
+  renderSupportIssues();
+}
+
 // ── Modal state ──────────────────────────────────────────────────────────────
 let opsModalJobIndex = -1;
 let opsSelectedProvider = null;
@@ -493,3 +591,12 @@ renderServiceCards();
 renderStaff();
 renderJobs();
 renderChart();
+renderSupportIssues();
+
+// Event listeners for support issues filters
+if (document.getElementById('supportSearch')) {
+  document.getElementById('supportSearch').addEventListener('input', () => renderSupportIssues());
+}
+if (document.getElementById('supportStatusFilter')) {
+  document.getElementById('supportStatusFilter').addEventListener('change', () => renderSupportIssues());
+}
