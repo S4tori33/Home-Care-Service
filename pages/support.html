@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help & Support - Home Care Service</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/home.css">
+    <link rel="stylesheet" href="../styles/support.css">
+</head>
+<body>
+
+    <!-- ── NAVBAR ───────────────────────────────────── -->
+    <nav class="navbar">
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+            <span></span><span></span><span></span>
+        </button>
+
+        <a href="home.html" class="navbar-brand">
+            <div class="navbar-logo">HCS</div>
+            <div class="navbar-brand-text">
+                <h1>Home Care Service</h1>
+                <p>Quality Care, Quality Life</p>
+            </div>
+        </a>
+
+        <div class="navbar-links">
+            <a href="home.html">Home</a>
+            <a href="home.html#services">Services</a>
+            <a href="about.html">About</a>
+            <a href="jobSeekerApplication.html">Careers</a>
+            <a href="home.html#contact">Contact</a>
+        </div>
+
+        <div class="navbar-spacer"></div>
+
+    </nav>
+
+    <!-- ── SIDEBAR OVERLAY ──────────────────────────── -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ── LEFT SIDEBAR ─────────────────────────────── -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-profile">
+            <div class="avatar-wrap">
+                <div class="avatar" id="avatarEl" title="Change profile picture">Avatar Here</div>
+                <div class="avatar-badge"></div>
+            </div>
+            <div class="sidebar-user-name" id="userName">Guest User</div>
+            <div class="sidebar-user-role" id="userRole">Not logged in</div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <div class="sidebar-section-label">Main</div>
+
+            <!-- 0. Home -->
+            <a href="home.html" class="sidebar-item" data-page="home">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9L12 2l9 7v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-5H9v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/>
+                </svg>
+                Home
+            </a>
+
+            <!-- 1. Dashboard -->
+            <a href="dashboard.html" class="sidebar-item" data-page="dashboard">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7"/>
+                    <rect x="14" y="3" width="7" height="7"/>
+                    <rect x="14" y="14" width="7" height="7"/>
+                    <rect x="3" y="14" width="7" height="7"/>
+                </svg>
+                Dashboard
+            </a>
+
+            <!-- 2. My Bookings -->
+            <a href="booking.html" class="sidebar-item" data-page="bookings">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                Book a Service
+            </a>
+
+            <!-- 3. Services -->
+            <a href="home.html#services" class="sidebar-item" data-page="services">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                </svg>
+                Services
+            </a>
+
+            <!-- About -->
+            <a href="about.html" class="sidebar-item" data-page="about">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                About
+            </a>
+
+            <!-- 4. Messages -->
+            <a href="messaging.html" class="sidebar-item" data-page="messages">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                Messages
+            </a>
+
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-label">Account</div>
+
+            <!-- 6. My Profile -->
+            <a href="profile.html" class="sidebar-item" data-page="profile">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                My Profile
+            </a>
+
+            <div class="sidebar-divider"></div>
+
+            <!-- 9. Help & Support -->
+            <a href="support.html" class="sidebar-item active" data-page="help">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                Help & Support
+            </a>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="../index.html" class="sidebar-item logout" style="margin-bottom:0;">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                Log Out
+            </a>
+        </div>
+    </aside>
+
+    <!-- ── MAIN CONTENT ──────────────────────────────── -->
+    <div class="main-wrap">
+
+        <!-- ── HERO SECTION ───────────────────────────────────── -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1>Customer Support</h1>
+                <p>We're here to help! Get in touch with our support team</p>
+            </div>
+        </section>
+
+        <!-- ── SUPPORT OPTIONS SECTION ───────────────────────────────────── -->
+        <section class="support-options-section">
+            <div class="support-options-grid">
+                <!-- Email Support -->
+                <div class="support-card">
+                    <div class="support-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="4" width="20" height="16" rx="2"/>
+                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                        </svg>
+                    </div>
+                    <h3>Email Support</h3>
+                    <p>Get help via email</p>
+                    <p class="contact-info">support@homecare.com</p>
+                    <p class="support-detail">Response within 24 hours</p>
+                </div>
+
+                <!-- Phone Support -->
+                <div class="support-card">
+                    <div class="support-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                    </div>
+                    <h3>Phone Support</h3>
+                    <p>Speak with our team</p>
+                    <p class="contact-info">1-800-123-4567</p>
+                    <p class="support-detail">Mon-Fri 9AM-6PM EST</p>
+                </div>
+
+                <!-- Live Chat -->
+                <div class="support-card">
+                    <div class="support-card-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                    </div>
+                    <h3>Live Chat</h3>
+                    <p>Chat with us in real-time</p>
+                    <p class="contact-info">Start chat</p>
+                    <p class="support-detail">Average wait: 2 minutes</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── MESSAGE FORM SECTION ───────────────────────────────────── -->
+        <section class="message-section">
+            <div class="message-container">
+                <h2>Send Us a Message</h2>
+                <form class="message-form" id="supportForm">
+                    <div class="form-group">
+                        <input type="text" placeholder="Name *" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email *" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Subject *" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Message *" rows="6" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="22" y1="2" x2="11" y2="13"/>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                        </svg>
+                        SEND MESSAGE
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- ── FAQ SECTION ───────────────────────────────────── -->
+        <section class="faq-section">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        What are your business hours?
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>We operate Monday through Friday, 9:00 AM to 6:00 PM EST. Emergency support is available 24/7 for urgent matters. You can reach us via email anytime, and we'll respond within 24 hours.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        How can I track my order?
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>You can track your booking status directly from your dashboard. Log in to your account, navigate to "My Bookings," and you'll see real-time updates of your service appointments and caregiver assignments.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        What is your cancellation policy?
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Cancellations made 48 hours before the scheduled service are free. Cancellations within 48 hours may incur a service fee. Emergency cancellations are handled on a case-by-case basis. Please contact our support team for specific situations.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        How do I update my account information?
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>You can update your account information anytime through your profile settings. Click on "My Profile" in the sidebar, then select "Edit Profile" to modify your personal information, contact details, and preferences.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Do you offer international services?
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Currently, we operate within the United States only. However, we're expanding our services to other regions. Contact our support team to be notified when we launch services in your area.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question">
+                        Can't find what you're looking for?
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p><a href="#" class="faq-link">View all FAQs</a> for more information. If you still can't find an answer, please contact our support team directly via email, phone, or live chat.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>© 2026 Home Care Service (HCS). All Rights Reserved.</p>
+    </footer>
+    
+    <script src="../js/script.js"></script>
+    <script src="../js/support.js"></script>
+</body>
+</html>
