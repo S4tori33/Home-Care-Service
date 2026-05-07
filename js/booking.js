@@ -72,6 +72,19 @@ function updateSelectedService(serviceName) {
 
 // Initialize booking functionality
 document.addEventListener('DOMContentLoaded', function() {
+    // Show safety verification modal on page load
+    const safetyModal = document.getElementById('safetyVerificationModal');
+    const safetyBtn = document.getElementById('safetyModalContinue');
+
+    if (safetyBtn) {
+        safetyBtn.addEventListener('click', () => {
+            if (safetyModal) {
+                safetyModal.classList.remove('open');
+                safetyModal.setAttribute('aria-hidden', 'true');
+            }
+        });
+    }
+
     // Add click handlers to service options
     document.querySelectorAll('.service-option').forEach((option) => {
         option.addEventListener('click', () => {

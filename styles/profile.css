@@ -142,11 +142,31 @@ img {
 
 .sidebar-overlay {
     display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 20, 0.4);
+    z-index: 850;
 }
+.sidebar-overlay.show { display: block; }
 
 .sidebar {
-    display: none;
+    position: fixed;
+    top: var(--nav-h);
+    left: 0;
+    width: 250px;
+    height: calc(100vh - var(--nav-h));
+    background: rgba(20, 35, 140, 0.92);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-right: 1px solid rgba(255, 255, 255, 0.15);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    z-index: 900;
+    transform: translateX(-250px);
+    transition: transform 0.3s cubic-bezier(.4, 0, .2, 1);
 }
+.sidebar.open { transform: translateX(0); }
 
 .main-wrap {
     padding: calc(var(--nav-h) + 24px) 26px 40px;
@@ -660,4 +680,249 @@ footer {
         margin-top: 12px;
         align-self: flex-end;
     }
+}
+
+/* ── SELECT / DROPDOWN ──────────────────────── */
+.field-group select {
+    width: 100%;
+    padding: 16px 42px 16px 18px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    background-color: var(--surface-soft);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    appearance: none;
+    -webkit-appearance: none;
+    color: var(--text);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.field-group select:focus {
+    outline: none;
+    border-color: rgba(37, 99, 235, 0.4);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+}
+
+.field-group select option[value=""][disabled] {
+    color: var(--text-muted);
+}
+
+/* ── MODAL FORM SPACING ─────────────────────── */
+.profile-form .field-group {
+    margin-bottom: 4px;
+}
+
+.profile-form .field-group + .field-group {
+    margin-top: 4px;
+}
+
+/* ── SECURITY ITEM HOVER FIX ────────────────── */
+.security-item {
+    cursor: pointer;
+    transition: background 0.18s, transform 0.15s;
+    text-decoration: none;
+}
+
+.security-item:hover {
+    background: #eef2ff;
+    transform: translateX(2px);
+}
+
+.security-arrow {
+    font-size: 1.4rem;
+    line-height: 1;
+    color: var(--text-muted);
+    transition: color 0.18s;
+}
+
+.security-item:hover .security-arrow {
+    color: var(--accent);
+}
+
+/* ── MODAL OPEN LOCK BODY ───────────────────── */
+body.modal-open {
+    overflow: hidden;
+}
+
+/* ── HEADER ACTION BUTTONS ──────────────────────── */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.btn-save {
+    padding: 12px 22px;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #94a3b8, #b0bec5);
+    border: none;
+    cursor: not-allowed;
+    opacity: 0.55;
+    transition: background 0.25s, opacity 0.25s, transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-save.btn-save--active,
+.btn-save:not([disabled]) {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    opacity: 1;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+}
+
+.btn-save.btn-save--active:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
+}
+
+.btn-outline-discard {
+    padding: 12px 22px;
+    border-radius: 14px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #9ca3af;
+    background: transparent;
+    border: 1.5px solid #e5e7eb;
+    cursor: not-allowed;
+    opacity: 0.5;
+    transition: all 0.25s;
+}
+
+.btn-outline-discard.btn-outline-discard--active,
+.btn-outline-discard:not([disabled]) {
+    color: #dc2626;
+    border-color: #fca5a5;
+    background: #fff5f5;
+    opacity: 1;
+    cursor: pointer;
+}
+
+.btn-outline-discard.btn-outline-discard--active:hover {
+    background: #fee2e2;
+    border-color: #f87171;
+    transform: translateY(-1px);
+}
+
+/* ── CONFIRM SAVE MODAL ─────────────────────────── */
+.confirm-save-modal {
+    max-width: 500px;
+    text-align: center;
+}
+
+.confirm-save-icon {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(37,99,235,0.1), rgba(59,130,246,0.18));
+    border: 2px solid rgba(37,99,235,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 18px;
+}
+
+.confirm-save-icon svg {
+    width: 32px;
+    height: 32px;
+    stroke: #2563eb;
+}
+
+.confirm-save-modal .modal-header {
+    text-align: center;
+}
+
+.confirm-save-modal .modal-actions {
+    justify-content: center;
+    margin-top: 20px;
+    gap: 14px;
+}
+
+/* ── CHANGES SUMMARY ────────────────────────────── */
+.changes-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 16px;
+    text-align: left;
+}
+
+.change-row {
+    display: grid;
+    grid-template-columns: 130px 1fr 18px 1fr;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    font-size: 0.875rem;
+}
+
+.change-label {
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+}
+
+.change-from {
+    color: var(--text-muted);
+    text-decoration: line-through;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.change-row svg {
+    width: 14px;
+    height: 14px;
+    stroke: #9ca3af;
+    flex-shrink: 0;
+}
+
+.change-to {
+    color: #2563eb;
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* ── SAVE TOAST ─────────────────────────────────── */
+.save-toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 24px;
+    background: #111827;
+    color: #fff;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 99999;
+    white-space: nowrap;
+}
+
+.save-toast svg {
+    width: 18px;
+    height: 18px;
+    stroke: #4ade80;
+}
+
+.save-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
 }

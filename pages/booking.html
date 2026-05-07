@@ -410,6 +410,60 @@
         </div>
     </div>
 
+    <!-- ── SAFETY VERIFICATION NOTICE MODAL ──────────── -->
+    <div class="service-modal-backdrop open" id="safetyVerificationModal" aria-modal="true" role="dialog" aria-labelledby="safetyModalTitle">
+        <div class="service-modal safety-modal">
+            <div class="service-modal-header safety-modal-header">
+                <div class="safety-modal-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                </div>
+                <h3 id="safetyModalTitle">Safety Verification Notice</h3>
+            </div>
+            <div class="service-modal-body safety-modal-body">
+                <p class="safety-modal-intro">
+                    To maintain a safe and trusted home-care environment, all clients requesting in-home services are required to complete identity verification before confirming a booking.
+                </p>
+                <p class="safety-modal-sub">
+                    This process helps protect both caregivers and clients by ensuring that all service requests come from verified individuals.
+                </p>
+
+                <div class="safety-credentials">
+                    <p class="safety-credentials-label">Required credentials may include:</p>
+                    <ul class="safety-credentials-list">
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>
+                            </svg>
+                            Government-issued ID
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.78a16 16 0 0 0 6.29 6.29l1.67-1.67a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                            Contact verification
+                        </li>
+                        <li>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            Address confirmation
+                        </li>
+                    </ul>
+                </div>
+
+                <p class="safety-modal-agreement">
+                    By continuing, you agree to comply with our safety and verification procedures.
+                </p>
+
+                <div class="modal-actions safety-modal-actions">
+                    <button class="btn btn-primary--blue" id="safetyModalContinue">I Understand, Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <p>© 2026 Home Care Service (HCS). All Rights Reserved.</p>
     </footer>

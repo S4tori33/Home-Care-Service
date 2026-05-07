@@ -213,21 +213,23 @@ function openModal(id) {
     const modal = document.getElementById(id);
     if (!modal) return;
     modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    document.body.classList.add('modal-open');
 }
 
 function closeModal(id) {
     const modal = document.getElementById(id);
     if (!modal) return;
     modal.classList.remove('active');
-    document.body.style.overflow = '';
+    // Only remove body lock if no other modals are open
+    const anyOpen = document.querySelector('.profile-modal-overlay.active, .modal-overlay.active');
+    if (!anyOpen) document.body.classList.remove('modal-open');
 }
 
 function closeAllProfileModals() {
     document.querySelectorAll('.profile-modal-overlay.active').forEach(modal => {
         modal.classList.remove('active');
     });
-    document.body.style.overflow = '';
+    document.body.classList.remove('modal-open');
 }
 
 function initializeProfileModals() {

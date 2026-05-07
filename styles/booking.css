@@ -834,3 +834,115 @@ footer {
     background: #e9e9e9;
     color: #333;
 }
+
+/* ── SAFETY VERIFICATION MODAL ─────────────────── */
+.safety-modal {
+    max-width: 480px;
+}
+
+.safety-modal-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+    padding-bottom: 16px;
+}
+
+.safety-modal-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(26,46,204,0.12), rgba(108,79,212,0.18));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(26,46,204,0.2);
+}
+
+.safety-modal-icon svg {
+    width: 28px;
+    height: 28px;
+    stroke: #1a2ecc;
+}
+
+.safety-modal-header h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #1a1a2e;
+}
+
+.safety-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.safety-modal-intro {
+    font-size: 0.9rem;
+    color: #333;
+    line-height: 1.6;
+}
+
+.safety-modal-sub {
+    font-size: 0.875rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.safety-credentials {
+    background: rgba(26,46,204,0.05);
+    border: 1px solid rgba(26,46,204,0.15);
+    border-radius: 10px;
+    padding: 14px 16px;
+}
+
+.safety-credentials-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #1a2ecc;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.safety-credentials-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.safety-credentials-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.875rem;
+    color: #333;
+    font-weight: 500;
+}
+
+.safety-credentials-list li svg {
+    width: 16px;
+    height: 16px;
+    stroke: #1a2ecc;
+    flex-shrink: 0;
+}
+
+.safety-modal-agreement {
+    font-size: 0.8rem;
+    color: #777;
+    text-align: center;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+.safety-modal-actions {
+    justify-content: center;
+    margin-top: 4px;
+}
+
+.safety-modal-actions .btn {
+    min-width: 200px;
+    font-size: 0.9rem;
+    padding: 12px 24px;
+}

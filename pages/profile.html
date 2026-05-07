@@ -299,8 +299,10 @@
                     <p>Manage your personal information and preferences</p>
                 </div>
             </div>
-            <button class="btn btn-primary header-action">Save Changes</button>
-             <button class="btn btn-primary header-action">Discard</button>
+            <div class="header-actions">
+                <button class="btn btn-outline-discard" id="discardBtn" disabled>Discard</button>
+                <button class="btn btn-save" id="saveBtn" disabled>Save Changes</button>
+            </div>
         </section>
         <section class="profile-grid">
             <aside class="profile-panel">
@@ -326,25 +328,6 @@
                             <span>Rating</span>
                             <strong>5.0</strong>
                         </div>
-                    </div>
-                </div>
-                 <div class="card section-card">
-                    <div class="card-header">
-                        <h2>Security & Privacy</h2>
-                    </div>
-                    <div class="security-list">
-                        <a href="#" class="security-item" data-open-modal="changePasswordModal">
-                            <span>Change Password</span>
-                            <span class="security-arrow">›</span>
-                        </a>
-                        <a href="#" class="security-item" data-open-modal="tfaModal">
-                            <span>Two-Factor Authentication</span>
-                            <span class="security-arrow">›</span>
-                        </a>
-                        <a href="#" class="security-item" data-open-modal="loginHistoryModal">
-                            <span>Login History</span>
-                            <span class="security-arrow">›</span>
-                        </a>
                     </div>
                 </div>
                 <!-- <div class="quick-actions card">
@@ -477,18 +460,18 @@
                                 <strong>Visa •••• 4242</strong>
                                 <span class="payment-note default">Default</span>
                             </div>
-                            <button class="btn btn-link edit-payment" type="button" data-open-modal="paymentEditModal" data-payment-method="Visa" data-payment-details="•••• 4242" data-default="true">Edit</button>
+                            <button class="btn btn-link edit-payment" type="button" data-payment-method="Visa" data-payment-details="•••• 4242" data-default="true">Edit</button>
                         </div>
                         <div class="payment-card">
                             <div class="payment-icon">M</div>
                             <div>
                                 <strong>Mastercard •••• 8888</strong>
                             </div>
-                            <button class="btn btn-link edit-payment" type="button" data-open-modal="paymentEditModal" data-payment-method="Mastercard" data-payment-details="•••• 8888" data-default="false">Edit</button>
+                            <button class="btn btn-link edit-payment" type="button" data-payment-method="Mastercard" data-payment-details="•••• 8888" data-default="false">Edit</button>
                         </div>
                     </div>
                 </div>
-                <!-- <div class="card section-card">
+                <div class="card section-card">
                     <div class="card-header">
                         <h2>Security & Privacy</h2>
                     </div>
@@ -506,7 +489,7 @@
                             <span class="security-arrow">›</span>
                         </a>
                     </div>
-                </div> -->
+                </div>
             </div>
         </section>
         
@@ -667,15 +650,250 @@
         </div>
     </div>
 
+    <!-- ── CONFIRM SAVE MODAL ─────────────────────────── -->
+    <div class="profile-modal-overlay" id="confirmSaveModal">
+        <div class="modal-card confirm-save-modal">
+            <div class="confirm-save-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z"/>
+                    <path d="M9 12l2 2 4-4"/>
+                </svg>
+            </div>
+            <div class="modal-header">
+                <h3>Save Profile Changes?</h3>
+                <p>You've made changes to your profile. Review what will be updated before confirming.</p>
+            </div>
+            <div class="modal-body">
+                <div id="changesSummary" class="changes-summary"></div>
+                <div class="modal-actions">
+                    <button class="btn btn-outline-discard modal-cancel-btn" type="button">Cancel</button>
+                    <button class="btn btn-save" id="confirmSaveBtn" type="button">Yes, Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── SAVE SUCCESS TOAST ─────────────────────────── -->
+    <div id="saveToast" class="save-toast">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+        </svg>
+        Profile saved successfully!
+    </div>
+
     <script src="../js/script.js"></script>
     <script>
-        if (typeof initializeProfileTabs === 'function') {
-            initializeProfileTabs();
+        // ── PROFILE MODAL SYSTEM ──────────────────────────────────────────────
+
+        function openProfileModal(id) {
+            var modal = document.getElementById(id);
+            if (!modal) return;
+            modal.style.opacity = '0';
+            modal.style.pointerEvents = 'auto';
+            modal.style.display = 'flex';
+            requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                    modal.style.transition = 'opacity 0.2s ease';
+                    modal.style.opacity = '1';
+                });
+            });
+            document.body.style.overflow = 'hidden';
         }
-        if (typeof initializeProfileModals === 'function') {
-            initializeProfileModals();
+
+        function closeProfileModal(id) {
+            var modal = document.getElementById(id);
+            if (!modal) return;
+            modal.style.opacity = '0';
+            modal.style.pointerEvents = 'none';
+            setTimeout(function () { modal.style.display = 'none'; }, 200);
+            document.body.style.overflow = '';
         }
+
+        // ── SAVE / DISCARD LOGIC ──────────────────────────────────────────────
+
+        var originalValues = {};
+        var fieldLabels = {
+            firstName: 'First Name',
+            lastName:  'Last Name',
+            email:     'Email Address',
+            phone:     'Phone Number',
+            street:    'Street Address',
+            city:      'City',
+            zip:       'ZIP Code'
+        };
+
+        function snapshotValues() {
+            Object.keys(fieldLabels).forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el) originalValues[id] = el.value;
+            });
+        }
+
+        function getChanges() {
+            var changes = [];
+            Object.keys(fieldLabels).forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el && el.value !== originalValues[id]) {
+                    changes.push({
+                        label: fieldLabels[id],
+                        from:  originalValues[id] || '(empty)',
+                        to:    el.value || '(empty)'
+                    });
+                }
+            });
+            return changes;
+        }
+
+        function hasChanges() {
+            return getChanges().length > 0;
+        }
+
+        function updateHeaderButtons() {
+            var saveBtn    = document.getElementById('saveBtn');
+            var discardBtn = document.getElementById('discardBtn');
+            var changed    = hasChanges();
+            saveBtn.disabled    = !changed;
+            discardBtn.disabled = !changed;
+            saveBtn.classList.toggle('btn-save--active', changed);
+            discardBtn.classList.toggle('btn-outline-discard--active', changed);
+        }
+
+        function showToast() {
+            var toast = document.getElementById('saveToast');
+            toast.classList.add('show');
+            setTimeout(function () { toast.classList.remove('show'); }, 3000);
+        }
+
+        function applyDiscard() {
+            Object.keys(fieldLabels).forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el) el.value = originalValues[id];
+            });
+            updateHeaderButtons();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Snapshot original values on load
+            snapshotValues();
+
+            // Hide all modals initially
+            document.querySelectorAll('.profile-modal-overlay').forEach(function (m) {
+                m.style.display = 'none';
+                m.style.opacity = '0';
+                m.style.pointerEvents = 'none';
+            });
+
+            // Watch inputs/selects for changes
+            Object.keys(fieldLabels).forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el) el.addEventListener('input', updateHeaderButtons);
+                if (el) el.addEventListener('change', updateHeaderButtons);
+            });
+
+            // Save button → open confirm modal
+            document.getElementById('saveBtn').addEventListener('click', function () {
+                var changes = getChanges();
+                if (!changes.length) return;
+
+                // Build changes summary
+                var summary = document.getElementById('changesSummary');
+                summary.innerHTML = changes.map(function (c) {
+                    return '<div class="change-row">' +
+                        '<span class="change-label">' + c.label + '</span>' +
+                        '<span class="change-from">' + c.from + '</span>' +
+                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>' +
+                        '<span class="change-to">' + c.to + '</span>' +
+                        '</div>';
+                }).join('');
+
+                openProfileModal('confirmSaveModal');
+            });
+
+            // Confirm save button inside modal
+            document.getElementById('confirmSaveBtn').addEventListener('click', function () {
+                snapshotValues(); // commit new values as baseline
+                closeProfileModal('confirmSaveModal');
+                updateHeaderButtons();
+                showToast();
+            });
+
+            // Discard button
+            document.getElementById('discardBtn').addEventListener('click', function () {
+                if (!hasChanges()) return;
+                applyDiscard();
+            });
+
+            // Open triggers
+            document.querySelectorAll('[data-open-modal]').forEach(function (trigger) {
+                trigger.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    openProfileModal(trigger.getAttribute('data-open-modal'));
+                });
+            });
+
+            // Close: X and Cancel buttons
+            document.querySelectorAll('.profile-modal-overlay .modal-close, .profile-modal-overlay .modal-cancel-btn').forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var overlay = btn.closest('.profile-modal-overlay');
+                    if (overlay) closeProfileModal(overlay.id);
+                });
+            });
+
+            // Backdrop click
+            document.querySelectorAll('.profile-modal-overlay').forEach(function (overlay) {
+                overlay.addEventListener('click', function (e) {
+                    if (e.target === overlay) closeProfileModal(overlay.id);
+                });
+            });
+
+            // Escape key
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.profile-modal-overlay').forEach(function (m) {
+                        if (m.style.display !== 'none') closeProfileModal(m.id);
+                    });
+                }
+            });
+
+            // Edit payment pre-fill
+            document.querySelectorAll('.edit-payment').forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var method    = btn.dataset.paymentMethod  || '';
+                    var details   = btn.dataset.paymentDetails || '';
+                    var isDefault = btn.dataset.default === 'true';
+                    var title     = document.getElementById('editPaymentTitle');
+                    var mInput    = document.getElementById('paymentMethodName');
+                    var dInput    = document.getElementById('paymentCardDetails');
+                    var defChk    = document.getElementById('paymentDefaultToggle');
+                    if (title)  title.textContent = 'Edit ' + method + ' Method';
+                    if (mInput) mInput.value      = method;
+                    if (dInput) dInput.value      = details;
+                    if (defChk) defChk.checked    = isDefault;
+                    openProfileModal('paymentEditModal');
+                });
+            });
+
+            // Form submits
+            function handleFormSubmit(formId, message, modalId) {
+                var form = document.getElementById(formId);
+                if (!form) return;
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    closeProfileModal(modalId);
+                    form.reset();
+                    showToast();
+                });
+            }
+            handleFormSubmit('addPaymentForm',    'Payment method saved!',                     'paymentAddModal');
+            handleFormSubmit('editPaymentForm',   'Payment method updated!',                   'paymentEditModal');
+            handleFormSubmit('changePasswordForm','Password updated successfully!',            'changePasswordModal');
+            handleFormSubmit('tfaForm',           'Two-Factor Authentication settings saved.', 'tfaModal');
+
+            if (typeof initializeProfileTabs === 'function') initializeProfileTabs();
+        });
     </script>
 </body>
 </html>
-

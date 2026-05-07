@@ -141,7 +141,7 @@
           <div class="grid-2">
             <div class="field-group" id="group-yearsExperience">
               <label for="yearsExperience">Years of Experience <span class="required">*</span></label>
-              <input id="yearsExperience" name="yearsExperience" type="number" min="0">
+              <input id="yearsExperience" name="yearsExperience" type="number" min="0" onkeypress="return event.charCode !== 45">
               <div class="field-error" id="error-yearsExperience"></div>
             </div>
             <div class="field-group" id="group-skills">
@@ -169,6 +169,7 @@
               <label><input type="checkbox" name="languages" value="Maguindanao"> Maguindanao</label>
               <label><input type="checkbox" name="languages" value="Maranao"> Maranao</label>
               <label><input type="checkbox" name="languages" value="Tausug"> Tausug</label>
+              <label><input type="checkbox" name="languages" value="Other"> Other</label>
             </div>
           </div>
           <div class="field-group">
@@ -189,12 +190,34 @@
             </div>
             <div class="upload-slot">
               <div>
-                <div class="upload-label">License / Certification</div>
+                <div class="upload-label">Driver's License</div>
                 <div class="upload-desc">PDF, DOC, DOCX, JPG, PNG up to 5MB.</div>
               </div>
               <div>
                 <input id="licenseUpload" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none;" onchange="handleFileUpload(event,'license')">
                 <button type="button" class="btn btn-secondary" onclick="document.getElementById('licenseUpload').click()">Upload File</button>
+                <div class="upload-file" id="licenseLabel">No file chosen</div>
+              </div>
+            </div>
+            <div class="upload-slot">
+              <div>
+                <div class="upload-label">National I.D.</div>
+                <div class="upload-desc">PDF, DOC, DOCX, JPG, PNG up to 5MB.</div>
+              </div>
+              <div>
+                <input id="licenseUpload" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none;" onchange="handleFileUpload(event,'license')">
+                <button type="button" class="btn btn-secondary" onclick="document.getElementById('nationalIDUpload').click()">Upload File</button>
+                <div class="upload-file" id="licenseLabel">No file chosen</div>
+              </div>
+            </div>
+            <div class="upload-slot">
+              <div>
+                <div class="upload-label">Birth Certificate</div>
+                <div class="upload-desc">PDF, DOC, DOCX, JPG, PNG up to 5MB.</div>
+              </div>
+              <div>
+                <input id="licenseUpload" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none;" onchange="handleFileUpload(event,'license')">
+                <button type="button" class="btn btn-secondary" onclick="document.getElementById('birthCertUpload').click()">Upload File</button>
                 <div class="upload-file" id="licenseLabel">No file chosen</div>
               </div>
             </div>
