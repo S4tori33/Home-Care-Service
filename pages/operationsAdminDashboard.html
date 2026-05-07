@@ -1,196 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Operations Dashboard - Home Care Service</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles/dashboard.css">
-  <link rel="stylesheet" href="../styles/adminDashboard.css">
-  <style>
-    .admin-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-bottom: 32px; }
-    .admin-card { background: white; border: 1px solid #e5e7eb; padding: 24px; border-radius: 12px; transition: all 0.3s ease; }
-    .admin-card:hover { border-color: #d97706; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.1); }
-    .admin-card h3 { font-size: 16px; font-weight: 600; color: #1f2937; margin-bottom: 16px; }
-    .admin-card .stat { font-size: 28px; font-weight: 700; color: #d97706; margin-bottom: 8px; }
-    .admin-card p { font-size: 13px; color: #6b7280; }
-    .admin-btn { padding: 10px 16px; border: 1px solid #d97706; background: white; color: #d97706; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; margin-top: 16px; }
-    .admin-btn:hover { background: #d97706; color: white; }
-    .admin-btn.primary { background: #d97706; color: white; }
-    .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; }
-    .status-pending { background: #fef3c7; color: #92400e; }
-    .status-confirmed { background: #dcfce7; color: #15803d; }
-    .status-completed { background: #d1d5db; color: #374151; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operations Dashboard - Home Care Service</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<link rel="stylesheet" href="../styles/opStyling.css">
 </head>
 <body>
 
-  <nav class="navbar">
-    <button class="sidebar-toggle" id="sidebarToggle"><span></span><span></span><span></span></button>
+<main>
+
+    <nav class="navbar">
     <a href="#" class="navbar-brand">
-      <div class="navbar-logo">HCS</div>
+      <div class="navbar-logo"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ea580c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
       <div class="navbar-brand-text">
-        <h1>Home Care Service</h1>
-        <p>Operations Center</p>
+        <h1>Operations Admin Dashboard</h1>
+        <p>Booking &amp; Provider Assignment</p>
       </div>
     </a>
-    <div class="navbar-links">
-      <a href="home.html">Home</a>
-      <a href="../index.html" id="logoutLink">Logout</a>
+    <div class="navbar-right">
+      <div class="admin-pill">
+        <span class="admin-dot"></span>
+        Operations Admin
+      </div>
+      <a href="../home.html" class="logout-btn" title="Exit">
+        <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+      </a>
     </div>
   </nav>
 
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-profile">
-      <div class="avatar-wrap">
-        <div class="avatar" id="avatarEl">OA</div>
-        <div class="avatar-badge"></div>
-      </div>
-      <div class="sidebar-user-name" id="userName">Operations Admin</div>
-      <div class="sidebar-user-role" id="userRole">Administrator</div>
-    </div>
-    <nav class="sidebar-nav" id="sidebarNav"></nav>
-  </aside>
-
-  <div class="main-wrap">
-    <div class="dashboard-shell">
-      <div class="shell-topbar">
-        <div class="shell-brand">
-          <div class="shell-logo">HCS</div>
-          <div class="shell-brand-text">
-            <h2>Operations Admin Dashboard</h2>
-            <p>Booking & Service Management</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="dashboard-header">
-        <h1>Welcome, <span id="headerName">Operations Admin</span>! 📊</h1>
-        <p class="dashboard-subtitle">Manage bookings and service provider assignments</p>
-      </div>
-
-      <div class="admin-grid">
-        <div class="admin-card">
-          <h3>📋 Total Bookings</h3>
-          <div class="stat" id="totalBookings">0</div>
-          <p>All bookings in system</p>
-          <button class="admin-btn primary" onclick="viewAllBookings()">View All</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>⏳ Pending Assignment</h3>
-          <div class="stat" id="pendingAssignment">0</div>
-          <p>Need provider assignment</p>
-          <button class="admin-btn primary" onclick="viewPendingAssignment()">Assign</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>✅ Confirmed</h3>
-          <div class="stat" id="confirmedBookings">0</div>
-          <p>Assigned and proceeding</p>
-          <button class="admin-btn" onclick="viewConfirmed()">View</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>✔️ Completed</h3>
-          <div class="stat" id="completedBookings">0</div>
-          <p>Successfully completed</p>
-          <button class="admin-btn" onclick="viewCompleted()">View</button>
-        </div>
-      </div>
-
-      <div class="section-title" style="font-size: 18px; margin-bottom: 16px;">Service Breakdown</div>
-      <div class="admin-grid">
-        <div class="admin-card">
-          <h3>🏥 Elderly Care</h3>
-          <div class="stat" id="caregivingServices">0</div>
-          <button class="admin-btn" onclick="viewServiceType('caregiver')">Manage</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>🐾 Pet Care</h3>
-          <div class="stat" id="petServices">0</div>
-          <button class="admin-btn" onclick="viewServiceType('pet_care')">Manage</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>🌿 Garden Work</h3>
-          <div class="stat" id="gardenServices">0</div>
-          <button class="admin-btn" onclick="viewServiceType('garden_maintenance')">Manage</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>🧹 House Cleaning</h3>
-          <div class="stat" id="cleaningServices">0</div>
-          <button class="admin-btn" onclick="viewServiceType('house_cleaning')">Manage</button>
-        </div>
-      </div>
-
-      <div class="section-title" style="font-size: 18px; margin-bottom: 16px;">Quick Actions</div>
-      <div class="admin-grid">
-        <div class="admin-card">
-          <h3>➕ Create Booking</h3>
-          <p style="margin-bottom: 16px;">Manually create new booking</p>
-          <button class="admin-btn primary" onclick="createBooking()">Create</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>👤 Assign Provider</h3>
-          <p style="margin-bottom: 16px;">Assign provider to booking</p>
-          <button class="admin-btn primary" onclick="assignProvider()">Assign</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>📞 Contact Provider</h3>
-          <p style="margin-bottom: 16px;">Message assigned providers</p>
-          <button class="admin-btn primary" onclick="contactProvider()">Message</button>
-        </div>
-      </div>
-
+  <!-- Header Card -->
+  <div class="header-card">
+    <div class="welcome-banner">
+      <h3>Welcome, Operations Manager! <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5046e4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-left:2px"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></h3>
+      <p>Monitor and manage all service operations in real-time</p>
     </div>
   </div>
 
-  <script src="../js/auth.js"></script>
-  <script src="../js/dashboard.js"></script>
-  <script>
-    if (!dashboard.checkAccess('operations_admin')) {
-      window.location.href = '../index.html';
-    }
-    dashboard.initializeDashboard();
+  <!-- Service Cards -->
+  <p class="section-label">Active Service Categories</p>
+  <div class="service-grid" id="serviceGrid">
+    <!-- Rendered by JS -->
+  </div>
 
-    function updateStats() {
-      const bookings = auth.getAllBookings();
-      
-      document.getElementById('totalBookings').textContent = bookings.length;
-      document.getElementById('pendingAssignment').textContent = bookings.filter(b => b.status === 'pending').length;
-      document.getElementById('confirmedBookings').textContent = bookings.filter(b => b.status === 'confirmed').length;
-      document.getElementById('completedBookings').textContent = bookings.filter(b => b.status === 'completed').length;
-      
-      document.getElementById('caregivingServices').textContent = bookings.filter(b => b.serviceType === 'Elderly Care').length;
-      document.getElementById('petServices').textContent = bookings.filter(b => b.serviceType === 'Pet Care').length;
-      document.getElementById('gardenServices').textContent = bookings.filter(b => b.serviceType === 'Garden Maintenance').length;
-      document.getElementById('cleaningServices').textContent = bookings.filter(b => b.serviceType === 'House Cleaning').length;
-    }
+  <!-- Middle Row -->
+  <div class="mid-row">
+    <!-- Metrics -->
+    <div class="metric-stack">
+      <div class="metric-card metric-revenue">
+        <div class="metric-top">
+          <div class="metric-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+          <span class="metric-badge">+12%</span>
+        </div>
+        <div class="metric-label">Total Revenue</div>
+        <div class="metric-value">$24,580</div>
+        <div class="metric-sub">This month</div>
+      </div>
+      <div class="metric-card metric-scheduled">
+        <div class="metric-top">
+          <div class="metric-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6d28d9" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+          <span class="metric-badge" style="background:var(--primary-light);color:var(--primary);">Today</span>
+        </div>
+        <div class="metric-label">Scheduled Jobs</div>
+        <div class="metric-value" id="scheduledCount">18</div>
+        <div class="metric-sub" id="scheduledSub">8 completed, 10 pending</div>
+      </div>
+      <div class="metric-card metric-rate">
+        <div class="metric-top">
+          <div class="metric-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1d4ed8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+          <span class="metric-badge">Avg</span>
+        </div>
+        <div class="metric-label">Service Rate</div>
+        <div class="metric-value">$85</div>
+        <div class="metric-sub">Per hour</div>
+      </div>
+    </div>
 
-    function viewAllBookings() { alert('Opening booking management...'); }
-    function viewPendingAssignment() { alert('Showing bookings needing assignment...'); }
-    function viewConfirmed() { alert('Showing confirmed bookings...'); }
-    function viewCompleted() { alert('Showing completed bookings...'); }
-    function viewServiceType(type) { alert(`Showing ${type} services...`); }
-    function createBooking() { alert('Opening booking creation form...'); }
-    function assignProvider() { alert('Opening provider assignment tool...'); }
-    function contactProvider() { alert('Opening messaging system...'); }
+    <!-- Chart -->
+    <div class="chart-card">
+      <div class="chart-title">Weekly Service Distribution</div>
+      <div class="chart-wrap">
+        <canvas id="weeklyChart"></canvas>
+      </div>
+    </div>
 
-    document.getElementById('logoutLink').addEventListener('click', (e) => {
-      e.preventDefault();
-      dashboard.logout();
-    });
+    <!-- Staff -->
+    <div class="staff-card">
+      <div class="staff-header">
+        <span class="staff-title">Staff Availability</span>
+        <span class="staff-icon"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span>
+      </div>
+      <div class="staff-counts">
+        <div class="scount available">
+          <strong id="avail-count">3</strong>
+          <span>Available</span>
+        </div>
+        <div class="scount onjob">
+          <strong id="onjob-count">4</strong>
+          <span>On Job</span>
+        </div>
+        <div class="scount">
+          <strong id="off-count">1</strong>
+          <span>Off Duty</span>
+        </div>
+      </div>
+      <div class="staff-list" id="staffList">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+  </div>
 
-    updateStats();
-    setInterval(updateStats, 10000);
-  </script>
+  <!-- Jobs Table -->
+  <div class="jobs-card">
+    <div class="jobs-toolbar">
+      <span class="jobs-title">Today's Jobs &amp; Assignments</span>
+      <div class="search-wrap">
+        <span class="search-icon"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+        <input type="text" id="jobSearch" placeholder="Search by client, staff, or location...">
+      </div>
+      <select class="filter-select" id="statusFilter">
+        <option value="">All Status</option>
+        <option value="In Progress">In Progress</option>
+        <option value="Scheduled">Scheduled</option>
+        <option value="Completed">Completed</option>
+        <option value="Urgent">Urgent</option>
+      </select>
+      <select class="filter-select" id="svcFilter">
+        <option value="">All Services</option>
+        <option value="Elderly Care">Elderly Care</option>
+        <option value="Pet Care">Pet Care</option>
+        <option value="Garden Work">Garden Work</option>
+        <option value="House Cleaning">House Cleaning</option>
+      </select>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Client</th>
+          <th>Service</th>
+          <th>Assigned To</th>
+          <th>Location</th>
+          <th>Time</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="jobsBody"></tbody>
+    </table>
+    <div class="no-results" id="noResults">No matching jobs found.</div>
+    <div class="pagination">
+      <span class="page-info" id="pageInfo">Showing 8 of 8 jobs today</span>
+      <div class="page-btns">
+        <button class="page-btn" id="prevBtn" onclick="changePage(-1)">Previous</button>
+        <button class="page-btn primary" id="nextBtn" onclick="changePage(1)">Next</button>
+      </div>
+    </div>
+  </div>
+
+<!-- ═══ Operations Admin Job Details Modal ═══ -->
+<div class="ops-modal-overlay" id="opsModal" onclick="opsCloseOutside(event)">
+  <div class="ops-modal">
+
+    <!-- Header -->
+    <div class="ops-modal-header">
+      <div class="ops-modal-header-icon" id="opsModalIcon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg></div>
+      <div class="ops-modal-header-info">
+        <h2 id="opsModalTitle">Job Details</h2>
+        <p id="opsModalSubtitle">Booking #0000</p>
+        <div class="ops-modal-header-badges">
+          <span class="ops-modal-svc-pill" id="opsModalSvc">Elderly Care</span>
+          <span class="ops-modal-status-pill" id="opsModalStatus">Scheduled</span>
+        </div>
+      </div>
+      <button class="ops-modal-close" onclick="closeOpsModal()">✕</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="ops-modal-tabs">
+      <button class="ops-tab-btn active" id="tab-details" onclick="switchOpsTab('details')"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg> Booking Details</button>
+      <button class="ops-tab-btn" id="tab-assign" onclick="switchOpsTab('assign')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Assign Provider
+        <span class="ops-tab-dot" id="assign-dot" style="display:none"></span>
+      </button>
+      <button class="ops-tab-btn" id="tab-hr" onclick="switchOpsTab('hr')">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg> HR Inbox
+        <span class="ops-tab-dot">3</span>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="ops-modal-body">
+
+      <!-- TAB: Booking Details -->
+      <div id="ops-tab-details">
+        <p class="ops-section-title">Customer Information</p>
+        <div class="ops-info-grid">
+          <div class="ops-info-field"><label>Customer Name</label><span id="d-client">—</span></div>
+          <div class="ops-info-field"><label>Phone</label><span id="d-phone">—</span></div>
+          <div class="ops-info-field"><label>Service Type</label><span id="d-service">—</span></div>
+          <div class="ops-info-field"><label>Booking Date &amp; Time</label><span id="d-time">—</span></div>
+          <div class="ops-info-field full"><label>Service Location</label><span id="d-location">—</span></div>
+        </div>
+        <div class="ops-divider"></div>
+        <p class="ops-section-title">Assignment Info</p>
+        <div class="ops-info-grid">
+          <div class="ops-info-field"><label>Assigned Provider</label><span id="d-provider">—</span></div>
+          <div class="ops-info-field"><label>Current Status</label><span id="d-status">—</span></div>
+          <div class="ops-info-field full"><label>Notes</label><span id="d-notes">No special notes recorded.</span></div>
+        </div>
+      </div>
+
+      <!-- TAB: Assign Provider -->
+      <div id="ops-tab-assign" style="display:none">
+        <p class="ops-section-title">Available Providers — HR Approved &amp; On-Roster</p>
+        <div class="ops-provider-list" id="opsProviderList">
+          <!-- populated by JS -->
+        </div>
+        <div class="ops-divider"></div>
+        <p class="ops-section-title">Recently Approved by HR</p>
+        <div class="ops-provider-list" id="opsHRApprovedList">
+          <!-- populated by JS -->
+        </div>
+      </div>
+
+      <!-- TAB: HR Inbox -->
+      <div id="ops-tab-hr" style="display:none">
+        <p class="ops-section-title">Incoming from HR Admin — Awaiting Ops Confirmation</p>
+        <div class="ops-hr-inbox" id="opsHrInbox">
+          <!-- populated by JS -->
+        </div>
+        <div class="ops-divider"></div>
+        <p class="ops-section-title">Recently Deployed</p>
+        <div class="ops-hr-inbox" id="opsHrDeployed">
+          <!-- populated by JS -->
+        </div>
+      </div>
+
+    </div><!-- /body -->
+
+    <!-- Footer -->
+    <div class="ops-modal-footer">
+      <div class="ops-footer-info">Booking <strong id="footer-id">#—</strong> · <span id="footer-status">—</span></div>
+      <div class="ops-footer-btns">
+        <button class="ops-btn-cancel" onclick="closeOpsModal()">Close</button>
+        <button class="ops-btn-assign" id="opsAssignBtn" onclick="confirmAssignment()" disabled>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Confirm Assignment
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast container -->
+<div id="opsToastContainer"></div>
+
+</main>
+
+<script src="../js/opLogic.js"> </script>
 </body>
 </html>
-
