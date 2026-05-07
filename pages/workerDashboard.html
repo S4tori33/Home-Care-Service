@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Worker Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/home.css">
+  <link rel="stylesheet" href="../styles/caregiverDashboard.css">
+</head>
+<body>
+
+    <!-- ── NAVBAR ───────────────────────────────────── -->
+    <nav class="navbar">
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+            <span></span><span></span><span></span>
+        </button>
+
+        <a href="home.html" class="navbar-brand">
+            <div class="navbar-logo">HCS</div>
+            <div class="navbar-brand-text">
+                <h1>Home Care Service</h1>
+                <p>Quality Care, Quality Life</p>
+            </div>
+        </a>
+
+        <div class="navbar-links">
+            <a href="home.html">Home</a>
+            <a href="home.html#services">Services</a>
+            <a href="about.html">About</a>
+            <a href="home.html#management">Careers</a>
+            <a href="home.html#contact">Contact</a>
+        </div>
+
+        <div class="navbar-spacer"></div>
+
+    </nav>
+
+    <!-- ── SIDEBAR OVERLAY ──────────────────────────── -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ── LEFT SIDEBAR ─────────────────────────────── -->
+    <aside class="sidebar" id="sidebar">
+
+        <div class="sidebar-profile">
+            <div class="avatar-wrap">
+                <div class="avatar" id="avatarEl" title="Change profile picture">Avatar Here</div>
+                <div class="avatar-badge"></div>
+            </div>
+            <div class="sidebar-user-name" id="userName">Michael Chen</div>
+            <div class="sidebar-user-role" id="userRole">Worker</div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <div class="sidebar-section-label">Main</div>
+
+            <!-- Dashboard -->
+            <a href="workerDashboard.html" class="sidebar-item active" data-page="dashboard">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="3" width="7" height="7"/>
+                    <rect x="14" y="3" width="7" height="7"/>
+                    <rect x="14" y="14" width="7" height="7"/>
+                    <rect x="3" y="14" width="7" height="7"/>
+                </svg>
+                Dashboard
+            </a>
+
+            <!-- My Bookings -->
+            <a href="booking.html" class="sidebar-item" data-page="bookings">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                My Jobs
+            </a>
+
+            <!-- Messages -->
+            <a href="messaging.html" class="sidebar-item" data-page="messages">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+                Messages
+            </a>
+
+            <!-- Inbox -->
+            <a href="#" class="sidebar-item" data-page="inbox" onclick="event.preventDefault(); openInboxModal()">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="2"/>
+                    <path d="M7 9l5 4 5-4"/>
+                </svg>
+                Inbox
+            </a>
+
+            <div class="sidebar-divider"></div>
+            <div class="sidebar-section-label">Account</div>
+
+            <!-- My Profile -->
+            <a href="profile.html" class="sidebar-item" data-page="profile">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+                My Profile
+            </a>
+
+            <!-- Help & Support -->
+            <a href="support.html" class="sidebar-item" data-page="help">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                </svg>
+                Help & Support
+            </a>
+
+            <div class="sidebar-divider"></div>
+
+        </nav>
+
+        <div class="sidebar-footer">
+            <a href="../index.html" class="sidebar-item logout" style="margin-bottom:0;">
+                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                    <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                </svg>
+                Log Out
+            </a>
+        </div>
+    </aside>
+
+    <!-- ── MAIN CONTENT ──────────────────────────────── -->
+    <div class="main-wrap" style="background-color: whitesmoke;">
+      <div class="container">
+        <section class="dashboard-overview">
+          <div class="dashboard-header">
+            <div class="dashboard-copy">
+              <p class="page-label">Worker Dashboard</p>
+              <h1>Welcome Back, Michael!</h1>
+              <p class="dashboard-summary">Manage your assigned jobs and communicate with customers.</p>
+              <span id="workerStatusPill" class="status-pill">Available</span>
+            </div>
+            <button class="btn blue outline" onclick="openScheduleModal()">View Schedule</button>
+          </div>
+
+          <div class="stats-grid">
+            <article class="stat-card">
+              <div class="stat-card-icon stat-icon-assigned">&#128188;</div>
+              <div class="stat-copy">
+                <span>Assigned Jobs</span>
+                <h2 id="assignedCount">2</h2>
+                <p class="stat-helper">Active assignments</p>
+              </div>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-card-icon stat-icon-completed">&#9989;</div>
+              <div class="stat-copy">
+                <span>Completed Jobs</span>
+                <h2 id="completedCount">0</h2>
+                <p class="stat-helper">This week</p>
+              </div>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-card-icon stat-icon-rating">&#11088;</div>
+              <div class="stat-copy">
+                <span>Rating</span>
+                <h2>4.8</h2>
+                <p class="stat-helper">Based on 45 reviews</p>
+              </div>
+            </article>
+
+            <article class="stat-card">
+              <div class="stat-card-icon stat-icon-earnings">&#36;</div>
+              <div class="stat-copy">
+                <span>Earnings (Week)</span>
+                <h2 id="earnings">$540</h2>
+                <p class="stat-helper">+12% from last week</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="jobs-panel">
+          <div class="jobs-panel-top">
+            <div>
+              <h2>Jobs</h2>
+              <p>Review your upcoming works and manage every detail from one place.</p>
+            </div>
+            <span class="status-pill">2 Active</span>
+          </div>
+
+          <div class="tab-bar">
+            <button class="tab-button active" data-tab="all">All Jobs</button>
+            <button class="tab-button" data-tab="assigned">Assigned Jobs</button>
+            <button class="tab-button" data-tab="completed">Completed Jobs</button>
+            <button class="tab-button" data-tab="browse">Browse Jobs</button>
+          </div>
+
+          <div class="jobs-list" id="jobsContainer">
+
+          </div>
+        </section>
+      </div>
+    </div>
+
+<!-- ACCEPT -->
+<div class="modal-overlay" id="acceptModal">
+  <div class="modal">
+    <h2>Accept Job</h2>
+    <p>Are you sure you want to accept this booking?</p>
+    <div class="modal-actions">
+      <button class="btn dark" onclick="confirmAccept()">Confirm</button>
+      <button class="btn light" onclick="closeModal('acceptModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- DECLINE -->
+<div class="modal-overlay" id="declineModal">
+  <div class="modal">
+    <h2>Decline Job</h2>
+    <p>Are you sure you want to decline this booking?</p>
+    <div class="modal-actions">
+      <button class="btn red" onclick="confirmDecline()">Decline</button>
+      <button class="btn light" onclick="closeModal('declineModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- MESSAGE -->
+<div class="modal-overlay" id="messageModal">
+  <div class="modal">
+    <h2>Message Client</h2>
+
+    <div class="chat-box">
+      <div class="msg admin">Operations: Client requires wheelchair assistance.</div>
+      <div class="msg caregiver">Understood. I will prepare accordingly.</div>
+    </div>
+
+    <textarea placeholder="Type your message..."></textarea>
+
+    <div class="modal-actions">
+      <button class="btn dark">Send</button>
+      <button class="btn light" onclick="closeModal('messageModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAILS -->
+<div class="modal-overlay" id="detailsModal">
+  <div class="modal">
+    <h2>Client Details</h2>
+
+    <div id="clientDetails"></div>
+
+    <div class="modal-actions">
+      <button class="btn light" onclick="closeModal('detailsModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/appData.js"></script>
+<script src="../js/caregiverDashboard.js"></script>
+
+</body>
+</html>
