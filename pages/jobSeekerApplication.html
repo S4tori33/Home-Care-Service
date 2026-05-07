@@ -1,289 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join Our Team - Home Care Service</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/jobSeeker.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Service Provider Application | Home Care Service</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/apply.css">
+</head>
 </head>
 <body>
-
-    <!-- ── NAVBAR ───────────────────────────────────── -->
-    <nav class="navbar">
-        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
-            <span></span><span></span><span></span>
-        </button>
-
-        <a href="../index.html" class="navbar-brand">
-            <div class="navbar-logo">HCS</div>
-            <div class="navbar-brand-text">
-                <h1>Home Care Service</h1>
-                <p>Quality Care, Quality Life</p>
-            </div>
-        </a>
-
-        <div class="navbar-links">
-            <a href="home.html">Home</a>
-            <a href="home.html#services">Services</a>
-            <a href="about.html">About</a>
-            <a href="home.html#management">Careers</a>
-            <a href="home.html#contact">Contact</a>
+<div class="page-shell">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-logo">HCS</div>
+      <div class="brand-copy">
+        <strong>Service Provider Application</strong>
+        <span>Apply to become a certified home care provider</span>
+      </div>
+    </div>
+    <button class="back-link" type="button" onclick="handleLeaveHome()">Back to Home</button>
+  </header>
+  <main class="main">
+    <div class="progress-shell">
+      <div class="progress-top">
+        <div>
+          <div class="progress-label">Application Progress</div>
+          <div class="progress-label step-counter">Step 1 of 4</div>
         </div>
-
-        <div class="navbar-spacer"></div>
-
-    </nav>
-
-    <!-- ── SIDEBAR OVERLAY ──────────────────────────── -->
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
-
-    <!-- ── LEFT SIDEBAR ─────────────────────────────── -->
-    <aside class="sidebar" id="sidebar">
-
-        <div class="sidebar-profile">
-            <div class="avatar-wrap">
-                <div class="avatar" id="avatarEl" title="Change profile picture">Avatar Here</div>
-                <div class="avatar-badge"></div>
-            </div>
-            <div class="sidebar-user-name" id="userName">Guest User</div>
-            <div class="sidebar-user-role" id="userRole">Not logged in</div>
-        </div>
-
-        <nav class="sidebar-nav">
-
-            <div class="sidebar-section-label">Main</div>
-
-            <!-- 0. Home -->
-            <a href="../index.html" class="sidebar-item" data-page="home">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 9L12 2l9 7v11a2 2 0 0 1-2 2h-4a2 2 0 0 1-2-2v-5H9v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9z"/>
-                </svg>
-                Home
-            </a>
-
-            <!-- 1. Dashboard -->
-            <a href="dashboard.html" class="sidebar-item" data-page="dashboard">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="3" width="7" height="7"/>
-                    <rect x="14" y="3" width="7" height="7"/>
-                    <rect x="14" y="14" width="7" height="7"/>
-                    <rect x="3" y="14" width="7" height="7"/>
-                </svg>
-                Dashboard
-            </a>
-
-            <!-- 1b. Jobseeker Profile -->
-            <a href="jobseekerProfile.html" class="sidebar-item" data-page="jobseeker-profile">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                </svg>
-                My Profile
-            </a>
-
-            <!-- 2. My Bookings -->
-            <a href="booking.html" class="sidebar-item" data-page="bookings">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
-                </svg>
-                My Bookings
-            </a>
-
-            <!-- 3. Services -->
-            <a href="../index.html#services" class="sidebar-item" data-page="services">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
-                </svg>
-                Services
-            </a>
-
-            <!-- 4. Messages -->
-            <a href="#" class="sidebar-item" data-page="messages">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                </svg>
-                Messages
-            </a>
-
-            <!-- 5. Payments -->
-            <a href="#" class="sidebar-item" data-page="payments">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
-                </svg>
-                Payments
-            </a>
-
-            <div class="sidebar-divider"></div>
-            <div class="sidebar-section-label">Account</div>
-
-            <!-- 6. My Profile -->
-            <a href="profile.html" class="sidebar-item" data-page="profile">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-                    <circle cx="12" cy="7" r="4"/>
-                </svg>
-                My Profile
-            </a>
-
-            <!-- 7. Notifications -->
-            <a href="#" class="sidebar-item" data-page="notifications">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
-                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
-                </svg>
-                Notifications
-            </a>
-
-            <div class="sidebar-divider"></div>
-
-            <!-- 9. Help & Support -->
-            <a href="#" class="sidebar-item" data-page="help">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-                </svg>
-                Help & Support
-            </a>
-
-        </nav>
-
-        <div class="sidebar-footer">
-            <a href="../index.html" class="sidebar-item logout" style="margin-bottom:0;">
-                <svg class="sidebar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                    <polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
-                </svg>
-                Log Out
-            </a>
-        </div>
-    </aside>
-
-    <!-- ── MAIN CONTENT ──────────────────────────────── -->
-    <div class="main-wrap">
-
-        <section class="hero">
-            <h2>Join Our<br><span class="line-2">Growing Team</span></h2>
-            <p class="hero-sub">
-                Start a rewarding career in home care services. We're looking for compassionate,
-                reliable professionals to join our team and make a difference in people's lives.
-            </p>
-        </section>
-
-        <section class="application-section">
-            <div class="application-container">
-                <div class="application-header">
-                    <h2>Job Application</h2>
-                    <p>Please fill out the form below to apply for a position with Home Care Service</p>
-                </div>
-
-                <form class="application-form" id="jobApplicationForm">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="firstName">First Name *</label>
-                            <input type="text" id="firstName" name="firstName" required placeholder="First Name">
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName">Last Name *</label>
-                            <input type="text" id="lastName" name="lastName" required placeholder="Last Name">
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName">Middle Name *</label>
-                            <input type="text" id="middlename" name="middleName" required placeholder="Middle Name">
-                        </div>
-                        <div class="form-group">
-                            <label for="lastName">Suffix </label>
-                            <input type="text" id="suffix" name="suffix" placeholder="Suffix (optional)">
-                        </div>
-                    </div>
-
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="email">Email Address *</label>
-                            <input type="email" id="email" name="email" required placeholder="Email Address">
-                        </div>
-                        <div class="form-group">
-                            <label for="phone">Phone Number *</label>
-                            <input type="tel" id="phone" name="phone" required placeholder="09XX XXX XXXX" maxlength="11">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="position">Position of Interest</label>
-                        <select id="position" name="position">
-                            <option value="">Select a position</option>
-                            <option value="caregiver">Caregiver</option>
-                            <option value="housekeeper">Housekeeper</option>
-                            <option value="gardener">Gardener</option>
-                            <option value="pet-care">Pet Care Specialist</option>
-                            <option value="other">Other</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="experience">Years of Experience</label>
-                        <select id="experience" name="experience">
-                            <option value="">Select experience level</option>
-                            <option value="none">No experience</option>
-                            <option value="1-2">1-2 years</option>
-                            <option value="3-5">3-5 years</option>
-                            <option value="5+">5+ years</option>
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="availability">Availability</label>
-                        <div class="checkbox-group">
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="availability" value="weekdays">
-                                Weekdays (Mon-Fri)
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="availability" value="weekends">
-                                Weekends (Sat-Sun)
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="availability" value="evenings">
-                                Evenings
-                            </label>
-                            <label class="checkbox-label">
-                                <input type="checkbox" name="availability" value="flexible">
-                                Flexible Schedule
-                            </label>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="certifications">Certifications/Licenses</label>
-                        <textarea id="certifications" name="certifications" rows="3" placeholder="List any relevant certifications, licenses, or training you've completed"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="about">Tell us about yourself *</label>
-                        <textarea id="about" name="about" rows="4" required placeholder="Briefly describe your experience, why you're interested in this role, and what makes you a good fit for our team"></textarea>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="references">References</label>
-                        <textarea id="references" name="references" rows="3" placeholder="Please provide contact information for 2 professional references (optional)"></textarea>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-primary">Submit Application</button>
-                        <button type="reset" class="btn btn-secondary">Clear Form</button>
-                    </div>
-                </form>
-            </div>
-        </section>
-
-        <footer>
-            <p>© 2026 Home Care Service (HCS). All Rights Reserved.</p>
-        </footer>
+        <div class="progress-label progress-status">Personal Info</div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill"></div></div>
+      <div class="steps">
+        <div class="step-pill" data-step="1">Personal Info</div>
+        <div class="step-pill" data-step="2">Service Type</div>
+        <div class="step-pill" data-step="3">Experience</div>
+        <div class="step-pill" data-step="4">Review</div>
+      </div>
     </div>
 
-    <script src="../js/jobSeeker.js"></script>
+    <div class="form-card">
+      <form id="providerApplicationForm" novalidate>
+        <div class="step-panel" data-step="1">
+          <h2 class="section-title">Personal Information</h2>
+          <div class="grid-2">
+            <div class="field-group" id="group-firstName">
+              <label for="firstName">First Name <span class="required">*</span></label>
+              <input id="firstName" name="firstName" type="text" autocomplete="given-name">
+              <div class="field-error" id="error-firstName"></div>
+            </div>
+            <div class="field-group" id="group-lastName">
+              <label for="lastName">Last Name <span class="required">*</span></label>
+              <input id="lastName" name="lastName" type="text" autocomplete="family-name">
+              <div class="field-error" id="error-lastName"></div>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="field-group" id="group-email">
+              <label for="email">Email <span class="required">*</span></label>
+              <input id="email" name="email" type="email" autocomplete="email">
+              <div class="field-error" id="error-email"></div>
+            </div>
+            <div class="field-group" id="group-phone">
+              <label for="phone">Phone <span class="required">*</span></label>
+              <input id="phone" name="phone" type="tel" autocomplete="tel">
+              <div class="field-error" id="error-phone"></div>
+            </div>
+          </div>
+          <div class="field-group" id="group-street">
+            <label for="street">Street Address <span class="required">*</span></label>
+            <input id="street" name="street" type="text" autocomplete="street-address">
+            <div class="field-error" id="error-street"></div>
+          </div>
+          <div class="grid-2">
+            <div class="field-group" id="group-city">
+              <label for="city">City <span class="required">*</span></label>
+              <select id="city" name="city" autocomplete="address-level2">
+                <option value="">Select a city</option>
+                <option value="Zamboanga City">Zamboanga City</option>
+                <option value="Other City">Other City</option>
+              </select>
+              <div class="field-error" id="error-city"></div>
+            </div>
+            <div class="field-group" id="group-barangay">
+              <label for="barangay">Barangay</label>
+              <select id="barangay" name="barangay" disabled>
+                <option value="">Choose Zamboanga City first</option>
+              </select>
+              <div class="field-error" id="error-barangay"></div>
+            </div>
+          </div>
+          <div class="grid-2">
+            <div class="field-group" id="group-zip">
+              <label for="zip">ZIP <span class="required">*</span></label>
+              <input id="zip" name="zip" type="text" autocomplete="postal-code">
+              <div class="field-error" id="error-zip"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-panel" data-step="2" style="display:none;">
+          <h2 class="section-title">Service Type & Availability</h2>
+          <div class="option-grid" id="serviceOptions">
+            <div class="card-option" data-value="Home Care">
+              <div class="checkmark">✓</div>
+              <h3>Home Care</h3>
+              <p>Personal care, hygiene, and daily living support.</p>
+            </div>
+            <div class="card-option" data-value="Pet Care">
+              <div class="checkmark">✓</div>
+              <h3>Pet Care</h3>
+              <p>Pet walking, feeding, and companionship services.</p>
+            </div>
+            <div class="card-option" data-value="Housekeeping">
+              <div class="checkmark">✓</div>
+              <h3>Housekeeping</h3>
+              <p>Cleaning, laundry, and household maintenance.</p>
+            </div>
+            <div class="card-option" data-value="Garden Care">
+              <div class="checkmark">✓</div>
+              <h3>Garden Care</h3>
+              <p>Outdoor maintenance and yard support.</p>
+            </div>
+          </div>
+          <div class="field-error" id="error-serviceType"></div>
+          <div class="field-group" style="margin-top:1.5rem;">
+            <label class="required">Availability <span class="required">*</span></label>
+            <div class="chip-grid" id="availabilityOptions">
+              <div class="chip" data-value="Weekdays">Weekdays</div>
+              <div class="chip" data-value="Weekends">Weekends</div>
+              <div class="chip" data-value="Evenings">Evenings</div>
+            </div>
+            <div class="field-error" id="error-availability"></div>
+          </div>
+        </div>
+
+        <div class="step-panel" data-step="3" style="display:none;">
+          <h2 class="section-title">Experience & Qualifications</h2>
+          <div class="grid-2">
+            <div class="field-group" id="group-yearsExperience">
+              <label for="yearsExperience">Years of Experience <span class="required">*</span></label>
+              <input id="yearsExperience" name="yearsExperience" type="number" min="0">
+              <div class="field-error" id="error-yearsExperience"></div>
+            </div>
+            <div class="field-group" id="group-skills">
+              <label for="skills">Skills & Expertise <span class="required">*</span></label>
+              <textarea id="skills" name="skills"></textarea>
+              <div class="field-error" id="error-skills"></div>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="certifications">Certifications</label>
+            <textarea id="certifications" name="certifications"></textarea>
+          </div>
+          <div class="field-group">
+            <label>Languages</label>
+            <div class="checkbox-grid">
+              <label><input type="checkbox" name="languages" value="Tagalog"> Tagalog</label>
+              <label><input type="checkbox" name="languages" value="English"> English</label>
+              <label><input type="checkbox" name="languages" value="Cebuano"> Cebuano</label>
+              <label><input type="checkbox" name="languages" value="Ilocano"> Ilocano</label>
+              <label><input type="checkbox" name="languages" value="Hiligaynon"> Hiligaynon</label>
+              <label><input type="checkbox" name="languages" value="Central Bikol"> Central Bikol</label>
+              <label><input type="checkbox" name="languages" value="Waray"> Waray</label>
+              <label><input type="checkbox" name="languages" value="Kapampangan"> Kapampangan</label>
+              <label><input type="checkbox" name="languages" value="Pangasinan"> Pangasinan</label>
+              <label><input type="checkbox" name="languages" value="Maguindanao"> Maguindanao</label>
+              <label><input type="checkbox" name="languages" value="Maranao"> Maranao</label>
+              <label><input type="checkbox" name="languages" value="Tausug"> Tausug</label>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="additionalNotes">Additional Notes</label>
+            <textarea id="additionalNotes" name="additionalNotes"></textarea>
+          </div>
+          <div class="upload-grid">
+            <div class="upload-slot">
+              <div>
+                <div class="upload-label">Resume / CV</div>
+                <div class="upload-desc">PDF, DOC, DOCX, JPG, PNG up to 5MB.</div>
+              </div>
+              <div>
+                <input id="resumeUpload" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none;" onchange="handleFileUpload(event,'resume')">
+                <button type="button" class="btn btn-secondary" onclick="document.getElementById('resumeUpload').click()">Upload File</button>
+                <div class="upload-file" id="resumeLabel">No file chosen</div>
+              </div>
+            </div>
+            <div class="upload-slot">
+              <div>
+                <div class="upload-label">License / Certification</div>
+                <div class="upload-desc">PDF, DOC, DOCX, JPG, PNG up to 5MB.</div>
+              </div>
+              <div>
+                <input id="licenseUpload" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display:none;" onchange="handleFileUpload(event,'license')">
+                <button type="button" class="btn btn-secondary" onclick="document.getElementById('licenseUpload').click()">Upload File</button>
+                <div class="upload-file" id="licenseLabel">No file chosen</div>
+              </div>
+            </div>
+          </div>
+          <div class="field-error" id="error-fileUpload"></div>
+        </div>
+
+        <div class="step-panel" data-step="4" style="display:none;">
+          <h2 class="section-title">Review & Submit</h2>
+          <div class="review-section">
+            <div class="review-card">
+              <h3>Personal Info</h3>
+              <div class="review-row"><div class="review-label">Name</div><div class="review-value" id="reviewName"></div></div>
+              <div class="review-row"><div class="review-label">Email</div><div class="review-value" id="reviewEmail"></div></div>
+              <div class="review-row"><div class="review-label">Phone</div><div class="review-value" id="reviewPhone"></div></div>
+              <div class="review-row"><div class="review-label">Address</div><div class="review-value" id="reviewAddress"></div></div>
+            </div>
+            <div class="review-card">
+              <h3>Service Info</h3>
+              <div class="review-row"><div class="review-label">Service Type</div><div class="review-value" id="reviewServiceType"></div></div>
+              <div class="review-row"><div class="review-label">Availability</div><div class="review-value" id="reviewAvailability"></div></div>
+            </div>
+            <div class="review-card">
+              <h3>Experience</h3>
+              <div class="review-row"><div class="review-label">Years of Experience</div><div class="review-value" id="reviewYears"></div></div>
+              <div class="review-row"><div class="review-label">Skills & Expertise</div><div class="review-value" id="reviewSkills"></div></div>
+              <div class="review-row"><div class="review-label">Certifications</div><div class="review-value" id="reviewCertifications"></div></div>
+              <div class="review-row"><div class="review-label">Languages</div><div class="review-value" id="reviewLanguages"></div></div>
+              <div class="review-row"><div class="review-label">Additional Notes</div><div class="review-value" id="reviewNotes"></div></div>
+              <div class="review-row"><div class="review-label">Resume</div><div class="review-value" id="reviewResume"></div></div>
+              <div class="review-row"><div class="review-label">License</div><div class="review-value" id="reviewLicense"></div></div>
+            </div>
+          </div>
+          <div class="checkbox-row">
+            <input id="agreeTerms" type="checkbox" onchange="updateSubmitState()">
+            <label for="agreeTerms">I agree to the terms and conditions.</label>
+          </div>
+          <div class="field-error" id="error-terms"></div>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-secondary" id="backButton" onclick="prevStep()" style="display:none;">Back</button>
+          <button type="button" class="btn btn-primary" id="nextButton" onclick="nextStep()">Next</button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+
+<div id="confirmModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-card">
+    <button type="button" class="modal-close" onclick="closeConfirmModal()">×</button>
+    <h3>Confirm Submission</h3>
+    <p>Please review your application one more time before sending it. Once submitted, our team will review your profile and contact you.</p>
+    <div class="error-summary" id="confirmError" style="display:none;"></div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-secondary" onclick="closeConfirmModal()">Review Again</button>
+      <button type="button" class="btn btn-primary" id="confirmSubmitButton" onclick="submitApplication()">Confirm & Submit</button>
+    </div>
+  </div>
+</div>
+
+<div id="successModal" class="modal-overlay" aria-hidden="true">
+  <div class="modal-card">
+    <button type="button" class="modal-close" onclick="closeSuccessModal()">×</button>
+    <div class="success-icon">✓</div>
+    <h3>Application Submitted!</h3>
+    <p>Your service provider application has been sent successfully.</p>
+    <div class="info-box">
+      <strong>What's next?</strong>
+      <ul>
+        <li>Our team reviews your application within 2 business days.</li>
+        <li>You will receive an email with next steps.</li>
+        <li>Prepare your documents for the onboarding call.</li>
+      </ul>
+    </div>
+    <button type="button" class="btn btn-primary" style="width:100%;" onclick="returnHome()">Return to Home</button>
+  </div>
+</div>
+<script src="../js/apply.js"></script>
 </body>
 </html>

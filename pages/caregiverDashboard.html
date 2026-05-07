@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Caregiver Dashboard</title>
+  <link rel="stylesheet" href="../styles/caregiverDashboard.css">
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="topbar-title">
+      <h1>Caregiver Dashboard</h1>
+      <p>Your Jobs & Assignments</p>
+    </div>
+  </div>
+
+  <div class="topbar-right">
+    <button class="inbox-btn" onclick="openInboxModal()">Inbox</button>
+    <span class="role-pill">Caregiver</span>
+    <a class="logout-link" href="../index.html">Log out</a>
+  </div>
+</div>
+
+<div class="container">
+  <section class="hero-card">
+    <div>
+      <h2>Welcome Back 👋</h2>
+      <p>Manage your assigned jobs and communicate with customers.</p>
+    </div>
+    <div class="hero-action">
+      <div class="hero-badge">Active</div>
+      <span class="hero-meta">2 new assignments today</span>
+    </div>
+  </section>
+
+  <div class="stats-grid">
+    <article class="stat-card">
+      <div class="stat-icon stat-icon-assigned">&#128188;</div>
+      <div>
+        <span>Assigned Jobs</span>
+        <h1 id="assignedCount">0</h1>
+        <p class="stat-helper">Active assignments</p>
+      </div>
+    </article>
+
+    <article class="stat-card">
+      <div class="stat-icon stat-icon-completed">&#9989;</div>
+      <div>
+        <span>Completed Jobs</span>
+        <h1 id="completedCount">0</h1>
+        <p class="stat-helper">This week</p>
+      </div>
+    </article>
+
+    <article class="stat-card">
+      <div class="stat-icon stat-icon-rating">&#11088;</div>
+      <div>
+        <span>Rating</span>
+        <h1>4.9</h1>
+        <p class="stat-helper">Based on 45 reviews</p>
+      </div>
+    </article>
+
+    <article class="stat-card">
+      <div class="stat-icon stat-icon-earnings">&#36;</div>
+      <div>
+        <span>Earnings</span>
+        <h1 id="earnings">$0</h1>
+        <p class="stat-helper">+12% from last week</p>
+      </div>
+    </article>
+  </div>
+
+  <div class="job-section">
+    <div class="tab-bar">
+      <button class="tab-button active" data-tab="assigned">Assigned Jobs (2)</button>
+      <button class="tab-button" data-tab="completed">Completed Jobs (0)</button>
+    </div>
+
+    <div id="jobsContainer" class="jobs-list"></div>
+  </div>
+</div>
+
+<!-- ACCEPT -->
+<div class="modal-overlay" id="acceptModal">
+  <div class="modal">
+    <h2>Accept Job</h2>
+    <p>Are you sure you want to accept this booking?</p>
+    <div class="modal-actions">
+      <button class="btn dark" onclick="confirmAccept()">Confirm</button>
+      <button class="btn light" onclick="closeModal('acceptModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- DECLINE -->
+<div class="modal-overlay" id="declineModal">
+  <div class="modal">
+    <h2>Decline Job</h2>
+    <p>Are you sure you want to decline this booking?</p>
+    <div class="modal-actions">
+      <button class="btn red" onclick="confirmDecline()">Decline</button>
+      <button class="btn light" onclick="closeModal('declineModal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- MESSAGE -->
+<div class="modal-overlay" id="messageModal">
+  <div class="modal">
+    <h2>Message Client</h2>
+
+    <div class="chat-box">
+      <div class="msg admin">Operations: Client requires wheelchair assistance.</div>
+      <div class="msg caregiver">Understood. I will prepare accordingly.</div>
+    </div>
+
+    <textarea placeholder="Type your message..."></textarea>
+
+    <div class="modal-actions">
+      <button class="btn dark">Send</button>
+      <button class="btn light" onclick="closeModal('messageModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAILS -->
+<div class="modal-overlay" id="detailsModal">
+  <div class="modal">
+    <h2>Client Details</h2>
+
+    <div id="clientDetails"></div>
+
+    <div class="modal-actions">
+      <button class="btn light" onclick="closeModal('detailsModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- INBOX -->
+<div class="modal-overlay" id="inboxModal">
+  <div class="modal">
+    <h2>Operations Inbox</h2>
+
+    <div class="inbox-item">
+      <strong>New Assignment</strong>
+      <p>You have been assigned a new client for tomorrow.</p>
+    </div>
+
+    <div class="inbox-item">
+      <strong>Schedule Change</strong>
+      <p>Client requested updated appointment timing.</p>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn light" onclick="closeModal('inboxModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/caregiverDashboard.js"></script>
+</body>
+</html>
