@@ -209,6 +209,125 @@ function initializeFormHandling() {
     });
 }
 
+function openModal(id) {
+    const modal = document.getElementById(id);
+    if (!modal) return;
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeModal(id) {
+    const modal = document.getElementById(id);
+    if (!modal) return;
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function closeAllProfileModals() {
+    document.querySelectorAll('.profile-modal-overlay.active').forEach(modal => {
+        modal.classList.remove('active');
+    });
+    document.body.style.overflow = '';
+}
+
+function initializeProfileModals() {
+    document.querySelectorAll('[data-open-modal]').forEach(trigger => {
+        trigger.addEventListener('click', (event) => {
+            event.preventDefault();
+            const targetId = trigger.getAttribute('data-open-modal');
+            if (!targetId) return;
+            openModal(targetId);
+        });
+    });
+
+    document.querySelectorAll('.profile-modal-overlay').forEach(overlay => {
+        overlay.addEventListener('click', (event) => {
+            if (event.target === overlay) {
+                closeModal(overlay.id);
+            }
+        });
+    });
+
+    document.querySelectorAll('.modal-close, .modal-cancel-btn').forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            const overlay = button.closest('.profile-modal-overlay');
+            if (overlay) closeModal(overlay.id);
+        });
+    });
+
+    document.querySelectorAll('.edit-payment').forEach(button => {
+        button.addEventListener('click', (event) => {
+            event.preventDefault();
+            const method = button.dataset.paymentMethod || '';
+            const details = button.dataset.paymentDetails || '';
+            const isDefault = button.dataset.default === 'true';
+
+            const title = document.getElementById('editPaymentTitle');
+            const methodInput = document.getElementById('paymentMethodName');
+            const detailsInput = document.getElementById('paymentCardDetails');
+            const defaultToggle = document.getElementById('paymentDefaultToggle');
+
+            if (title) title.textContent = `Edit ${method} Method`;
+            if (methodInput) methodInput.value = method;
+            if (detailsInput) detailsInput.value = details;
+            if (defaultToggle) defaultToggle.checked = isDefault;
+
+            openModal('paymentEditModal');
+        });
+    });
+
+    const savePaymentBtn = document.getElementById('savePaymentBtn');
+    if (savePaymentBtn) {
+        savePaymentBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const form = document.getElementById('addPaymentForm');
+            if (form && validateForm(form)) {
+                showSuccessMessage('New payment method saved.');
+                closeModal('paymentAddModal');
+            }
+        });
+    }
+
+    const updatePaymentBtn = document.getElementById('updatePaymentBtn');
+    if (updatePaymentBtn) {
+        updatePaymentBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const form = document.getElementById('editPaymentForm');
+            if (form && validateForm(form)) {
+                showSuccessMessage('Payment method updated.');
+                closeModal('paymentEditModal');
+            }
+        });
+    }
+
+    const changePasswordForm = document.getElementById('changePasswordForm');
+    if (changePasswordForm) {
+        changePasswordForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (validateForm(changePasswordForm)) {
+                showSuccessMessage('Password updated successfully.');
+                closeModal('changePasswordModal');
+            }
+        });
+    }
+
+    const tfaForm = document.getElementById('tfaForm');
+    if (tfaForm) {
+        tfaForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showSuccessMessage('Two-Factor Authentication saved.');
+            closeModal('tfaModal');
+        });
+    }
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            closeAllProfileModals();
+        }
+    });
+}
+
 // Form validation
 function validateForm(form) {
     const requiredFields = form.querySelectorAll('input[required], select[required], textarea[required]');
@@ -352,6 +471,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeAvatarUpload();
     initializeToggles();
     initializeFormHandling();
+    initializeProfileModals();
 });
 
 

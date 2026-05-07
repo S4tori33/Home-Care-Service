@@ -252,11 +252,29 @@
                         </div>
                         <div class="field-group">
                             <label for="city">City</label>
-                            <input id="city" type="text" value="New York">
+                            <select id="city" required>
+                                <option value="" disabled selected>Select city</option>
+                                <option>Manila</option>
+                                <option>Quezon City</option>
+                                <option>Caloocan</option>
+                                <option>Davao City</option>
+                                <option>Cebu City</option>
+                                <option>Zamboanga City</option>
+                                <option>Antipolo</option>
+                                <option>Pasig</option>
+                                <option>Taguig</option>
+                                <option>Cagayan de Oro</option>
+                                <option>Parañaque</option>
+                                <option>Dasmariñas</option>
+                                <option>Bacoor</option>
+                                <option>Baguio</option>
+                                <option>Iloilo City</option>
+                                <option>General Santos City</option>
+                            </select>
                         </div>
                         <div class="field-group">
-                            <label for="state">State</label>
-                            <input id="state" type="text" value="NY">
+                            <label for="street">Street</label>
+                            <input id="street" type="text" value="2nd Street">
                         </div>
                         <div class="field-group">
                             <label for="zip">ZIP Code</label>
@@ -304,23 +322,23 @@
                 <div class="card section-card">
                     <div class="card-header card-header-row">
                         <h2>Payment Methods</h2>
-                        <button class="btn btn-secondary small">Add New</button>
+                        <button class="btn btn-secondary small" type="button" data-open-modal="paymentAddModal">Add New</button>
                     </div>
                     <div class="payment-list">
                         <div class="payment-card">
-                            <div class="payment-icon">??</div>
+                            <div class="payment-icon">V</div>
                             <div>
-                                <strong>Visa ���� 4242</strong>
+                                <strong>Visa •••• 4242</strong>
                                 <span class="payment-note default">Default</span>
                             </div>
-                            <button class="btn btn-link">Edit</button>
+                            <button class="btn btn-link edit-payment" type="button" data-open-modal="paymentEditModal" data-payment-method="Visa" data-payment-details="•••• 4242" data-default="true">Edit</button>
                         </div>
                         <div class="payment-card">
-                            <div class="payment-icon">??</div>
+                            <div class="payment-icon">M</div>
                             <div>
-                                <strong>Mastercard ���� 8888</strong>
+                                <strong>Mastercard •••• 8888</strong>
                             </div>
-                            <button class="btn btn-link">Edit</button>
+                            <button class="btn btn-link edit-payment" type="button" data-open-modal="paymentEditModal" data-payment-method="Mastercard" data-payment-details="•••• 8888" data-default="false">Edit</button>
                         </div>
                     </div>
                 </div>
@@ -329,17 +347,17 @@
                         <h2>Security & Privacy</h2>
                     </div>
                     <div class="security-list">
-                        <a href="#" class="security-item">
+                        <a href="#" class="security-item" data-open-modal="changePasswordModal">
                             <span>Change Password</span>
-                            <span class="security-arrow">�</span>
+                            <span class="security-arrow">›</span>
                         </a>
-                        <a href="#" class="security-item">
+                        <a href="#" class="security-item" data-open-modal="tfaModal">
                             <span>Two-Factor Authentication</span>
-                            <span class="security-arrow">�</span>
+                            <span class="security-arrow">›</span>
                         </a>
-                        <a href="#" class="security-item">
+                        <a href="#" class="security-item" data-open-modal="loginHistoryModal">
                             <span>Login History</span>
-                            <span class="security-arrow">�</span>
+                            <span class="security-arrow">›</span>
                         </a>
                     </div>
                 </div>
@@ -347,6 +365,162 @@
         </section>
         
     </div>
+
+    <div class="profile-modal-overlay" id="paymentAddModal">
+        <div class="modal-card">
+            <button class="modal-close" type="button" aria-label="Close modal">×</button>
+            <div class="modal-header">
+                <h3>Add Payment Method</h3>
+                <p>Save a new card or e-wallet for quick checkout.</p>
+            </div>
+            <div class="modal-body">
+                <form id="addPaymentForm" class="profile-form">
+                    <div class="field-group">
+                        <label for="newPaymentMethod">Payment Method</label>
+                        <input id="newPaymentMethod" type="text" placeholder="e.g., Visa" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="newPaymentDetails">Card / Account Details</label>
+                        <input id="newPaymentDetails" type="text" placeholder="•••• 1234" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="newPaymentExpiry">Expiry Date</label>
+                        <input id="newPaymentExpiry" type="month" required>
+                    </div>
+                    <div class="field-group">
+                        <label class="preference-row" for="newPaymentDefault">
+                            <span>Set as default payment</span>
+                            <input id="newPaymentDefault" type="checkbox">
+                        </label>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-secondary modal-cancel-btn" type="button">Cancel</button>
+                        <button class="btn btn-primary" id="savePaymentBtn" type="submit">Save Method</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-modal-overlay" id="paymentEditModal">
+        <div class="modal-card">
+            <button class="modal-close" type="button" aria-label="Close modal">×</button>
+            <div class="modal-header">
+                <h3 id="editPaymentTitle">Edit Payment Method</h3>
+                <p>Update details for the selected payment method.</p>
+            </div>
+            <div class="modal-body">
+                <form id="editPaymentForm" class="profile-form">
+                    <div class="field-group">
+                        <label for="paymentMethodName">Payment Method</label>
+                        <input id="paymentMethodName" type="text" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="paymentCardDetails">Card / Account Details</label>
+                        <input id="paymentCardDetails" type="text" required>
+                    </div>
+                    <div class="field-group">
+                        <label class="preference-row" for="paymentDefaultToggle">
+                            <span>Make this the default method</span>
+                            <input id="paymentDefaultToggle" type="checkbox">
+                        </label>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-secondary modal-cancel-btn" type="button">Cancel</button>
+                        <button class="btn btn-primary" id="updatePaymentBtn" type="submit">Update Method</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-modal-overlay" id="changePasswordModal">
+        <div class="modal-card">
+            <button class="modal-close" type="button" aria-label="Close modal">×</button>
+            <div class="modal-header">
+                <h3>Change Password</h3>
+                <p>Update your account password for improved security.</p>
+            </div>
+            <div class="modal-body">
+                <form id="changePasswordForm" class="profile-form">
+                    <div class="field-group">
+                        <label for="currentPassword">Current Password</label>
+                        <input id="currentPassword" type="password" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="newPassword">New Password</label>
+                        <input id="newPassword" type="password" required>
+                    </div>
+                    <div class="field-group">
+                        <label for="confirmPassword">Confirm New Password</label>
+                        <input id="confirmPassword" type="password" required>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-secondary modal-cancel-btn" type="button">Cancel</button>
+                        <button class="btn btn-primary" type="submit">Save Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-modal-overlay" id="tfaModal">
+        <div class="modal-card">
+            <button class="modal-close" type="button" aria-label="Close modal">×</button>
+            <div class="modal-header">
+                <h3>Two-Factor Authentication</h3>
+                <p>Control whether you receive an extra security step when signing in.</p>
+            </div>
+            <div class="modal-body">
+                <form id="tfaForm" class="profile-form">
+                    <div class="preference-row">
+                        <div>
+                            <span>Enable 2FA</span>
+                            <small>Require a verification code when logging in.</small>
+                        </div>
+                        <div class="toggle-switch">
+                            <input id="tfaToggle" type="checkbox">
+                            <span class="slider"></span>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-secondary modal-cancel-btn" type="button">Cancel</button>
+                        <button class="btn btn-primary" type="submit">Save Settings</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="profile-modal-overlay" id="loginHistoryModal">
+        <div class="modal-card">
+            <button class="modal-close" type="button" aria-label="Close modal">×</button>
+            <div class="modal-header">
+                <h3>Login History</h3>
+                <p>Review your recent sign in activity.</p>
+            </div>
+            <div class="modal-body">
+                <div class="login-history-list">
+                    <div class="login-history-item">
+                        <strong>May 5, 2026</strong>
+                        <span>Logged in from Manila, PH</span>
+                    </div>
+                    <div class="login-history-item">
+                        <strong>May 2, 2026</strong>
+                        <span>Logged in from Quezon City, PH</span>
+                    </div>
+                    <div class="login-history-item">
+                        <strong>Apr 28, 2026</strong>
+                        <span>Logged in from Cebu City, PH</span>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-secondary modal-cancel-btn" type="button">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="../js/script.js"></script>
     <script>
         if (typeof initializeProfileTabs === 'function') {
