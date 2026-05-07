@@ -73,7 +73,7 @@ const messageInput = document.getElementById('messageInput');
         }
 
         function viewProfile() {
-            window.location.href = 'viewWorkerProfile.html';
+            window.location.href = 'jobseekerProfile.html';
         }
 
         function escapeHtml(text) {
