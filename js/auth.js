@@ -710,7 +710,7 @@ class AuthSystem {
 
   getDashboardPath() {
     const user = this.getCurrentUser();
-    if (!user) return '../pages/userLogin.html';
+    if (!user) return '../index.html';
     const role = this.getUserRole();
     return role ? role.dashboardPath : '../dashboard/user.html';
   }

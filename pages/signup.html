@@ -3,256 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up – Home Care Service</title>
+    <title>Sign Up</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles/userLogin.css">
-    <style>
-        /* ── Step indicator ──────────────────────────────── */
-        .steps {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 28px;
-        }
-        .step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 5px;
-        }
-        .step-dot {
-            width: 32px; height: 32px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            border: 1.5px solid rgba(255,255,255,0.25);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-            font-weight: 600;
-            color: rgba(255,255,255,0.4);
-            transition: all 0.3s;
-        }
-        .step.active .step-dot {
-            background: rgba(255,255,255,0.25);
-            border-color: rgba(255,255,255,0.7);
-            color: #fff;
-            box-shadow: 0 0 14px rgba(255,255,255,0.2);
-        }
-        .step.done .step-dot {
-            background: rgba(255,255,255,0.15);
-            border-color: rgba(255,255,255,0.5);
-            color: rgba(255,255,255,0.8);
-        }
-        .step-label {
-            font-size: 10.5px;
-            color: rgba(255,255,255,0.3);
-            white-space: nowrap;
-        }
-        .step.active .step-label { color: rgba(255,255,255,0.8); }
-        .step.done  .step-label  { color: rgba(255,255,255,0.55); }
-        .step-line {
-            flex: 1;
-            height: 1px;
-            background: rgba(255,255,255,0.15);
-            margin: 0 8px 16px;
-            min-width: 36px;
-            transition: background 0.3s;
-        }
-        .step-line.done { background: rgba(255,255,255,0.4); }
-
-        /* ── Multi-step panels ───────────────────────────── */
-        .form-steps { position: relative; overflow: hidden; }
-        .form-step  { display: none; animation: fadeUp 0.3s ease both; }
-        .form-step.active { display: block; }
-
-        /* ── Role cards ──────────────────────────────────── */
-        .role-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .role-card {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 14px;
-            background: var(--input-bg);
-            border: 1.5px solid var(--input-border);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
-            user-select: none;
-        }
-        .role-card:hover { background: rgba(255,255,255,0.15); }
-        .role-card input { display: none; }
-        .role-card.selected {
-            background: rgba(255,255,255,0.18);
-            border-color: rgba(255,255,255,0.6);
-        }
-        .radio-dot {
-            width: 18px; height: 18px;
-            border-radius: 50%;
-            border: 1.5px solid rgba(255,255,255,0.3);
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s;
-        }
-        .role-card.selected .radio-dot {
-            border-color: rgba(255,255,255,0.8);
-            background: rgba(255,255,255,0.15);
-        }
-        .radio-dot::after {
-            content: '';
-            width: 7px; height: 7px;
-            border-radius: 50%;
-            background: #fff;
-            opacity: 0; transform: scale(0);
-            transition: all 0.2s;
-        }
-        .role-card.selected .radio-dot::after { opacity: 1; transform: scale(1); }
-        .role-text  { font-size: 14px; color: var(--white); font-weight: 500; }
-        .role-sub   { font-size: 11.5px; color: rgba(255,255,255,0.5); margin-top: 2px; }
-
-        /* ── Password strength ───────────────────────────── */
-        .strength-bar {
-            display: flex;
-            gap: 4px;
-            margin-top: 8px;
-        }
-        .strength-seg {
-            flex: 1; height: 3px;
-            border-radius: 2px;
-            background: rgba(255,255,255,0.12);
-            transition: background 0.3s;
-        }
-        .strength-hint {
-            font-size: 11px;
-            color: rgba(255,255,255,0.4);
-            margin-top: 4px;
-        }
-
-        /* ── Terms ───────────────────────────────────────── */
-        .terms-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .terms-row input[type="checkbox"] {
-            appearance: none; -webkit-appearance: none;
-            width: 18px; height: 18px;
-            border-radius: 5px;
-            border: 1.5px solid rgba(255,255,255,0.3);
-            background: var(--input-bg);
-            cursor: pointer;
-            flex-shrink: 0;
-            margin-top: 1px;
-            position: relative;
-            transition: all 0.2s;
-        }
-        .terms-row input[type="checkbox"]:checked {
-            background: rgba(255,255,255,0.25);
-            border-color: rgba(255,255,255,0.7);
-        }
-        .terms-row input[type="checkbox"]:checked::after {
-            content: '✓';
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%,-50%);
-            color: #fff;
-            font-size: 11px;
-            font-weight: 700;
-        }
-        .terms-row label {
-            font-size: 12.5px;
-            color: rgba(255,255,255,0.55);
-            line-height: 1.5;
-            cursor: pointer;
-        }
-        .terms-row label a {
-            color: rgba(255,255,255,0.85);
-            text-decoration: underline;
-        }
-
-        /* ── Success screen ──────────────────────────────── */
-        .success-screen {
-            display: none;
-            text-align: center;
-            padding: 1rem 0 0.5rem;
-            animation: fadeUp 0.4s ease both;
-        }
-        .success-icon {
-            width: 68px; height: 68px;
-            background: rgba(255,255,255,0.18);
-            border: 2px solid rgba(255,255,255,0.45);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            color: #fff;
-            margin: 0 auto 1.25rem;
-        }
-        .success-screen h3 {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 700;
-            font-size: 1.4rem;
-            color: var(--white);
-            margin-bottom: 8px;
-        }
-        .success-screen p {
-            font-size: 13.5px;
-            color: var(--text-muted);
-            line-height: 1.65;
-            margin-bottom: 1.75rem;
-        }
-
-        /* ── Back nav button ─────────────────────────────── */
-        .btn-back {
-            width: 100%;
-            padding: 12px;
-            background: transparent;
-            border: 1.5px solid rgba(255,255,255,0.25);
-            border-radius: 10px;
-            color: rgba(255,255,255,0.65);
-            font-family: 'DM Sans', sans-serif;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: background 0.2s, border-color 0.2s, color 0.2s;
-        }
-        .btn-back:hover {
-            background: rgba(255,255,255,0.08);
-            border-color: rgba(255,255,255,0.4);
-            color: var(--white);
-        }
-
-        /* ── Login link ──────────────────────────────────── */
-        .login-link {
-            text-align: center;
-            margin-top: 1.25rem;
-            font-size: 13px;
-            color: rgba(255,255,255,0.5);
-        }
-        .login-link a {
-            color: var(--white);
-            font-weight: 500;
-            text-decoration: underline;
-        }
-    </style>
 </head>
 <body>
 
     <section class="hero">
 
-        <a href="userLogin.html" class="back-link" aria-label="Return to login">←</a>
+        <a href="../index.html" class="back-link" aria-label="Return to login">←</a>
 
         <!-- Brand -->
         <div class="brand">
@@ -280,12 +41,7 @@
                 <div class="step-line" id="line-1"></div>
                 <div class="step" id="step-ind-2">
                     <div class="step-dot">2</div>
-                    <div class="step-label">Account</div>
-                </div>
-                <div class="step-line" id="line-2"></div>
-                <div class="step" id="step-ind-3">
-                    <div class="step-dot">3</div>
-                    <div class="step-label">Role</div>
+                    <div class="step-label">Credentials</div>
                 </div>
             </div>
 
@@ -302,9 +58,15 @@
                             <label class="form-label" for="lastName">Last Name *</label>
                             <input type="text" id="lastName" class="form-input" placeholder="Cruz" required>
                         </div>
+                    </div>
+                    <div class="name-row">
                         <div class="form-group">
                             <label class="form-label" for="lmiddlename">Middle Name</label>
                             <input type="text" id="middlename" class="form-input" placeholder="Dela" >
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="suffix">Suffix</label>
+                            <input type="text" id="suffix" class="form-input" placeholder="Jr." >
                         </div>
                     </div>
                     <div class="form-group">
@@ -347,49 +109,14 @@
                         <input type="password" id="regConfirm" class="form-input" placeholder="Repeat your password" maxlength="30">
                     </div>
                     <div id="err2" style="color:#ffb3b3;font-size:12px;margin-bottom:10px;display:none;"></div>
-                    <div class="form-actions">
-                        <button class="btn btn-primary" onclick="nextStep(2)">Continue →</button>
-                        <button class="btn-back" onclick="prevStep(2)">← Back</button>
-                    </div>
-                </div>
 
-                <!-- STEP 3: Role & Terms -->
-                <div class="form-step" id="step3">
-                    <p class="form-label" style="margin-bottom:12px;">I am registering as a</p>
-                    <div class="role-group" id="roleGroup">
-                        <label class="role-card" onclick="selectRole(this)">
-                            <input type="radio" name="role" value="client">
-                            <div class="radio-dot"></div>
-                            <div>
-                                <div class="role-text">Client / Family</div>
-                                <div class="role-sub">Looking for care services for myself or a loved one</div>
-                            </div>
-                        </label>
-                        <label class="role-card" onclick="selectRole(this)">
-                            <input type="radio" name="role" value="caregiver">
-                            <div class="radio-dot"></div>
-                            <div>
-                                <div class="role-text">Caregiver / Provider</div>
-                                <div class="role-sub">Offering professional care or home services</div>
-                            </div>
-                        </label>
-                        <label class="role-card" onclick="selectRole(this)">
-                            <input type="radio" name="role" value="support">
-                            <div class="radio-dot"></div>
-                            <div>
-                                <div class="role-text">Support Staff</div>
-                                <div class="role-sub">Administrative or customer support role</div>
-                            </div>
-                        </label>
-                    </div>
                     <div class="terms-row">
                         <input type="checkbox" id="terms">
                         <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a> of Home Care Service.</label>
                     </div>
-                    <div id="err3" style="color:#ffb3b3;font-size:12px;margin-bottom:10px;display:none;"></div>
                     <div class="form-actions">
                         <button class="btn btn-primary" onclick="submitSignup()">Create Account</button>
-                        <button class="btn-back" onclick="prevStep(3)">← Back</button>
+                        <button class="btn-back" onclick="prevStep(2)">← Back</button>
                     </div>
                 </div>
 
@@ -401,21 +128,17 @@
                 <h3>Account Created!</h3>
                 <p>Welcome to Home Care Service.<br>Please log in to get started.</p>
                 <div class="form-actions">
-                    <button class="btn btn-primary" onclick="window.location.href='userLogin.html'">Go to Login</button>
+                    <button class="btn btn-primary" onclick="window.location.href='../index.html'">Go to Login</button>
                 </div>
             </div>
 
             <div class="login-link" id="loginLinkRow">
-                Already have an account? <a href="userLogin.html">Log In</a>
+                Already have an account? <a href="../index.html">Log In</a>
             </div>
 
         </div><!-- /.form-container -->
 
     </section>
-
-    <footer>
-        <p>© 2026 Home Care Service (HCS). All Rights Reserved.</p>
-    </footer>
 
     <script>
         let currentStep = 1;
@@ -434,15 +157,13 @@
             updateIndicator();
         }
         function updateIndicator() {
-            for (let i = 1; i <= 3; i++) {
+            for (let i = 1; i <= 2; i++) {
                 const ind = document.getElementById('step-ind-' + i);
                 ind.classList.remove('active','done');
                 if (i < currentStep) ind.classList.add('done');
                 if (i === currentStep) ind.classList.add('active');
             }
-            for (let i = 1; i <= 2; i++) {
-                document.getElementById('line-' + i).classList.toggle('done', i < currentStep);
-            }
+            document.getElementById('line-1').classList.toggle('done', currentStep > 1);
         }
         function validateStep(step) {
             const err = document.getElementById('err' + step);
@@ -460,24 +181,14 @@
                 if (!em || !/\S+@\S+\.\S+/.test(em)) return showErr(err, 'Please enter a valid email.');
                 if (pw.length < 6) return showErr(err, 'Password must be at least 6 characters.');
                 if (pw !== cp)     return showErr(err, 'Passwords do not match.');
+                if (!document.getElementById('terms').checked) return showErr(err, 'Please accept the Terms of Service to continue.');
             }
             return true;
         }
         function showErr(el, msg) { el.textContent = msg; el.style.display = 'block'; return false; }
 
-        function selectRole(el) {
-            document.querySelectorAll('.role-card').forEach(c => c.classList.remove('selected'));
-            el.classList.add('selected');
-            el.querySelector('input').checked = true;
-        }
-
         function submitSignup() {
-            const err = document.getElementById('err3');
-            err.style.display = 'none';
-            if (!document.querySelector('.role-card.selected'))
-                return showErr(err, 'Please select your account role.');
-            if (!document.getElementById('terms').checked)
-                return showErr(err, 'Please accept the Terms of Service to continue.');
+            if (!validateStep(2)) return;
 
             // Hide form, show success
             document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
@@ -507,3 +218,4 @@
 
 </body>
 </html>
+

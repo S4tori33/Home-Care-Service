@@ -27,7 +27,7 @@ class DashboardManager {
    */
   initializeDashboard() {
     if (!this.auth.isLoggedIn()) {
-      window.location.href = '../pages/userLogin.html';
+      window.location.href = '../index.html';
       return;
     }
 
@@ -139,7 +139,7 @@ class DashboardManager {
 
     // Add logout button
     const logoutBtn = document.createElement('a');
-    logoutBtn.href = '../pages/userLogin.html';
+    logoutBtn.href = '../index.html';
     logoutBtn.className = 'sidebar-item logout';
     logoutBtn.id = 'logoutBtn';
     logoutBtn.innerHTML = `
@@ -250,7 +250,7 @@ class DashboardManager {
   logout() {
     if (confirm('Are you sure you want to log out?')) {
       this.auth.logout();
-      window.location.href = '../pages/userLogin.html';
+      window.location.href = '../index.html';
     }
   }
 
@@ -271,7 +271,7 @@ class DashboardManager {
     const user = this.auth.getCurrentUser();
     
     if (!user) {
-      window.location.href = '../pages/userLogin.html';
+      window.location.href = '../index.html';
       return false;
     }
 
@@ -367,3 +367,150 @@ class DashboardManager {
 
 // Initialize dashboard manager globally
 const dashboard = new DashboardManager();
+
+let selectedOtherId = null;
+    const currentUser = auth.getCurrentUser();
+
+    if (!currentUser) {
+      window.location.href = '../index.html';
+    } else {
+      dashboard.initializeDashboard();
+      renderConversationPanel();
+      const params = new URLSearchParams(window.location.search);
+      const withId = params.get('with');
+      if (withId) {
+        selectPartner(withId);
+      }
+    }
+
+    function displayName(u) {
+      if (!u) return 'Unknown';
+      const n = `${u.firstName || ''} ${u.lastName || ''}`.trim();
+      return n || u.email || 'User';
+    }
+
+    function initials(u) {
+      if (!u) return '?';
+      const a = (u.firstName || '').charAt(0);
+      const b = (u.lastName || '').charAt(0);
+      return (a + b).toUpperCase() || (u.email || '?').charAt(0).toUpperCase();
+    }
+
+    function conversationRows() {
+      const conv = auth.getUserConversations(currentUser.id);
+      const eligible = auth.getEligibleMessagePartners(currentUser.id);
+      const seen = new Set(conv.map(c => c.otherUserId));
+      const rows = conv.slice();
+
+      eligible.forEach(e => {
+        if (!seen.has(e.otherUserId)) {
+          rows.push({
+            otherUserId: e.otherUserId,
+            otherUser: e.otherUser,
+            lastMessage: {
+              content: 'No messages yet — say hello',
+              timestamp: new Date().toISOString()
+            },
+            unreadCount: 0
+          });
+          seen.add(e.otherUserId);
+        }
+      });
+
+      return rows.sort(
+        (a, b) =>
+          new Date(b.lastMessage.timestamp).getTime() -
+          new Date(a.lastMessage.timestamp).getTime()
+      );
+    }
+
+    function renderConversationPanel() {
+      const conversationsList = document.getElementById('conversationsList');
+      const rows = conversationRows();
+
+      if (!rows.length) {
+        conversationsList.innerHTML =
+          '<div style="padding: 20px; text-align: center; color: #9ca3af;">No eligible contacts yet. Complete booking assignment and acceptance first.</div>';
+        return;
+      }
+
+      conversationsList.innerHTML = rows
+        .map(conv => {
+          const otherUser = conv.otherUser || auth.getUserById(conv.otherUserId);
+          const preview = (conv.lastMessage && conv.lastMessage.content) || '';
+          const active = conv.otherUserId === selectedOtherId ? 'active' : '';
+          return `
+          <div class="conversation-item ${active}" data-other="${conv.otherUserId}">
+            <div class="conversation-avatar">${initials(otherUser)}</div>
+            <div class="conversation-info">
+              <div class="conversation-name">${displayName(otherUser)}</div>
+              <div class="conversation-preview">${preview.substring(0, 40)}</div>
+            </div>
+            ${conv.unreadCount > 0 ? `<div class="conversation-badge">${conv.unreadCount}</div>` : ''}
+          </div>`;
+        })
+        .join('');
+
+      conversationsList.querySelectorAll('.conversation-item').forEach(el => {
+        el.addEventListener('click', () => {
+          selectPartner(el.getAttribute('data-other'));
+        });
+      });
+    }
+
+    function selectPartner(otherUserId) {
+      if (!otherUserId) return;
+      selectedOtherId = otherUserId;
+
+      const otherUser = auth.getUserById(otherUserId);
+      document.getElementById('chatTitle').textContent = displayName(otherUser);
+      document.getElementById('chatSubtitle').textContent =
+        (otherUser && otherUser.email) || '';
+      document.getElementById('chatInputArea').style.display = 'flex';
+
+      auth.markMessagesAsRead(currentUser.id, otherUserId);
+
+      const msgs = auth.getMessages(currentUser.id, otherUserId);
+      const chatContent = document.getElementById('chatContent');
+      chatContent.innerHTML = msgs
+        .map(
+          msg => `
+        <div class="message ${msg.senderId === currentUser.id ? 'sent' : 'received'}">
+          <div>
+            <div class="message-bubble">${msg.content.replace(/</g, '&lt;')}</div>
+            <div class="message-timestamp">${new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+          </div>
+        </div>`
+        )
+        .join('');
+      chatContent.scrollTop = chatContent.scrollHeight;
+
+      renderConversationPanel();
+    }
+
+    function sendMessage() {
+      if (!selectedOtherId) return;
+      const input = document.getElementById('messageInput');
+      const content = input.value.trim();
+      if (!content) return;
+
+      try {
+        auth.sendMessage(currentUser.id, selectedOtherId, content);
+        input.value = '';
+        selectPartner(selectedOtherId);
+      } catch (err) {
+        alert(err.message || 'Could not send message');
+      }
+    }
+
+    document.getElementById('messageInput').addEventListener('keypress', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    document.getElementById('logoutLink').addEventListener('click', e => {
+      e.preventDefault();
+      dashboard.logout();
+    });

@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (!user) {
     // No user logged in - redirect back to login
-    window.location.href = 'userLogin.html';
+    window.location.href = '../index.html';
     return;
   }
 
@@ -38,7 +38,7 @@ function redirectToDashboard() {
   const user = appData.getCurrentUser();
 
   if (!user) {
-    window.location.href = 'userLogin.html';
+    window.location.href = '../index.html';
     return;
   }
 
@@ -51,12 +51,12 @@ function redirectToDashboard() {
     'pet_care': 'petCareDashboard.html',
     'garden_maintenance': 'gardenDashboard.html',
     'house_cleaning': 'cleaningDashboard.html',
-    'regular_user': 'customerDashboard.html',
+    'regular_user': 'dashboard.html',
     'customer_support': 'supportDashboard.html',
     'moderator': 'moderatorDashboard.html'
   };
 
-  const dashboard = dashboardMap[user.role] || 'customerDashboard.html';
+  const dashboard = dashboardMap[user.role] || 'dashboard.html';
 
   // Show loading state
   const nextBtn = document.getElementById('nextBtn');
@@ -72,5 +72,5 @@ function redirectToDashboard() {
 
 function goBackToLogin() {
   appData.logout();
-  window.location.href = 'userLogin.html';
+  window.location.href = '../index.html';
 }

@@ -1,0 +1,268 @@
+<!-- 
+  RESPONSIVE DASHBOARD HTML TEMPLATE
+  
+  USE THIS AS A TEMPLATE FOR ALL DASHBOARD PAGES
+  Copy structure and adapt content as needed
+  
+  REQUIRED SECTIONS:
+  1. CSS Files in <head>
+  2. Dashboard Layout wrapper
+  3. Sidebar navigation
+  4. Main content area
+  5. Scripts at bottom of <body>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Home Care Service</title>
+  
+  <!-- CRITICAL: Add responsive CSS files first -->
+  <link rel="stylesheet" href="../styles/responsive.css">
+  <link rel="stylesheet" href="../styles/dashboard-responsive.css">
+  
+  <!-- Then add existing page-specific CSS -->
+  <link rel="stylesheet" href="../styles/dashboard.css">
+  <!-- <link rel="stylesheet" href="../styles/userLogin.css"> -->
+  <!-- Add other page CSS as needed -->
+  
+  <style>
+    /* Quick inline overrides if needed */
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <!-- 
+    DASHBOARD LAYOUT STRUCTURE
+    - layout: grid with sidebar + main
+    - sidebar: fixed on mobile, static on desktop
+    - overlay: for mobile, closes sidebar when clicked
+    - main: scrollable content area
+  -->
+  <div class="dashboard-layout">
+    
+    <!-- SIDEBAR NAVIGATION -->
+    <nav class="dashboard-sidebar" id="sidebar">
+      <div style="padding: var(--spacing-lg);">
+        <h2>Menu</h2>
+        <ul style="list-style: none; padding: 0; margin: 0;">
+          <li><a href="../pages/dashboard.html" class="nav-link">Home</a></li>
+          <li><a href="../pages/superadminDashboard.html" class="nav-link">Admin</a></li>
+          <li><a href="../pages/profile.html" class="nav-link">Profile</a></li>
+          <li><a href="../pages/messaging.html" class="nav-link">Messages</a></li>
+          <li><a href="../pages/userLogin.html" class="nav-link">Logout</a></li>
+        </ul>
+      </div>
+    </nav>
+    
+    <!-- MOBILE OVERLAY (closes sidebar when clicked) -->
+    <div class="dashboard-overlay" id="sidebar-overlay"></div>
+    
+    <!-- MAIN CONTENT AREA -->
+    <main class="dashboard-main">
+      
+      <!-- HEADER/NAVBAR -->
+      <div style="
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: var(--spacing-md);
+        background: white;
+        border-bottom: 1px solid #e5e7eb;
+        margin: -1rem -1rem 1rem -1rem;
+        flex-wrap: wrap;
+      ">
+        <h1>Dashboard</h1>
+        
+        <!-- HAMBURGER MENU (mobile only) -->
+        <button class="sidebar-toggle" id="hamburger" style="
+          display: none;
+          background: transparent;
+          border: none;
+          font-size: 1.5rem;
+          cursor: pointer;
+          padding: 0.5rem;
+          min-width: 44px;
+          min-height: 44px;
+        ">
+          ☰
+        </button>
+      </div>
+      
+      <!-- Show hamburger on mobile -->
+      <style>
+        @media (max-width: 767px) {
+          #hamburger { display: block !important; }
+        }
+      </style>
+      
+      <!-- MAIN CONTENT -->
+      <div class="container">
+        
+        <!-- EXAMPLE: Stats Grid (responsive) -->
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-label">Total Users</div>
+            <div class="stat-value">0</div>
+            <div class="stat-change positive">↑ 0%</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Services</div>
+            <div class="stat-value">0</div>
+            <div class="stat-change positive">↑ 0%</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Bookings</div>
+            <div class="stat-value">0</div>
+            <div class="stat-change">→ 0%</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-label">Pending</div>
+            <div class="stat-value">0</div>
+            <div class="stat-change negative">↓ 0%</div>
+          </div>
+        </div>
+        
+        <!-- EXAMPLE: Filter Bar -->
+        <div class="filter-bar">
+          <div class="filter-group">
+            <label>Search:</label>
+            <input type="text" placeholder="Search..." id="search-input">
+          </div>
+          <div class="filter-group">
+            <label>Filter:</label>
+            <select id="filter-select">
+              <option>All</option>
+              <option>Active</option>
+              <option>Inactive</option>
+            </select>
+          </div>
+          <button class="btn">Search</button>
+        </div>
+        
+        <!-- EXAMPLE: Responsive Table -->
+        <div class="dashboard-card">
+          <h2 class="dashboard-card-title">Users</h2>
+          
+          <div class="table-wrapper">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-label="Name">Loading...</td>
+                  <td data-label="Email">-</td>
+                  <td data-label="Role">-</td>
+                  <td data-label="Status">-</td>
+                  <td data-label="Actions">-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="pagination">
+            <button>← Previous</button>
+            <button class="active">1</button>
+            <button>2</button>
+            <button>Next →</button>
+          </div>
+        </div>
+        
+        <!-- EXAMPLE: Empty State -->
+        <div class="empty-state" style="display: none;" id="empty-state">
+          <div class="empty-state-icon">📋</div>
+          <h3 class="empty-state-title">No data available</h3>
+          <p class="empty-state-description">Try adjusting your filters or adding new items</p>
+          <button class="btn">Create New</button>
+        </div>
+        
+      </div><!-- .container -->
+      
+    </main><!-- .dashboard-main -->
+    
+  </div><!-- .dashboard-layout -->
+
+  <!-- 
+    SCRIPTS - Order matters!
+    1. storage.js - foundation data layer
+    2. sync.js - event synchronization  
+    3. mobileResponsive.js - mobile utilities
+    4. dashboardInit.js - dashboard helper
+    5. YOUR dashboard-specific script
+  -->
+  
+  <script src="../js/storage.js"></script>
+  <script src="../js/sync.js"></script>
+  <script src="../js/mobileResponsive.js"></script>
+  <script src="../js/dashboardInit.js"></script>
+  
+  <!-- Your existing dashboard scripts -->
+  <!-- <script src="../js/adminDashboard.js"></script> -->
+  <!-- <script src="../js/dashboard.js"></script> -->
+  
+  <!-- Initialize this specific dashboard -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      // Initialize dashboard with required role(s)
+      // Replace these with actual requirements
+      DashboardInit.setup('dashboard', ['user', 'admin']);
+      
+      // Subscribe to users data
+      const unsubscribeUsers = DashboardInit.subscribeToUpdates('users', (users) => {
+        updateTable(users);
+      });
+      
+      // Load initial data
+      loadDashboardData();
+      
+      // Cleanup on page leave
+      window.addEventListener('beforeunload', () => {
+        unsubscribeUsers();
+      });
+    });
+    
+    function loadDashboardData() {
+      const users = DashboardInit.getData('users');
+      updateTable(users);
+    }
+    
+    function updateTable(users) {
+      const tbody = document.querySelector('table tbody');
+      if (!tbody || !users.length) {
+        document.getElementById('empty-state').style.display = 'block';
+        return;
+      }
+      
+      document.getElementById('empty-state').style.display = 'none';
+      tbody.innerHTML = users.map(user => `
+        <tr>
+          <td data-label="Name">${user.name || 'N/A'}</td>
+          <td data-label="Email">${user.email || 'N/A'}</td>
+          <td data-label="Role">${user.role || 'N/A'}</td>
+          <td data-label="Status">
+            <span class="badge ${user.active ? 'status-approved' : 'status-pending'}">
+              ${user.active ? 'Active' : 'Inactive'}
+            </span>
+          </td>
+          <td data-label="Actions">
+            <button class="btn-small">Edit</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+  </script>
+  
+</body>
+</html>

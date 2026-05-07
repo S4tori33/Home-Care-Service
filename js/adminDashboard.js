@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function initializeAdminDashboard() {
     // Check if user is logged in and is admin
     if (!auth.isLoggedIn()) {
-        window.location.href = 'userLogin.html';
+        window.location.href = '../index.html';
         return;
     }
 
@@ -41,12 +41,12 @@ function updateAdminProfile(user) {
 
 function setupLogout() {
     // Setup navbar logout button
-    const logoutLink = document.querySelector('a[href="userLogin.html"].active');
+    const logoutLink = document.querySelector('a[href="../index.html"].active');
     if (logoutLink) {
         logoutLink.addEventListener('click', (e) => {
             e.preventDefault();
             auth.logout();
-            window.location.href = 'userLogin.html';
+            window.location.href = '../index.html';
         });
     }
 
@@ -56,7 +56,7 @@ function setupLogout() {
         sidebarLogout.addEventListener('click', (e) => {
             e.preventDefault();
             auth.logout();
-            window.location.href = 'userLogin.html';
+            window.location.href = '../index.html';
         });
     }
 }

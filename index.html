@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login / Sign Up</title>
+    <title>Login</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/userLogin.css">
+    <link rel="stylesheet" href="styles/userLogin.css">
 </head>
 <body>
 
@@ -25,18 +25,18 @@
         </div>
 
         <!-- Form Container -->
-        <a href="../home.html" class="btn btn-secondary back-link" aria-label="Return">←</a>
+        <a href="pages/home.html" class="btn btn-secondary back-link" aria-label="Return">←</a>
         <div class="form-container">
             <!-- Login Form -->
             <div style="text-align: center; margin-bottom: 20px;">
-                <h2 style="color: #ffffff;"> Sign Up | Login</h2>
+                <h2 style="color: #ffffff;">Login</h2>
                 
             </div>
             
             <form class="form active" id="loginForm">
                 <div class="form-group">
                     <label class="form-label" for="loginEmail">Email Address</label>
-                    <input type="email" id="loginEmail" class="form-input" placeholder="Enter demo email" required>
+                    <input type="email" id="loginEmail" class="form-input" placeholder="Enter email" required>
                 </div>
                 <div class="form-group">
                     <label class="form-label" for="loginPassword">Password</label>
@@ -45,11 +45,10 @@
                 <div id="loginError" style="color: #d32f2f; font-size: 12px; margin-bottom: 10px; display: none;"></div>
                 <div class="form-actions">
                     <button type="submit" class="btn btn-primary">Log In</button>
-
                 </div>
                 <br> <br>
-                <div id="signup">
-                    <p style="color:white;"> Don't have an account yet? <a href="signup.html"> Sign Up </a></p>
+                <div class="signup">
+                    <p style="color:white; text-decoration: none;"> Don't have an account yet? <a href="./pages/signup.html"> Sign Up </a></p>
                 </div>
             </form>
 
@@ -78,12 +77,8 @@
 
     </section>
 
-    <footer>
-        <p>© 2026 Home Care Service (HCS). All Rights Reserved.</p>
-    </footer>
-
-    <script src="../js/appData.js"></script>
-    <script src="../js/userLoginLogic.js"></script>
+    <script src="js/appData.js"></script>
+    <script src="js/userLoginLogic.js"></script>
 
 </body>
 </html>

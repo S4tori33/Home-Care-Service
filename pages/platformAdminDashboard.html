@@ -1,250 +1,392 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Platform Admin Dashboard - Home Care Service</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../styles/dashboard.css">
-  <link rel="stylesheet" href="../styles/adminDashboard.css">
-  <style>
-    .admin-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      margin-bottom: 32px;
-    }
-    .admin-card {
-      background: white;
-      border: 1px solid #e5e7eb;
-      padding: 24px;
-      border-radius: 12px;
-      transition: all 0.3s ease;
-    }
-    .admin-card:hover {
-      border-color: #1e40af;
-      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.1);
-    }
-    .admin-card h3 {
-      font-size: 16px;
-      font-weight: 600;
-      color: #1f2937;
-      margin-bottom: 16px;
-    }
-    .admin-card .stat {
-      font-size: 28px;
-      font-weight: 700;
-      color: #1e40af;
-      margin-bottom: 8px;
-    }
-    .admin-card p {
-      font-size: 13px;
-      color: #6b7280;
-    }
-    .admin-btn {
-      padding: 10px 16px;
-      border: 1px solid #1e40af;
-      background: white;
-      color: #1e40af;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-top: 16px;
-    }
-    .admin-btn:hover {
-      background: #1e40af;
-      color: white;
-    }
-    .admin-btn.primary {
-      background: #1e40af;
-      color: white;
-    }
-    .section-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: #1f2937;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform Admin Dashboard - Home Care Service</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../styles/platformStyling.css">
+
 </head>
 <body>
 
-  <!-- NAVBAR -->
-  <nav class="navbar">
-    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
-      <span></span><span></span><span></span>
-    </button>
-    <a href="#" class="navbar-brand">
-      <div class="navbar-logo">HCS</div>
-      <div class="navbar-brand-text">
-        <h1>Home Care Service</h1>
-        <p>Platform Administration</p>
-      </div>
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="nav-left">
+    <div class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </div>
+    <div class="nav-title">
+      <h1>Platform Admin Dashboard</h1>
+      <p>User Management &amp; Control</p>
+    </div>
+  </div>
+  <div class="nav-right">
+    <div class="admin-pill">
+      <div class="admin-dot"></div>
+      Platform Admin
+    </div>
+    <a href="#" class="logout-btn" title="Logout" onclick="handleLogout(event)">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
     </a>
-    <div class="navbar-links">
-      <a href="../home.html">Home</a>
-      <a href="#" id="logoutLink">Logout</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<main>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="page-header-row">
+      <h2>User Management</h2>
+      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#4f46e5" stroke="none"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2h16z"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87" fill="none" stroke="#4f46e5" stroke-width="2"/><path d="M16 3.13a4 4 0 0 1 0 7.75" fill="none" stroke="#4f46e5" stroke-width="2"/></svg>
     </div>
-  </nav>
+    <p>Manage all user accounts, permissions, and activities</p>
+  </div>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-profile">
-      <div class="avatar-wrap">
-        <div class="avatar" id="avatarEl">PA</div>
-        <div class="avatar-badge"></div>
+  <!-- STAT CARDS -->
+  <div class="stat-grid">
+    <!-- Total Users -->
+    <div class="stat-card blue">
+      <div class="stat-card-top">
+        <div class="stat-icon blue">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="stat-trend up">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
       </div>
-      <div class="sidebar-user-name" id="userName">Platform Admin</div>
-      <div class="sidebar-user-role" id="userRole">Administrator</div>
+      <div class="stat-label">Total Users</div>
+      <div class="stat-value" id="statTotal">1248</div>
+      <div class="stat-sub green">+127 this month</div>
     </div>
-    <nav class="sidebar-nav" id="sidebarNav"></nav>
-  </aside>
 
-  <!-- MAIN CONTENT -->
-  <div class="main-wrap">
-    <div class="dashboard-shell">
-      <div class="shell-topbar">
-        <div class="shell-brand">
-          <div class="shell-logo">HCS</div>
-          <div class="shell-brand-text">
-            <h2>Platform Admin Dashboard</h2>
-            <p>User Management & Analytics</p>
-          </div>
+    <!-- Active Users -->
+    <div class="stat-card green">
+      <div class="stat-card-top">
+        <div class="stat-icon green">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         </div>
       </div>
+      <div class="stat-label">Active Users</div>
+      <div class="stat-value" id="statActive">1156</div>
+      <div class="stat-sub">92.6% of total</div>
+    </div>
 
-      <div class="dashboard-header">
-        <h1>Welcome, <span id="headerName">Admin</span>! 👤</h1>
-        <p class="dashboard-subtitle">Manage users and monitor platform activity</p>
-      </div>
-
-      <!-- USER STATISTICS -->
-      <div class="admin-grid">
-        <div class="admin-card">
-          <h3>👥 Total Users</h3>
-          <div class="stat" id="totalUsers">0</div>
-          <p>All active users</p>
-          <button class="admin-btn primary" onclick="viewUsers()">View All</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>🆕 New This Month</h3>
-          <div class="stat" id="newUsers">0</div>
-          <p>Recently registered</p>
-          <button class="admin-btn" onclick="viewNewUsers()">View</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>⏸️ Inactive</h3>
-          <div class="stat" id="inactiveUsers">0</div>
-          <p>Not active in 30 days</p>
-          <button class="admin-btn" onclick="viewInactive()">View</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>🚫 Banned</h3>
-          <div class="stat" id="bannedUsers">0</div>
-          <p>Suspended accounts</p>
-          <button class="admin-btn" onclick="viewBanned()">View</button>
+    <!-- New This Month -->
+    <div class="stat-card purple">
+      <div class="stat-card-top">
+        <div class="stat-icon purple">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
         </div>
       </div>
+      <div class="stat-label">New This Month</div>
+      <div class="stat-value" id="statNew">127</div>
+      <div class="stat-sub purple">Growing steadily</div>
+    </div>
 
-      <!-- USER TYPE BREAKDOWN -->
-      <div class="section-title">👥 User Type Distribution</div>
-      <div class="admin-grid">
-        <div class="admin-card">
-          <h3>Customers</h3>
-          <div class="stat" id="countCustomers">0</div>
-          <p>Service booking users</p>
-          <button class="admin-btn" onclick="viewUserType('customer')">Manage</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>Service Providers</h3>
-          <div class="stat" id="countProviders">0</div>
-          <p>Service delivery professionals</p>
-          <button class="admin-btn" onclick="viewUserType('providers')">Manage</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>Support Staff</h3>
-          <div class="stat" id="countSupport">0</div>
-          <p>Support & moderation team</p>
-          <button class="admin-btn" onclick="viewUserType('support')">Manage</button>
+    <!-- Banned Users -->
+    <div class="stat-card red">
+      <div class="stat-card-top">
+        <div class="stat-icon red">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
         </div>
       </div>
-
-      <!-- ACTIONS -->
-      <div class="section-title">Actions</div>
-      <div class="admin-grid">
-        <div class="admin-card">
-          <h3>➕ Create User</h3>
-          <p style="margin-bottom: 16px;">Add new user account to system</p>
-          <button class="admin-btn primary" onclick="openUserForm()">Create</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>📊 Analytics</h3>
-          <p style="margin-bottom: 16px;">View detailed platform analytics</p>
-          <button class="admin-btn primary" onclick="viewAnalytics()">View</button>
-        </div>
-
-        <div class="admin-card">
-          <h3>📋 Reports</h3>
-          <p style="margin-bottom: 16px;">Generate user and activity reports</p>
-          <button class="admin-btn primary" onclick="generateReport()">Generate</button>
-        </div>
-      </div>
-
+      <div class="stat-label">Banned Users</div>
+      <div class="stat-value" id="statBanned">5</div>
+      <div class="stat-sub red">Requires attention</div>
     </div>
   </div>
 
-  <script src="../js/auth.js"></script>
-  <script src="../js/dashboard.js"></script>
-  <script>
-    if (!dashboard.checkAccess('platform_admin')) {
-      window.location.href = '../pages/userLogin.html';
-    }
-    dashboard.initializeDashboard();
+  <!-- TOOLBAR -->
+  <div class="toolbar-card">
+    <div class="toolbar">
+      <div class="search-wrap">
+        <span class="search-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </span>
+        <input type="text" id="searchInput" placeholder="Search users by name or email..." oninput="applyFilters()">
+      </div>
 
-    function updateStats() {
-      const users = auth.getAllUsers();
-      document.getElementById('totalUsers').textContent = users.filter(u => u.status !== 'banned').length;
-      document.getElementById('newUsers').textContent = users.filter(u => {
-        const created = new Date(u.createdAt);
-        const now = new Date();
-        return (now - created) < 30 * 24 * 60 * 60 * 1000;
-      }).length;
-      document.getElementById('inactiveUsers').textContent = users.filter(u => !u.lastLogin || (new Date() - new Date(u.lastLogin)) > 30 * 24 * 60 * 60 * 1000).length;
-      document.getElementById('bannedUsers').textContent = users.filter(u => u.status === 'banned').length;
-      document.getElementById('countCustomers').textContent = users.filter(u => u.role === 'customer' || u.role === 'regular_user').length;
-      document.getElementById('countProviders').textContent = users.filter(u => ['caregiver', 'pet_care', 'garden_maintenance', 'house_cleaning'].includes(u.role)).length;
-      document.getElementById('countSupport').textContent = users.filter(u => ['customer_support', 'moderator'].includes(u.role)).length;
-    }
+      <div class="filter-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        <select class="filter-select" id="statusFilter" onchange="applyFilters()">
+          <option value="">All Status</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+          <option value="banned">Banned</option>
+        </select>
+        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="#6b7280"><path d="M7 10l5 5 5-5z"/></svg>
+      </div>
 
-    function viewUsers() { alert('Opening user management...'); }
-    function viewNewUsers() { alert('Showing new users...'); }
-    function viewInactive() { alert('Showing inactive users...'); }
-    function viewBanned() { alert('Showing banned users...'); }
-    function viewUserType(type) { alert(`Showing ${type} users...`); }
-    function openUserForm() { alert('Opening user creation form...'); }
-    function viewAnalytics() { alert('Opening analytics...'); }
-    function generateReport() { alert('Generating report...'); }
+      <div class="filter-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        <select class="filter-select" id="roleFilter" onchange="applyFilters()">
+          <option value="">All Roles</option>
+          <option value="customer">Customer</option>
+          <option value="provider">Provider</option>
+          <option value="support">Support</option>
+          <option value="admin">Admin</option>
+        </select>
+        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="#6b7280"><path d="M7 10l5 5 5-5z"/></svg>
+      </div>
 
-    document.getElementById('logoutLink').addEventListener('click', (e) => {
-      e.preventDefault();
-      dashboard.logout();
-    });
+      <button class="btn btn-primary" onclick="openAddUserModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+        Add User
+      </button>
 
-    updateStats();
-    setInterval(updateStats, 10000);
-  </script>
+      <button class="btn btn-outline" onclick="exportUsers()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export
+      </button>
+
+      <button class="btn btn-outline" onclick="openInboxModal()" style="position:relative;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>
+        Inbox
+        <span class="notif-dot" id="inboxBadge">3</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-card">
+    <div class="table-header">
+      <h3 id="tableTitle">All Users (6)</h3>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Contact</th>
+          <th>Location</th>
+          <th>Bookings</th>
+          <th>Total Spent</th>
+          <th>Member Since</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="usersBody"></tbody>
+    </table>
+    <div id="noResults" style="display:none;text-align:center;padding:40px;color:var(--muted);font-size:14px;">No users match your filters.</div>
+  </div>
+
+</main>
+
+<!-- ═══ MODALS ═══ -->
+
+<!-- View User Modal -->
+<div class="modal-overlay" id="viewModal" onclick="closeOnOverlay(event,'viewModal')">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div>
+        <h2>User Details</h2>
+        <p id="viewModalSub">Account overview and activity</p>
+      </div>
+      <button class="modal-close" onclick="closeModal('viewModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="detail-section">
+        <h3>Personal Information</h3>
+        <div class="detail-grid">
+          <div class="detail-field"><label>Full Name</label><span id="vd-name">—</span></div>
+          <div class="detail-field"><label>Email</label><span id="vd-email">—</span></div>
+          <div class="detail-field"><label>Phone</label><span id="vd-phone">—</span></div>
+          <div class="detail-field"><label>Location</label><span id="vd-location">—</span></div>
+        </div>
+      </div>
+      <div class="detail-divider"></div>
+      <div class="detail-section">
+        <h3>Account Details</h3>
+        <div class="detail-grid">
+          <div class="detail-field"><label>Role</label><span id="vd-role">—</span></div>
+          <div class="detail-field"><label>Status</label><span id="vd-status">—</span></div>
+          <div class="detail-field"><label>Member Since</label><span id="vd-since">—</span></div>
+          <div class="detail-field"><label>Last Login</label><span id="vd-login">—</span></div>
+          <div class="detail-field"><label>Total Bookings</label><span id="vd-bookings">—</span></div>
+          <div class="detail-field"><label>Total Spent</label><span id="vd-spent">—</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('viewModal')">Close</button>
+      <button class="btn btn-primary" onclick="editFromView()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        Edit User
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit User Modal -->
+<div class="modal-overlay" id="userFormModal" onclick="closeOnOverlay(event,'userFormModal')">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <h2 id="formModalTitle">Add New User</h2>
+        <p id="formModalSub">Fill in the details below</p>
+      </div>
+      <button class="modal-close" onclick="closeModal('userFormModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-field">
+          <label>First Name</label>
+          <input type="text" id="ff-firstName" placeholder="John">
+        </div>
+        <div class="form-field">
+          <label>Last Name</label>
+          <input type="text" id="ff-lastName" placeholder="Doe">
+        </div>
+        <div class="form-field full">
+          <label>Email Address</label>
+          <input type="email" id="ff-email" placeholder="john.doe@example.com">
+        </div>
+        <div class="form-field">
+          <label>Phone</label>
+          <input type="text" id="ff-phone" placeholder="(555) 123-4567">
+        </div>
+        <div class="form-field">
+          <label>Location / City</label>
+          <input type="text" id="ff-location" placeholder="New York">
+        </div>
+        <div class="form-field">
+          <label>Role</label>
+          <select id="ff-role">
+            <option value="customer">Customer</option>
+            <option value="provider">Service Provider</option>
+            <option value="support">Support Staff</option>
+            <option value="platform_admin">Platform Admin</option>
+            <option value="operations_admin">Operations Admin</option>
+            <option value="hr_admin">HR Admin</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>Status</label>
+          <select id="ff-status">
+            <option value="active">Active</option>
+            <option value="inactive">Inactive</option>
+            <option value="banned">Banned</option>
+          </select>
+        </div>
+        <div class="form-field full">
+          <label>Notes (optional)</label>
+          <textarea id="ff-notes" placeholder="Any additional notes..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('userFormModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveUser()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <span id="formSaveLabel">Create User</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Permissions Modal -->
+<div class="modal-overlay" id="permModal" onclick="closeOnOverlay(event,'permModal')">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <h2>Change Permissions</h2>
+        <p id="permModalSub">Adjust access levels for this user</p>
+      </div>
+      <button class="modal-close" onclick="closeModal('permModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="perm-list" id="permList"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('permModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="savePermissions()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- Ban Confirm Modal -->
+<div class="modal-overlay" id="banModal" onclick="closeOnOverlay(event,'banModal')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div><h2>Confirm Action</h2></div>
+      <button class="modal-close" onclick="closeModal('banModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="confirm-center">
+        <div class="confirm-icon warn" id="banIcon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+        </div>
+        <h3 id="banTitle">Ban User</h3>
+        <p id="banDesc">This will suspend their access to the platform.</p>
+      </div>
+    </div>
+    <div class="modal-footer" style="justify-content:center;gap:14px;">
+      <button class="btn btn-outline" onclick="closeModal('banModal')">Cancel</button>
+      <button class="btn" id="banConfirmBtn" style="background:#dc2626;color:#fff;" onclick="confirmBanAction()">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div class="modal-overlay" id="deleteModal" onclick="closeOnOverlay(event,'deleteModal')">
+  <div class="modal modal-sm">
+    <div class="modal-header">
+      <div><h2>Delete User</h2></div>
+      <button class="modal-close" onclick="closeModal('deleteModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="confirm-center">
+        <div class="confirm-icon danger">
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        </div>
+        <h3>Delete User</h3>
+        <p id="deleteDesc">This action is permanent and cannot be undone.</p>
+      </div>
+    </div>
+    <div class="modal-footer" style="justify-content:center;gap:14px;">
+      <button class="btn btn-outline" onclick="closeModal('deleteModal')">Cancel</button>
+      <button class="btn" style="background:#dc2626;color:#fff;" onclick="confirmDelete()">Delete Permanently</button>
+    </div>
+  </div>
+</div>
+
+<!-- Inbox Modal (HR + Ops applicants) -->
+<div class="modal-overlay" id="inboxModal" onclick="closeOnOverlay(event,'inboxModal')">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <div>
+        <h2>Admin Inbox</h2>
+        <p>Applicants from HR Admin &amp; Operations Admin pending your review</p>
+      </div>
+      <button class="modal-close" onclick="closeModal('inboxModal')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="inbox-tabs">
+        <button class="inbox-tab active" id="tab-hr" onclick="switchInboxTab('hr')">
+          HR Admin <span class="notif-dot" style="width:16px;height:16px;font-size:9px;">2</span>
+        </button>
+        <button class="inbox-tab" id="tab-ops" onclick="switchInboxTab('ops')">
+          Operations Admin <span class="notif-dot" style="width:16px;height:16px;font-size:9px;">1</span>
+        </button>
+        <button class="inbox-tab" id="tab-updates" onclick="switchInboxTab('updates')">Site Updates</button>
+      </div>
+      <div id="inbox-hr"></div>
+      <div id="inbox-ops" style="display:none;"></div>
+      <div id="inbox-updates" style="display:none;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('inboxModal')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toastContainer"></div>
+
+<script src="../js/platformLogic.js"> </script>
+
 </body>
 </html>
