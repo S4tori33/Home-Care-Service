@@ -490,6 +490,87 @@
                         </a>
                     </div>
                 </div>
+
+                <!-- ── CREDENTIALS & VERIFICATION ──────────────────────── -->
+                <div class="card section-card" id="credentialsSection">
+                    <div class="card-header">
+                        <h2>Credentials &amp; Verification</h2>
+                    </div>
+                    <p class="credentials-intro">Upload government-issued documents to verify your identity. Accepted formats: JPG, PNG, PDF (max 5 MB each).</p>
+
+                    <!-- National ID -->
+                    <div class="cred-item" id="credNationalId">
+                        <div class="cred-icon-wrap cred-icon--id">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="5" width="20" height="14" rx="2"/>
+                                <circle cx="8" cy="12" r="2"/>
+                                <path d="M14 9h4M14 12h4M14 15h2"/>
+                            </svg>
+                        </div>
+                        <div class="cred-info">
+                            <span class="cred-label">National ID</span>
+                            <span class="cred-filename" id="nationalIdName">No file uploaded</span>
+                        </div>
+                        <span class="cred-badge cred-badge--pending" id="nationalIdBadge">Not Uploaded</span>
+                        <label class="btn btn-secondary small cred-upload-btn" for="nationalIdInput" title="Upload National ID">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            Upload
+                        </label>
+                        <input type="file" id="nationalIdInput" accept=".jpg,.jpeg,.png,.pdf" class="cred-file-input" data-label="nationalIdName" data-badge="nationalIdBadge" data-preview="nationalIdPreview">
+                        <div class="cred-preview-wrap" id="nationalIdPreview"></div>
+                    </div>
+
+                    <!-- Birth Certificate -->
+                    <div class="cred-item" id="credBirthCert">
+                        <div class="cred-icon-wrap cred-icon--birth">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="9" y1="13" x2="15" y2="13"/>
+                                <line x1="9" y1="17" x2="13" y2="17"/>
+                            </svg>
+                        </div>
+                        <div class="cred-info">
+                            <span class="cred-label">Birth Certificate</span>
+                            <span class="cred-filename" id="birthCertName">No file uploaded</span>
+                        </div>
+                        <span class="cred-badge cred-badge--pending" id="birthCertBadge">Not Uploaded</span>
+                        <label class="btn btn-secondary small cred-upload-btn" for="birthCertInput" title="Upload Birth Certificate">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            Upload
+                        </label>
+                        <input type="file" id="birthCertInput" accept=".jpg,.jpeg,.png,.pdf" class="cred-file-input" data-label="birthCertName" data-badge="birthCertBadge" data-preview="birthCertPreview">
+                        <div class="cred-preview-wrap" id="birthCertPreview"></div>
+                    </div>
+
+                    <!-- Driver's License -->
+                    <div class="cred-item" id="credDriversLicense">
+                        <div class="cred-icon-wrap cred-icon--license">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="1" y="4" width="22" height="16" rx="2"/>
+                                <circle cx="7" cy="13" r="2"/>
+                                <path d="M11 10h6M11 13h4M11 16h2"/>
+                                <path d="M3 8h18"/>
+                            </svg>
+                        </div>
+                        <div class="cred-info">
+                            <span class="cred-label">Driver's License</span>
+                            <span class="cred-filename" id="driversLicenseName">No file uploaded</span>
+                        </div>
+                        <span class="cred-badge cred-badge--pending" id="driversLicenseBadge">Not Uploaded</span>
+                        <label class="btn btn-secondary small cred-upload-btn" for="driversLicenseInput" title="Upload Driver's License">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            Upload
+                        </label>
+                        <input type="file" id="driversLicenseInput" accept=".jpg,.jpeg,.png,.pdf" class="cred-file-input" data-label="driversLicenseName" data-badge="driversLicenseBadge" data-preview="driversLicensePreview">
+                        <div class="cred-preview-wrap" id="driversLicensePreview"></div>
+                    </div>
+
+                    <div class="cred-notice">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                        Documents are encrypted and stored securely. They are only used for identity verification purposes.
+                    </div>
+                </div>
             </div>
         </section>
         
@@ -682,218 +763,5 @@
     </div>
 
     <script src="../js/script.js"></script>
-    <script>
-        // ── PROFILE MODAL SYSTEM ──────────────────────────────────────────────
-
-        function openProfileModal(id) {
-            var modal = document.getElementById(id);
-            if (!modal) return;
-            modal.style.opacity = '0';
-            modal.style.pointerEvents = 'auto';
-            modal.style.display = 'flex';
-            requestAnimationFrame(function () {
-                requestAnimationFrame(function () {
-                    modal.style.transition = 'opacity 0.2s ease';
-                    modal.style.opacity = '1';
-                });
-            });
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeProfileModal(id) {
-            var modal = document.getElementById(id);
-            if (!modal) return;
-            modal.style.opacity = '0';
-            modal.style.pointerEvents = 'none';
-            setTimeout(function () { modal.style.display = 'none'; }, 200);
-            document.body.style.overflow = '';
-        }
-
-        // ── SAVE / DISCARD LOGIC ──────────────────────────────────────────────
-
-        var originalValues = {};
-        var fieldLabels = {
-            firstName: 'First Name',
-            lastName:  'Last Name',
-            email:     'Email Address',
-            phone:     'Phone Number',
-            street:    'Street Address',
-            city:      'City',
-            zip:       'ZIP Code'
-        };
-
-        function snapshotValues() {
-            Object.keys(fieldLabels).forEach(function (id) {
-                var el = document.getElementById(id);
-                if (el) originalValues[id] = el.value;
-            });
-        }
-
-        function getChanges() {
-            var changes = [];
-            Object.keys(fieldLabels).forEach(function (id) {
-                var el = document.getElementById(id);
-                if (el && el.value !== originalValues[id]) {
-                    changes.push({
-                        label: fieldLabels[id],
-                        from:  originalValues[id] || '(empty)',
-                        to:    el.value || '(empty)'
-                    });
-                }
-            });
-            return changes;
-        }
-
-        function hasChanges() {
-            return getChanges().length > 0;
-        }
-
-        function updateHeaderButtons() {
-            var saveBtn    = document.getElementById('saveBtn');
-            var discardBtn = document.getElementById('discardBtn');
-            var changed    = hasChanges();
-            saveBtn.disabled    = !changed;
-            discardBtn.disabled = !changed;
-            saveBtn.classList.toggle('btn-save--active', changed);
-            discardBtn.classList.toggle('btn-outline-discard--active', changed);
-        }
-
-        function showToast() {
-            var toast = document.getElementById('saveToast');
-            toast.classList.add('show');
-            setTimeout(function () { toast.classList.remove('show'); }, 3000);
-        }
-
-        function applyDiscard() {
-            Object.keys(fieldLabels).forEach(function (id) {
-                var el = document.getElementById(id);
-                if (el) el.value = originalValues[id];
-            });
-            updateHeaderButtons();
-        }
-
-        document.addEventListener('DOMContentLoaded', function () {
-
-            // Snapshot original values on load
-            snapshotValues();
-
-            // Hide all modals initially
-            document.querySelectorAll('.profile-modal-overlay').forEach(function (m) {
-                m.style.display = 'none';
-                m.style.opacity = '0';
-                m.style.pointerEvents = 'none';
-            });
-
-            // Watch inputs/selects for changes
-            Object.keys(fieldLabels).forEach(function (id) {
-                var el = document.getElementById(id);
-                if (el) el.addEventListener('input', updateHeaderButtons);
-                if (el) el.addEventListener('change', updateHeaderButtons);
-            });
-
-            // Save button → open confirm modal
-            document.getElementById('saveBtn').addEventListener('click', function () {
-                var changes = getChanges();
-                if (!changes.length) return;
-
-                // Build changes summary
-                var summary = document.getElementById('changesSummary');
-                summary.innerHTML = changes.map(function (c) {
-                    return '<div class="change-row">' +
-                        '<span class="change-label">' + c.label + '</span>' +
-                        '<span class="change-from">' + c.from + '</span>' +
-                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>' +
-                        '<span class="change-to">' + c.to + '</span>' +
-                        '</div>';
-                }).join('');
-
-                openProfileModal('confirmSaveModal');
-            });
-
-            // Confirm save button inside modal
-            document.getElementById('confirmSaveBtn').addEventListener('click', function () {
-                snapshotValues(); // commit new values as baseline
-                closeProfileModal('confirmSaveModal');
-                updateHeaderButtons();
-                showToast();
-            });
-
-            // Discard button
-            document.getElementById('discardBtn').addEventListener('click', function () {
-                if (!hasChanges()) return;
-                applyDiscard();
-            });
-
-            // Open triggers
-            document.querySelectorAll('[data-open-modal]').forEach(function (trigger) {
-                trigger.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    openProfileModal(trigger.getAttribute('data-open-modal'));
-                });
-            });
-
-            // Close: X and Cancel buttons
-            document.querySelectorAll('.profile-modal-overlay .modal-close, .profile-modal-overlay .modal-cancel-btn').forEach(function (btn) {
-                btn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    var overlay = btn.closest('.profile-modal-overlay');
-                    if (overlay) closeProfileModal(overlay.id);
-                });
-            });
-
-            // Backdrop click
-            document.querySelectorAll('.profile-modal-overlay').forEach(function (overlay) {
-                overlay.addEventListener('click', function (e) {
-                    if (e.target === overlay) closeProfileModal(overlay.id);
-                });
-            });
-
-            // Escape key
-            document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape') {
-                    document.querySelectorAll('.profile-modal-overlay').forEach(function (m) {
-                        if (m.style.display !== 'none') closeProfileModal(m.id);
-                    });
-                }
-            });
-
-            // Edit payment pre-fill
-            document.querySelectorAll('.edit-payment').forEach(function (btn) {
-                btn.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    var method    = btn.dataset.paymentMethod  || '';
-                    var details   = btn.dataset.paymentDetails || '';
-                    var isDefault = btn.dataset.default === 'true';
-                    var title     = document.getElementById('editPaymentTitle');
-                    var mInput    = document.getElementById('paymentMethodName');
-                    var dInput    = document.getElementById('paymentCardDetails');
-                    var defChk    = document.getElementById('paymentDefaultToggle');
-                    if (title)  title.textContent = 'Edit ' + method + ' Method';
-                    if (mInput) mInput.value      = method;
-                    if (dInput) dInput.value      = details;
-                    if (defChk) defChk.checked    = isDefault;
-                    openProfileModal('paymentEditModal');
-                });
-            });
-
-            // Form submits
-            function handleFormSubmit(formId, message, modalId) {
-                var form = document.getElementById(formId);
-                if (!form) return;
-                form.addEventListener('submit', function (e) {
-                    e.preventDefault();
-                    closeProfileModal(modalId);
-                    form.reset();
-                    showToast();
-                });
-            }
-            handleFormSubmit('addPaymentForm',    'Payment method saved!',                     'paymentAddModal');
-            handleFormSubmit('editPaymentForm',   'Payment method updated!',                   'paymentEditModal');
-            handleFormSubmit('changePasswordForm','Password updated successfully!',            'changePasswordModal');
-            handleFormSubmit('tfaForm',           'Two-Factor Authentication settings saved.', 'tfaModal');
-
-            if (typeof initializeProfileTabs === 'function') initializeProfileTabs();
-        });
-    </script>
 </body>
 </html>

@@ -926,3 +926,182 @@ body.modal-open {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
 }
+/* ── CREDENTIALS & VERIFICATION ──────────────────────────────────── */
+
+.credentials-intro {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin: 0 0 20px;
+    line-height: 1.55;
+}
+
+.cred-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+}
+
+.cred-item:last-of-type {
+    border-bottom: none;
+}
+
+/* Icon wrap */
+.cred-icon-wrap {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+}
+
+.cred-icon-wrap svg {
+    width: 22px;
+    height: 22px;
+}
+
+.cred-icon--id     { background: rgba(37,99,235,0.10); color: #2563eb; }
+.cred-icon--birth  { background: rgba(16,185,129,0.10); color: #059669; }
+.cred-icon--license { background: rgba(245,158,11,0.10); color: #d97706; }
+
+/* Label + filename */
+.cred-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    flex: 1;
+    min-width: 120px;
+}
+
+.cred-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.cred-filename {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px;
+}
+
+/* Status badge */
+.cred-badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.cred-badge--pending {
+    background: var(--surface-soft);
+    color: var(--text-muted);
+}
+
+.cred-badge--uploaded {
+    background: rgba(16,185,129,0.12);
+    color: #059669;
+}
+
+/* Hidden native file input */
+.cred-file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    pointer-events: none;
+}
+
+/* Upload button (label styled as button) */
+.cred-upload-btn {
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+/* Preview area */
+.cred-preview-wrap {
+    width: 100%;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    margin-top: 6px;
+    position: relative;
+}
+
+.cred-preview-img {
+    width: 100%;
+    max-width: 280px;
+    max-height: 160px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+}
+
+.cred-preview-pdf {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--text);
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 14px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cred-preview-remove {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    border: none;
+    background: rgba(239,68,68,0.12);
+    color: #dc2626;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s;
+}
+
+.cred-preview-remove:hover {
+    background: rgba(239,68,68,0.22);
+}
+
+/* Security notice at bottom */
+.cred-notice {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    background: var(--surface-soft);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-top: 16px;
+    line-height: 1.5;
+}
+
+.cred-notice svg {
+    flex-shrink: 0;
+    margin-top: 1px;
+}

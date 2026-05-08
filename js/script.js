@@ -1070,3 +1070,504 @@ document.addEventListener('DOMContentLoaded', () => {
   /* ── System Settings save ── */
   document.getElementById('saveSettingsBtn')?.addEventListener('click', saveSystemSettings);
 });
+
+// ── PROFILE MODAL SYSTEM ──────────────────────────────────────────────
+
+        function openProfileModal(id) {
+            var modal = document.getElementById(id);
+            if (!modal) return;
+            modal.style.opacity = '0';
+            modal.style.pointerEvents = 'auto';
+            modal.style.display = 'flex';
+            requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                    modal.style.transition = 'opacity 0.2s ease';
+                    modal.style.opacity = '1';
+                });
+            });
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProfileModal(id) {
+            var modal = document.getElementById(id);
+            if (!modal) return;
+            modal.style.opacity = '0';
+            modal.style.pointerEvents = 'none';
+            setTimeout(function () { modal.style.display = 'none'; }, 200);
+            document.body.style.overflow = '';
+        }
+
+        // ── SAVE / DISCARD LOGIC ──────────────────────────────────────────────
+
+        var originalValues = {};
+        var fieldLabels = {
+            firstName: 'First Name',
+            lastName:  'Last Name',
+            email:     'Email Address',
+            phone:     'Phone Number',
+            street:    'Street Address',
+            city:      'City',
+            zip:       'ZIP Code'
+        };
+
+        function snapshotValues() {
+            Object.keys(fieldLabels).forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el) originalValues[id] = el.value;
+            });
+        }
+
+        function getChanges() {
+            var changes = [];
+            Object.keys(fieldLabels).forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el && el.value !== originalValues[id]) {
+                    changes.push({
+                        label: fieldLabels[id],
+                        from:  originalValues[id] || '(empty)',
+                        to:    el.value || '(empty)'
+                    });
+                }
+            });
+            return changes;
+        }
+
+        function hasChanges() {
+            return getChanges().length > 0;
+        }
+
+        function updateHeaderButtons() {
+            var saveBtn    = document.getElementById('saveBtn');
+            var discardBtn = document.getElementById('discardBtn');
+            var changed    = hasChanges();
+            saveBtn.disabled    = !changed;
+            discardBtn.disabled = !changed;
+            saveBtn.classList.toggle('btn-save--active', changed);
+            discardBtn.classList.toggle('btn-outline-discard--active', changed);
+        }
+
+        function showToast() {
+            var toast = document.getElementById('saveToast');
+            toast.classList.add('show');
+            setTimeout(function () { toast.classList.remove('show'); }, 3000);
+        }
+
+        function applyDiscard() {
+            Object.keys(fieldLabels).forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el) el.value = originalValues[id];
+            });
+            updateHeaderButtons();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Snapshot original values on load
+            snapshotValues();
+
+            // Hide all modals initially
+            document.querySelectorAll('.profile-modal-overlay').forEach(function (m) {
+                m.style.display = 'none';
+                m.style.opacity = '0';
+                m.style.pointerEvents = 'none';
+            });
+
+            // Watch inputs/selects for changes
+            Object.keys(fieldLabels).forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el) el.addEventListener('input', updateHeaderButtons);
+                if (el) el.addEventListener('change', updateHeaderButtons);
+            });
+
+            // Save button → open confirm modal
+            document.getElementById('saveBtn').addEventListener('click', function () {
+                var changes = getChanges();
+                if (!changes.length) return;
+
+                // Build changes summary
+                var summary = document.getElementById('changesSummary');
+                summary.innerHTML = changes.map(function (c) {
+                    return '<div class="change-row">' +
+                        '<span class="change-label">' + c.label + '</span>' +
+                        '<span class="change-from">' + c.from + '</span>' +
+                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>' +
+                        '<span class="change-to">' + c.to + '</span>' +
+                        '</div>';
+                }).join('');
+
+                openProfileModal('confirmSaveModal');
+            });
+
+            // Confirm save button inside modal
+            document.getElementById('confirmSaveBtn').addEventListener('click', function () {
+                snapshotValues(); // commit new values as baseline
+                closeProfileModal('confirmSaveModal');
+                updateHeaderButtons();
+                showToast();
+            });
+
+            // Discard button
+            document.getElementById('discardBtn').addEventListener('click', function () {
+                if (!hasChanges()) return;
+                applyDiscard();
+            });
+
+            // Open triggers
+            document.querySelectorAll('[data-open-modal]').forEach(function (trigger) {
+                trigger.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    openProfileModal(trigger.getAttribute('data-open-modal'));
+                });
+            });
+
+            // Close: X and Cancel buttons
+            document.querySelectorAll('.profile-modal-overlay .modal-close, .profile-modal-overlay .modal-cancel-btn').forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var overlay = btn.closest('.profile-modal-overlay');
+                    if (overlay) closeProfileModal(overlay.id);
+                });
+            });
+
+            // Backdrop click
+            document.querySelectorAll('.profile-modal-overlay').forEach(function (overlay) {
+                overlay.addEventListener('click', function (e) {
+                    if (e.target === overlay) closeProfileModal(overlay.id);
+                });
+            });
+
+            // Escape key
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.profile-modal-overlay').forEach(function (m) {
+                        if (m.style.display !== 'none') closeProfileModal(m.id);
+                    });
+                }
+            });
+
+            // Edit payment pre-fill
+            document.querySelectorAll('.edit-payment').forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var method    = btn.dataset.paymentMethod  || '';
+                    var details   = btn.dataset.paymentDetails || '';
+                    var isDefault = btn.dataset.default === 'true';
+                    var title     = document.getElementById('editPaymentTitle');
+                    var mInput    = document.getElementById('paymentMethodName');
+                    var dInput    = document.getElementById('paymentCardDetails');
+                    var defChk    = document.getElementById('paymentDefaultToggle');
+                    if (title)  title.textContent = 'Edit ' + method + ' Method';
+                    if (mInput) mInput.value      = method;
+                    if (dInput) dInput.value      = details;
+                    if (defChk) defChk.checked    = isDefault;
+                    openProfileModal('paymentEditModal');
+                });
+            });
+
+            // Form submits
+            function handleFormSubmit(formId, message, modalId) {
+                var form = document.getElementById(formId);
+                if (!form) return;
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    closeProfileModal(modalId);
+                    form.reset();
+                    showToast();
+                });
+            }
+            handleFormSubmit('addPaymentForm',    'Payment method saved!',                     'paymentAddModal');
+            handleFormSubmit('editPaymentForm',   'Payment method updated!',                   'paymentEditModal');
+            handleFormSubmit('changePasswordForm','Password updated successfully!',            'changePasswordModal');
+            handleFormSubmit('tfaForm',           'Two-Factor Authentication settings saved.', 'tfaModal');
+
+            if (typeof initializeProfileTabs === 'function') initializeProfileTabs();
+        });
+
+        // ── PROFILE MODAL SYSTEM ──────────────────────────────────────────────
+
+        function openProfileModal(id) {
+            var modal = document.getElementById(id);
+            if (!modal) return;
+            modal.style.opacity = '0';
+            modal.style.pointerEvents = 'auto';
+            modal.style.display = 'flex';
+            requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                    modal.style.transition = 'opacity 0.2s ease';
+                    modal.style.opacity = '1';
+                });
+            });
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProfileModal(id) {
+            var modal = document.getElementById(id);
+            if (!modal) return;
+            modal.style.opacity = '0';
+            modal.style.pointerEvents = 'none';
+            setTimeout(function () { modal.style.display = 'none'; }, 200);
+            document.body.style.overflow = '';
+        }
+
+        // ── SAVE / DISCARD LOGIC ──────────────────────────────────────────────
+
+        var originalValues = {};
+        var fieldLabels = {
+            firstName: 'First Name',
+            lastName:  'Last Name',
+            email:     'Email Address',
+            phone:     'Phone Number',
+            street:    'Street Address',
+            city:      'City',
+            zip:       'ZIP Code'
+        };
+
+        function snapshotValues() {
+            Object.keys(fieldLabels).forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el) originalValues[id] = el.value;
+            });
+        }
+
+        function getChanges() {
+            var changes = [];
+            Object.keys(fieldLabels).forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el && el.value !== originalValues[id]) {
+                    changes.push({
+                        label: fieldLabels[id],
+                        from:  originalValues[id] || '(empty)',
+                        to:    el.value || '(empty)'
+                    });
+                }
+            });
+            return changes;
+        }
+
+        function hasChanges() {
+            return getChanges().length > 0;
+        }
+
+        function updateHeaderButtons() {
+            var saveBtn    = document.getElementById('saveBtn');
+            var discardBtn = document.getElementById('discardBtn');
+            var changed    = hasChanges();
+            saveBtn.disabled    = !changed;
+            discardBtn.disabled = !changed;
+            saveBtn.classList.toggle('btn-save--active', changed);
+            discardBtn.classList.toggle('btn-outline-discard--active', changed);
+        }
+
+        function showToast() {
+            var toast = document.getElementById('saveToast');
+            toast.classList.add('show');
+            setTimeout(function () { toast.classList.remove('show'); }, 3000);
+        }
+
+        function applyDiscard() {
+            Object.keys(fieldLabels).forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el) el.value = originalValues[id];
+            });
+            updateHeaderButtons();
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+
+            // Snapshot original values on load
+            snapshotValues();
+
+            // Hide all modals initially
+            document.querySelectorAll('.profile-modal-overlay').forEach(function (m) {
+                m.style.display = 'none';
+                m.style.opacity = '0';
+                m.style.pointerEvents = 'none';
+            });
+
+            // Watch inputs/selects for changes
+            Object.keys(fieldLabels).forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el) el.addEventListener('input', updateHeaderButtons);
+                if (el) el.addEventListener('change', updateHeaderButtons);
+            });
+
+            // Save button → open confirm modal
+            document.getElementById('saveBtn').addEventListener('click', function () {
+                var changes = getChanges();
+                if (!changes.length) return;
+
+                // Build changes summary
+                var summary = document.getElementById('changesSummary');
+                summary.innerHTML = changes.map(function (c) {
+                    return '<div class="change-row">' +
+                        '<span class="change-label">' + c.label + '</span>' +
+                        '<span class="change-from">' + c.from + '</span>' +
+                        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>' +
+                        '<span class="change-to">' + c.to + '</span>' +
+                        '</div>';
+                }).join('');
+
+                openProfileModal('confirmSaveModal');
+            });
+
+            // Confirm save button inside modal
+            document.getElementById('confirmSaveBtn').addEventListener('click', function () {
+                snapshotValues(); // commit new values as baseline
+                closeProfileModal('confirmSaveModal');
+                updateHeaderButtons();
+                showToast();
+            });
+
+            // Discard button
+            document.getElementById('discardBtn').addEventListener('click', function () {
+                if (!hasChanges()) return;
+                applyDiscard();
+            });
+
+            // Open triggers
+            document.querySelectorAll('[data-open-modal]').forEach(function (trigger) {
+                trigger.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    openProfileModal(trigger.getAttribute('data-open-modal'));
+                });
+            });
+
+            // Close: X and Cancel buttons
+            document.querySelectorAll('.profile-modal-overlay .modal-close, .profile-modal-overlay .modal-cancel-btn').forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var overlay = btn.closest('.profile-modal-overlay');
+                    if (overlay) closeProfileModal(overlay.id);
+                });
+            });
+
+            // Backdrop click
+            document.querySelectorAll('.profile-modal-overlay').forEach(function (overlay) {
+                overlay.addEventListener('click', function (e) {
+                    if (e.target === overlay) closeProfileModal(overlay.id);
+                });
+            });
+
+            // Escape key
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.profile-modal-overlay').forEach(function (m) {
+                        if (m.style.display !== 'none') closeProfileModal(m.id);
+                    });
+                }
+            });
+
+            // Edit payment pre-fill
+            document.querySelectorAll('.edit-payment').forEach(function (btn) {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    var method    = btn.dataset.paymentMethod  || '';
+                    var details   = btn.dataset.paymentDetails || '';
+                    var isDefault = btn.dataset.default === 'true';
+                    var title     = document.getElementById('editPaymentTitle');
+                    var mInput    = document.getElementById('paymentMethodName');
+                    var dInput    = document.getElementById('paymentCardDetails');
+                    var defChk    = document.getElementById('paymentDefaultToggle');
+                    if (title)  title.textContent = 'Edit ' + method + ' Method';
+                    if (mInput) mInput.value      = method;
+                    if (dInput) dInput.value      = details;
+                    if (defChk) defChk.checked    = isDefault;
+                    openProfileModal('paymentEditModal');
+                });
+            });
+
+            // Form submits
+            function handleFormSubmit(formId, message, modalId) {
+                var form = document.getElementById(formId);
+                if (!form) return;
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+                    closeProfileModal(modalId);
+                    form.reset();
+                    showToast();
+                });
+            }
+            handleFormSubmit('addPaymentForm',    'Payment method saved!',                     'paymentAddModal');
+            handleFormSubmit('editPaymentForm',   'Payment method updated!',                   'paymentEditModal');
+            handleFormSubmit('changePasswordForm','Password updated successfully!',            'changePasswordModal');
+            handleFormSubmit('tfaForm',           'Two-Factor Authentication settings saved.', 'tfaModal');
+
+            if (typeof initializeProfileTabs === 'function') initializeProfileTabs();
+
+            // ── CREDENTIALS UPLOAD LOGIC ──────────────────────────────────────
+            document.querySelectorAll('.cred-file-input').forEach(function (input) {
+                input.addEventListener('change', function () {
+                    var file = input.files[0];
+                    if (!file) return;
+
+                    // Size guard (5 MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('File is too large. Maximum allowed size is 5 MB.');
+                        input.value = '';
+                        return;
+                    }
+
+                    var labelEl   = document.getElementById(input.dataset.label);
+                    var badgeEl   = document.getElementById(input.dataset.badge);
+                    var previewEl = document.getElementById(input.dataset.preview);
+
+                    // Update filename display
+                    if (labelEl) labelEl.textContent = file.name;
+
+                    // Update badge → "Uploaded"
+                    if (badgeEl) {
+                        badgeEl.textContent = 'Uploaded';
+                        badgeEl.classList.remove('cred-badge--pending');
+                        badgeEl.classList.add('cred-badge--uploaded');
+                    }
+
+                    // Show preview
+                    if (previewEl) {
+                        previewEl.innerHTML = '';
+                        if (file.type.startsWith('image/')) {
+                            var img = document.createElement('img');
+                            img.className = 'cred-preview-img';
+                            img.src = URL.createObjectURL(file);
+                            img.onload = function () { URL.revokeObjectURL(img.src); };
+                            var removeBtn = document.createElement('button');
+                            removeBtn.type = 'button';
+                            removeBtn.className = 'cred-preview-remove';
+                            removeBtn.innerHTML = '&times;';
+                            removeBtn.setAttribute('aria-label', 'Remove file');
+                            removeBtn.addEventListener('click', function () { resetCred(input); });
+                            previewEl.appendChild(img);
+                            previewEl.appendChild(removeBtn);
+                            previewEl.style.display = 'flex';
+                        } else {
+                            // PDF: show file name pill
+                            var pill = document.createElement('div');
+                            pill.className = 'cred-preview-pdf';
+                            pill.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>' + file.name;
+                            var removeBtn2 = document.createElement('button');
+                            removeBtn2.type = 'button';
+                            removeBtn2.className = 'cred-preview-remove';
+                            removeBtn2.innerHTML = '&times;';
+                            removeBtn2.setAttribute('aria-label', 'Remove file');
+                            removeBtn2.addEventListener('click', function () { resetCred(input); });
+                            pill.appendChild(removeBtn2);
+                            previewEl.appendChild(pill);
+                            previewEl.style.display = 'flex';
+                        }
+                    }
+                });
+            });
+
+            function resetCred(input) {
+                input.value = '';
+                var labelEl   = document.getElementById(input.dataset.label);
+                var badgeEl   = document.getElementById(input.dataset.badge);
+                var previewEl = document.getElementById(input.dataset.preview);
+                if (labelEl) labelEl.textContent = 'No file uploaded';
+                if (badgeEl) {
+                    badgeEl.textContent = 'Not Uploaded';
+                    badgeEl.classList.remove('cred-badge--uploaded');
+                    badgeEl.classList.add('cred-badge--pending');
+                }
+                if (previewEl) { previewEl.innerHTML = ''; previewEl.style.display = 'none'; }
+            }
+        });
