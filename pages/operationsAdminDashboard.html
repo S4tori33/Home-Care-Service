@@ -141,6 +141,10 @@
         <option value="Garden Work">Garden Work</option>
         <option value="House Cleaning">House Cleaning</option>
       </select>
+      <button class="add-job-btn" onclick="openAddJobModal()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add Job
+      </button>
     </div>
 
     <table>
@@ -281,6 +285,164 @@
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- ═══ Add Job Modal ═══ -->
+<div class="ops-modal-overlay" id="addJobModal" onclick="addJobCloseOutside(event)">
+  <div class="ops-modal">
+
+    <!-- Header -->
+    <div class="ops-modal-header">
+      <div class="ops-modal-header-icon" id="addJobModalIcon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+      <div class="ops-modal-header-info">
+        <h2>Create New Assignment</h2>
+        <p>Select a booking request and assign a provider</p>
+      </div>
+      <button class="ops-modal-close" onclick="closeAddJobModal()">✕</button>
+    </div>
+
+    <!-- Body -->
+    <div class="ops-modal-body">
+
+      <!-- Select Booking -->
+      <p class="ops-section-title">Step 1: Select a Booking Request</p>
+      <div class="ops-booking-list" id="addJobBookingList">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Select Provider -->
+      <div class="ops-divider"></div>
+      <p class="ops-section-title">Step 2: Select a Jobseeker to Assign</p>
+      <div class="ops-provider-list" id="addJobProviderList">
+        <!-- Populated by JS -->
+      </div>
+
+    </div><!-- /body -->
+
+    <!-- Footer -->
+    <div class="ops-modal-footer">
+      <div class="ops-footer-info">Select a booking and provider to create assignment</div>
+      <div class="ops-footer-btns">
+        <button class="ops-btn-cancel" onclick="closeAddJobModal()">Cancel</button>
+        <button class="ops-btn-assign" id="addJobConfirmBtn" onclick="confirmNewAssignment()" disabled>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Create Assignment
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ Support Issue Detail Modal ═══ -->
+<div class="si-overlay" id="supportIssueModal" onclick="siCloseOutside(event)">
+  <div class="si-modal">
+
+    <!-- Sidebar -->
+    <div class="si-sidebar">
+      <div class="si-sidebar-top">
+        <div class="si-avatar-wrap">
+          <div class="si-avatar" id="siAvatar">?</div>
+          <div class="si-avatar-ring"></div>
+        </div>
+        <div class="si-user-name" id="siUserName">Customer Name</div>
+        <div class="si-user-email" id="siUserEmail">email@example.com</div>
+        <div class="si-status-select-wrap">
+          <div class="si-status-dot" id="siStatusDot"></div>
+          <select class="si-status-select" id="siStatusSelect" onchange="siUpdateStatus()">
+            <option value="open">Open</option>
+            <option value="in-progress">In Progress</option>
+            <option value="resolved">Resolved</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="si-meta-list">
+        <div class="si-meta-item">
+          <span class="si-meta-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            Date Submitted
+          </span>
+          <span class="si-meta-value" id="siDate">—</span>
+        </div>
+        <div class="si-meta-item">
+          <span class="si-meta-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Time
+          </span>
+          <span class="si-meta-value" id="siTime">—</span>
+        </div>
+        <div class="si-meta-item">
+          <span class="si-meta-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Ticket ID
+          </span>
+          <span class="si-meta-value" id="siTicketId">—</span>
+        </div>
+      </div>
+
+      <div class="si-sidebar-actions">
+        <button class="si-action-btn si-btn-resolve" id="siResolveBtn" onclick="siQuickResolve()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Mark Resolved
+        </button>
+        <button class="si-action-btn si-btn-close-modal" onclick="closeSupportIssueModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          Close
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Panel -->
+    <div class="si-main">
+
+      <!-- Top bar -->
+      <div class="si-main-header">
+        <div class="si-header-left">
+          <div class="si-tag">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Support Ticket
+          </div>
+          <h2 class="si-subject" id="siSubject">Issue Subject</h2>
+        </div>
+        <button class="si-close-x" onclick="closeSupportIssueModal()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <!-- Message bubble -->
+      <div class="si-message-area">
+        <div class="si-message-header">
+          <div class="si-msg-avatar" id="siMsgAvatar">?</div>
+          <div class="si-msg-meta">
+            <strong id="siMsgName">Customer</strong>
+            <span id="siMsgDateTime">—</span>
+          </div>
+          <div class="si-msg-tag">User Message</div>
+        </div>
+        <div class="si-message-body" id="siMessageBody">
+          Message content here...
+        </div>
+      </div>
+
+      <!-- Reply / Notes area -->
+      <div class="si-reply-section">
+        <div class="si-reply-label">
+          <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 0 0-4-4H4"/></svg>
+          Internal Note
+        </div>
+        <textarea class="si-reply-box" id="siNoteBox" placeholder="Add an internal note or response summary for this ticket…" rows="3"></textarea>
+        <div class="si-reply-footer">
+          <span class="si-reply-hint">Notes are private and won't be sent to the customer.</span>
+          <button class="si-save-note-btn" onclick="siSaveNote()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+            Save Note
+          </button>
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
 

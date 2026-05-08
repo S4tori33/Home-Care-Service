@@ -8,13 +8,13 @@ const services = [
 ];
 
 const staff = [
-  { initials:"SJ", color:"linear-gradient(135deg,#5046e4,#7c3aed)", name:"Sarah Johnson",    sub:"Elderly Care - Margaret T.", status:"on-job",   statusLabel:"On Job"   },
-  { initials:"MC", color:"linear-gradient(135deg,#0ea5e9,#2563eb)", name:"Michael Chen",     sub:"",                           status:"available", statusLabel:"Available"},
-  { initials:"ER", color:"linear-gradient(135deg,#f97316,#ef4444)", name:"Emily Rodriguez",  sub:"House Cleaning - Lisa D.",   status:"on-job",   statusLabel:"On Job"   },
-  { initials:"DK", color:"linear-gradient(135deg,#10b981,#0d9488)", name:"David Martinez",   sub:"Garden Work - Robert W.",    status:"on-job",   statusLabel:"On Job"   },
-  { initials:"JM", color:"linear-gradient(135deg,#8b5cf6,#6d28d9)", name:"Jessica Martinez", sub:"Elderly Care - George P.",   status:"on-job",   statusLabel:"On Job"   },
-  { initials:"RT", color:"linear-gradient(135deg,#f43f5e,#be123c)", name:"Robert Taylor",    sub:"",                           status:"off-duty",  statusLabel:"Off Duty" },
-  { initials:"AM", color:"linear-gradient(135deg,#f59e0b,#d97706)", name:"Amanda White",     sub:"",                           status:"available", statusLabel:"Available"},
+  { initials:"SJ", color:"linear-gradient(135deg,#5046e4,#7c3aed)", name:"Sarah Johnson",    specialty:"Elderly Care",    sub:"Elderly Care - Margaret T.", status:"on-job",   statusLabel:"On Job"   },
+  { initials:"MC", color:"linear-gradient(135deg,#0ea5e9,#2563eb)", name:"Michael Chen",     specialty:"Pet Care",         sub:"",                           status:"available", statusLabel:"Available"},
+  { initials:"ER", color:"linear-gradient(135deg,#f97316,#ef4444)", name:"Emily Rodriguez",  specialty:"House Cleaning",   sub:"House Cleaning - Lisa D.",   status:"on-job",   statusLabel:"On Job"   },
+  { initials:"DK", color:"linear-gradient(135deg,#10b981,#0d9488)", name:"David Martinez",   specialty:"Garden Maintenance",sub:"Garden Work - Robert W.",    status:"on-job",   statusLabel:"On Job"   },
+  { initials:"JM", color:"linear-gradient(135deg,#8b5cf6,#6d28d9)", name:"Jessica Martinez", specialty:"Elderly Care",    sub:"Elderly Care - George P.",   status:"on-job",   statusLabel:"On Job"   },
+  { initials:"RT", color:"linear-gradient(135deg,#f43f5e,#be123c)", name:"Robert Taylor",    specialty:"House Cleaning",   sub:"",                           status:"off-duty",  statusLabel:"Off Duty" },
+  { initials:"AM", color:"linear-gradient(135deg,#f59e0b,#d97706)", name:"Amanda White",     specialty:"Garden Maintenance",sub:"",                           status:"available", statusLabel:"Available"},
 ];
 
 let jobs = [];
@@ -280,11 +280,131 @@ function renderSupportIssues() {
   }).join('');
 }
 
+// ── Support Issue Modal ──────────────────────────────────────────────────────
+let siCurrentIssueId = null;
+
 function viewSupportIssue(issueId) {
   const issue = supportIssuesData.find(i => i.id === issueId);
   if (!issue) return;
-  
-  alert(`Support Issue: ${issue.subject}\n\nCustomer: ${issue.userName}\nEmail: ${issue.email}\n\nMessage:\n${issue.message}\n\nStatus: ${issue.status}`);
+  siCurrentIssueId = issueId;
+
+  const createdDate = new Date(issue.createdAt);
+  const dateStr = createdDate.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+  const timeStr = createdDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const initials = (issue.userName?.substring(0, 2) || '??').toUpperCase();
+  const ticketId = '#TKT-' + issueId.toString().slice(-5).toUpperCase();
+
+  // Sidebar
+  document.getElementById('siAvatar').textContent = initials;
+  document.getElementById('siMsgAvatar').textContent = initials;
+  document.getElementById('siUserName').textContent = issue.userName || 'Customer';
+  document.getElementById('siUserEmail').textContent = issue.email || '';
+  document.getElementById('siDate').textContent = dateStr;
+  document.getElementById('siTime').textContent = timeStr;
+  document.getElementById('siTicketId').textContent = ticketId;
+
+  // Status select + dot
+  const sel = document.getElementById('siStatusSelect');
+  sel.value = issue.status || 'open';
+  siSyncStatusDot(issue.status || 'open');
+
+  // Resolve button
+  const resolveBtn = document.getElementById('siResolveBtn');
+  if (issue.status === 'resolved') {
+    resolveBtn.textContent = '\u2713 Resolved';
+    resolveBtn.disabled = true;
+    resolveBtn.style.opacity = '0.5';
+  } else {
+    resolveBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Mark Resolved';
+    resolveBtn.disabled = false;
+    resolveBtn.style.opacity = '1';
+  }
+
+  // Main panel
+  document.getElementById('siSubject').textContent = issue.subject || 'No subject';
+  document.getElementById('siMsgName').textContent = issue.userName || 'Customer';
+  document.getElementById('siMsgDateTime').textContent = dateStr + ' at ' + timeStr;
+  document.getElementById('siMessageBody').textContent = issue.message || '(No message content)';
+
+  // Notes
+  document.getElementById('siNoteBox').value = issue.adminNote || '';
+
+  // Open modal
+  document.getElementById('supportIssueModal').classList.add('open');
+}
+
+function siSyncStatusDot(status) {
+  const dot = document.getElementById('siStatusDot');
+  dot.className = 'si-status-dot';
+  if (status === 'open') dot.classList.add('open-dot');
+  else if (status === 'in-progress') dot.classList.add('progress-dot');
+  else if (status === 'resolved') dot.classList.add('resolved-dot');
+}
+
+function siUpdateStatus() {
+  if (!siCurrentIssueId) return;
+  const newStatus = document.getElementById('siStatusSelect').value;
+  siSyncStatusDot(newStatus);
+
+  const issues = getSupportIssues();
+  const idx = issues.findIndex(i => i.id === siCurrentIssueId);
+  if (idx === -1) return;
+  issues[idx].status = newStatus;
+  issues[idx].updatedAt = new Date().toISOString();
+  localStorage.setItem('supportIssues', JSON.stringify(issues));
+  supportIssuesData = issues;
+  renderSupportIssues();
+
+  const resolveBtn = document.getElementById('siResolveBtn');
+  if (newStatus === 'resolved') {
+    resolveBtn.textContent = '\u2713 Resolved';
+    resolveBtn.disabled = true;
+    resolveBtn.style.opacity = '0.5';
+  } else {
+    resolveBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Mark Resolved';
+    resolveBtn.disabled = false;
+    resolveBtn.style.opacity = '1';
+  }
+
+  const labels = { open: 'Open', 'in-progress': 'In Progress', resolved: 'Resolved' };
+  showOpsToast(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5046e4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg>',
+    'Status Updated',
+    'Ticket status changed to "' + (labels[newStatus] || newStatus) + '".',
+    't-blue'
+  );
+}
+
+function siQuickResolve() {
+  document.getElementById('siStatusSelect').value = 'resolved';
+  siUpdateStatus();
+}
+
+function siSaveNote() {
+  if (!siCurrentIssueId) return;
+  const note = document.getElementById('siNoteBox').value.trim();
+  const issues = getSupportIssues();
+  const idx = issues.findIndex(i => i.id === siCurrentIssueId);
+  if (idx === -1) return;
+  issues[idx].adminNote = note;
+  issues[idx].updatedAt = new Date().toISOString();
+  localStorage.setItem('supportIssues', JSON.stringify(issues));
+  supportIssuesData = issues;
+  showOpsToast(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>',
+    'Note Saved',
+    'Internal note has been saved to this ticket.',
+    't-green'
+  );
+}
+
+function closeSupportIssueModal() {
+  document.getElementById('supportIssueModal').classList.remove('open');
+  siCurrentIssueId = null;
+}
+
+function siCloseOutside(e) {
+  if (e.target === document.getElementById('supportIssueModal')) closeSupportIssueModal();
 }
 
 function updateSupportStatus(issueId) {
@@ -307,6 +427,10 @@ function updateSupportStatus(issueId) {
 // ── Modal state ──────────────────────────────────────────────────────────────
 let opsModalJobIndex = -1;
 let opsSelectedProvider = null;
+
+// Add Job Modal state
+let addJobSelectedBooking = null;
+let addJobSelectedProvider = null;
 
 // HR-approved applicants from HR admin (simulated inbox)
 const hrApprovedApplicants = [
@@ -383,7 +507,8 @@ function renderOpsProviders(job) {
       <div class="ops-prov-info">
         <div class="ops-prov-name">${s.name}</div>
         <div class="ops-prov-meta">
-          ${s.sub ? `<span><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:2px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> ${s.sub}</span>` : `<span>No active job</span>`}
+          <span class="ops-prov-specialty-tag ${serviceClassFromType(s.specialty || '')}">${s.specialty || 'General'}</span>
+          ${s.sub ? `<span style="font-size:11px;color:#9ca3af;margin-top:2px;display:block"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:2px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>${s.sub}</span>` : ''}
         </div>
       </div>
       <span class="ops-prov-badge ${s.status === 'on-job' ? 'on-job' : s.status === 'off-duty' ? '' : 'available'}">
@@ -527,7 +652,157 @@ function opsCloseOutside(e) {
   if (e.target === document.getElementById("opsModal")) closeOpsModal();
 }
 
-document.addEventListener("keydown", e => { if (e.key === "Escape") closeOpsModal(); });
+document.addEventListener("keydown", e => { 
+  if (e.key === "Escape") {
+    closeOpsModal();
+    closeAddJobModal();
+    closeSupportIssueModal();
+  }
+});
+
+// ── Add Job Modal Functions ──────────────────────────────────────────────────
+function openAddJobModal() {
+  addJobSelectedBooking = null;
+  addJobSelectedProvider = null;
+  renderAddJobBookings();
+  renderAddJobProviders();
+  document.getElementById("addJobConfirmBtn").disabled = true;
+  document.getElementById("addJobModal").classList.add("open");
+}
+
+function closeAddJobModal() {
+  document.getElementById("addJobModal").classList.remove("open");
+  addJobSelectedBooking = null;
+  addJobSelectedProvider = null;
+}
+
+function addJobCloseOutside(e) {
+  if (e.target === document.getElementById("addJobModal")) closeAddJobModal();
+}
+
+// Snapshot of pending bookings built when the modal opens — used by selectAddJobBooking
+let _addJobPendingSnapshot = [];
+
+function renderAddJobBookings() {
+  // Primary source: jobs already loaded in memory (always available).
+  // Fallback to appData for raw booking fields if present.
+  refreshJobData();
+  const unassigned = jobs.filter(j => j.status === 'Scheduled' || j.staff === 'Unassigned' || !j.staff);
+
+  // Build a snapshot of raw booking objects from the jobs array
+  _addJobPendingSnapshot = unassigned.map(j => j.booking || {
+    id: j.id,
+    customerName: j.client,
+    customerPhone: j.phone,
+    serviceType: j.service,
+    date: j.time,
+    time: '',
+    location: j.location,
+    providerName: j.staff,
+    status: j.status
+  });
+
+  document.getElementById("addJobBookingList").innerHTML = _addJobPendingSnapshot.length > 0
+    ? _addJobPendingSnapshot.map((b, i) => `
+    <div class="ops-booking-card" id="booking-${i}" onclick="selectAddJobBooking(${i}, '${b.id}')">
+      <div class="ops-booking-info">
+        <div class="ops-booking-client">${b.customerName || 'Customer'}</div>
+        <div class="ops-booking-details">
+          <span class="ops-booking-service">${b.serviceType || 'Service'}</span>
+          <span class="ops-booking-time">${b.date ? `${b.date}${b.time && b.time !== 'TBD' ? ' · ' + b.time : ''}` : (b.time || 'TBD')}</span>
+          <span class="ops-booking-location">${b.location || 'To be determined'}</span>
+        </div>
+      </div>
+      <div class="ops-booking-status">${b.status === 'Pending' ? 'Pending' : 'Unassigned'}</div>
+      <div class="ops-select-radio" id="booking-radio-${i}"></div>
+    </div>
+  `).join("")
+    : '<div class="no-bookings">No unassigned booking requests available.</div>';
+}
+
+function selectAddJobBooking(index, bookingId) {
+  // Clear all selections
+  document.querySelectorAll(".ops-booking-card").forEach(c => c.classList.remove("selected"));
+  // Find by ID in snapshot (string IDs like 'b1', 'b2')
+  addJobSelectedBooking = bookingId
+    ? (_addJobPendingSnapshot.find(b => String(b.id) === String(bookingId)) || _addJobPendingSnapshot[index] || null)
+    : (_addJobPendingSnapshot[index] || null);
+  // Highlight selected card
+  document.getElementById(`booking-${index}`)?.classList.add("selected");
+  updateAddJobConfirmBtn();
+}
+
+function renderAddJobProviders() {
+  // Available providers
+  const availableStaff = staff.filter(s => s.status === 'available');
+
+  document.getElementById("addJobProviderList").innerHTML = availableStaff.length > 0 ? availableStaff.map((s, i) => `
+    <div class="ops-provider-card" id="add-prov-${i}" onclick="selectAddJobProvider('${s.name}', ${i})">
+      <div class="ops-prov-avatar" style="background:${s.color}">${s.initials}</div>
+      <div class="ops-prov-info">
+        <div class="ops-prov-name">${s.name}</div>
+        <div class="ops-prov-meta">
+          <span class="ops-prov-specialty-tag ${serviceClassFromType(s.specialty || '')}">${s.specialty || 'General'}</span>
+        </div>
+      </div>
+      <span class="ops-prov-badge available">Available</span>
+      <div class="ops-select-radio" id="add-prov-radio-${i}"></div>
+    </div>
+  `).join("") : '<div class="no-providers">No available providers at the moment.</div>';
+}
+
+function selectAddJobProvider(name, index) {
+  // Clear all selections
+  document.querySelectorAll("#addJobProviderList .ops-provider-card").forEach(c => c.classList.remove("selected"));
+  addJobSelectedProvider = name;
+  // Apply selection
+  document.getElementById(`add-prov-${index}`)?.classList.add("selected");
+  updateAddJobConfirmBtn();
+}
+
+function updateAddJobConfirmBtn() {
+  document.getElementById("addJobConfirmBtn").disabled = !addJobSelectedBooking || !addJobSelectedProvider;
+}
+
+function confirmNewAssignment() {
+  if (!addJobSelectedBooking || !addJobSelectedProvider) return;
+
+  const providerName  = addJobSelectedProvider;
+  const bookingId     = addJobSelectedBooking.id;
+  const customerName  = addJobSelectedBooking.customerName || 'Customer';
+  const serviceType   = addJobSelectedBooking.serviceType  || 'Service';
+
+  // Mutate the in-memory snapshot object so the list reflects change immediately
+  addJobSelectedBooking.providerName = providerName;
+  addJobSelectedBooking.status       = 'Active';
+
+  // Persist to localStorage (reads fresh from storage, updates, saves back)
+  persistBookingChanges(bookingId, { providerName, status: 'Active' });
+
+  // Force jobs array to re-read from updated localStorage
+  refreshJobData();
+
+  // Update staff status in memory
+  const provider = staff.find(s => s.name === providerName);
+  if (provider) {
+    provider.status      = 'on-job';
+    provider.statusLabel = 'On Job';
+    provider.sub         = `${serviceType} - ${customerName}`;
+  }
+
+  // Refresh the jobs table and staff list
+  renderJobs();
+  renderStaff();
+
+  showOpsToast(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+    "Assignment Created",
+    `${providerName} assigned to ${customerName} for ${serviceType}.`,
+    "t-green"
+  );
+
+  closeAddJobModal();
+}
 
 function showOpsToast(icon, title, sub, colorClass) {
   const container = document.getElementById("opsToastContainer");
