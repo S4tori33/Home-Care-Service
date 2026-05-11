@@ -90,7 +90,7 @@
     .navbar-brand-text p { font-size: 11px; color: rgba(255,255,255,0.75); margin-top: 1px; }
 
     .navbar-links {
-      display: flex; gap: 4px; margin-left: auto;
+      display: flex; gap: 4px;
     }
     .navbar-links a {
       color: rgba(255,255,255,0.82); text-decoration: none;
@@ -1265,7 +1265,7 @@
     .navbar-brand-text p { font-size: 11px; color: rgba(255,255,255,0.75); margin-top: 1px; }
 
     .navbar-links {
-      display: flex; gap: 4px; margin-left: auto;
+      display: flex; gap: 4px;
     }
     .navbar-links a {
       color: rgba(255,255,255,0.82); text-decoration: none;

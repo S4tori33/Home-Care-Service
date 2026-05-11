@@ -1571,3 +1571,129 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (previewEl) { previewEl.innerHTML = ''; previewEl.style.display = 'none'; }
             }
         });
+
+        // Service data for modals
+        const serviceData = {
+            cleaning: {
+                title: "House Cleaning",
+                subtitle: "Professional cleaning for a spotless home",
+                priceMain: "₱550 per service",
+                priceAlt: "or ₱300-350 per hour",
+                includes: [
+                    "Deep Cleaning (bathrooms, kitchen, floors)",
+                    "Regular Cleaning (dusting, vacuuming, surfaces)",
+                    "Move-in/Move-out Cleaning",
+                    "Window Cleaning",
+                    "Carpet Cleaning"
+                ]
+            },
+            garden: {
+                title: "Garden Maintenance",
+                subtitle: "Expert maintenance for beautiful outdoor spaces",
+                priceMain: "₱550 per service",
+                priceAlt: "or ₱200-250 per hour",
+                includes: [
+                    "Lawn Mowing & Trimming",
+                    "Weed Control & Removal",
+                    "Plant Care & Watering",
+                    "Tree & Shrub Pruning",
+                    "Fertilizing & Pest Control"
+                ]
+            },
+            pet: {
+                title: "Pet Care",
+                subtitle: "Loving care for your furry companions",
+                priceMain: "₱300 per service",
+                priceAlt: "or ₱150-200 per hour",
+                includes: [
+                    "Dog Walking",
+                    "Pet Sitting (in-home)",
+                    "Pet Grooming",
+                    "Feeding & Medication",
+                    "Basic Training Sessions"
+                ]
+            },
+            elderly: {
+                title: "Elderly Care",
+                subtitle: "Compassionate support for seniors",
+                priceMain: "₱1,200 per session",
+                priceAlt: "or ₱650-800 per hour",
+                includes: [
+                    "Companionship & Social Activities",
+                    "Personal Care (bathing, dressing)",
+                    "Medication Management",
+                    "Meal Preparation & Light Housekeeping",
+                    "Transportation & Errands"
+                ]
+            }
+        };
+
+        // DOM elements
+        const modalBackdrop = document.getElementById('serviceModalBackdrop');
+        const modal = document.getElementById('serviceModal');
+        const modalTitle = document.getElementById('serviceModalTitle');
+        const modalSubtitle = document.getElementById('serviceModalSubtitle');
+        const modalPriceMain = document.getElementById('serviceModalPriceMain');
+        const modalPriceAlt = document.getElementById('serviceModalPriceAlt');
+        const modalIncludes = document.getElementById('serviceModalIncludes');
+        const modalCloseBtn = document.getElementById('serviceModalClose');
+
+        // Open modal function
+        function openServiceModal(serviceType) {
+            const data = serviceData[serviceType];
+            if (!data) return;
+
+            // Set modal content
+            modalTitle.textContent = data.title;
+            modalSubtitle.textContent = data.subtitle;
+            modalPriceMain.textContent = data.priceMain;
+            modalPriceAlt.textContent = data.priceAlt;
+
+            // Clear and populate includes list
+            modalIncludes.innerHTML = '';
+            data.includes.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                modalIncludes.appendChild(li);
+            });
+
+            // Set data attribute for styling
+            modal.setAttribute('data-service', serviceType);
+
+            // Show modal
+            modalBackdrop.classList.add('active');
+            modalBackdrop.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close modal function
+        function closeServiceModal() {
+            modalBackdrop.classList.remove('active');
+            modalBackdrop.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        // Event listeners for service cards
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const serviceType = card.getAttribute('data-service');
+                openServiceModal(serviceType);
+            });
+        });
+
+        // X button closes modal
+        modalCloseBtn.addEventListener('click', closeServiceModal);
+
+        // Close on backdrop click
+        modalBackdrop.addEventListener('click', (e) => {
+            if (e.target === modalBackdrop) {
+                closeServiceModal();
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modalBackdrop.classList.contains('active')) {
+                closeServiceModal();
+            }
+        });

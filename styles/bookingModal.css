@@ -1,0 +1,233 @@
+/* ============================================================
+   Booking Modal Additions
+   Add these rules to dashboard.css (or include as a separate
+   <link> before the closing </head>).
+   ============================================================ */
+
+/* ── Red header icon (cancel/delete actions) ── */
+.modal-header-icon.red {
+  background: #fee2e2;
+}
+.modal-header-icon.red svg {
+  stroke: #dc2626;
+}
+
+/* ── Primary blue button ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 22px;
+  border-radius: 11px;
+  border: none;
+  cursor: pointer;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.12s;
+  white-space: nowrap;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn.btn-primary--blue {
+  background: #3b5bdb;
+  color: #fff;
+}
+.btn.btn-primary--blue:hover:not(:disabled) {
+  background: #1a2ecc;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(59, 91, 219, 0.3);
+}
+
+.btn.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+}
+.btn.btn-secondary:hover:not(:disabled) {
+  background: #e5e7eb;
+}
+
+/* Solid danger button (two-step cancel) */
+.btn.btn-danger-solid {
+  background: #ef4444;
+  color: #fff;
+}
+.btn.btn-danger-solid:hover:not(:disabled) {
+  background: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.3);
+}
+
+/* ── Modal footer spacing ── */
+#bookingActionModal .modal-footer {
+  padding: 16px 24px 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  border-top: 1px solid #f3f4f6;
+  flex-shrink: 0;
+}
+
+/* ── Edit form inputs ── */
+#bookingActionModal .modal-input {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: #111827;
+  background: #f9fafb;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 11px;
+  padding: 11px 14px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+#bookingActionModal .modal-input:focus {
+  border-color: #3b5bdb;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(59, 91, 219, 0.12);
+}
+
+/* ── Field validation error ── */
+.bm-field-error {
+  display: block;
+  font-size: 12px;
+  color: #ef4444;
+  margin-top: 4px;
+}
+
+/* ── Cancel confirmation panel ── */
+.bm-confirm-panel {
+  text-align: center;
+  padding: 8px 0 4px;
+}
+.bm-confirm-icon {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #fef3c7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 18px;
+}
+.bm-confirm-icon svg {
+  width: 28px;
+  height: 28px;
+  stroke: #d97706;
+}
+.bm-confirm-heading {
+  font-family: 'Outfit', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+}
+.bm-confirm-body {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.65;
+  max-width: 340px;
+  margin: 0 auto;
+}
+.bm-confirm-body strong {
+  color: #374151;
+}
+
+/* ── Toast notifications ── */
+.bm-toast {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 16px 13px 14px;
+  border-radius: 13px;
+  box-shadow: 0 8px 32px rgba(0, 0, 20, 0.18);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  max-width: 360px;
+  min-width: 240px;
+
+  /* Slide-up enter */
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+.bm-toast--visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+.bm-toast--success {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #15803d;
+}
+.bm-toast--error {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #b91c1c;
+}
+.bm-toast--info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+}
+
+.bm-toast__icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.bm-toast__icon svg {
+  width: 18px;
+  height: 18px;
+}
+.bm-toast--success .bm-toast__icon svg { stroke: #16a34a; }
+.bm-toast--error   .bm-toast__icon svg { stroke: #dc2626; }
+.bm-toast--info    .bm-toast__icon svg { stroke: #2563eb; }
+
+.bm-toast__msg {
+  flex: 1;
+  line-height: 1.4;
+}
+
+.bm-toast__close {
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  opacity: 0.6;
+  transition: opacity 0.15s;
+}
+.bm-toast__close:hover { opacity: 1; }
+.bm-toast__close svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .bm-toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    max-width: none;
+  }
+}

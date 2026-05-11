@@ -1470,6 +1470,176 @@ footer {
     text-align: center;
     padding: 15px;
 }
+
+/* Service Modal Styles */
+        .service-modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .service-modal-backdrop.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .service-modal {
+            background: #fff;
+            border-radius: 16px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            transform: translateY(20px) scale(0.95);
+            transition: transform 0.3s ease;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .service-modal-backdrop.active .service-modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .service-modal-header {
+            padding: 24px 24px 16px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .service-modal-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 0 8px;
+            color: #1f2937;
+        }
+
+        .service-modal-header p {
+            color: #6b7280;
+            margin: 0;
+            font-size: 0.95rem;
+        }
+
+        .service-modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 32px;
+            height: 32px;
+            border: none;
+            background: #f3f4f6;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .service-modal-close:hover {
+            background: #e5e7eb;
+            color: #1f2937;
+        }
+
+        .service-modal-body {
+            padding: 24px;
+        }
+
+        .service-modal-body h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #374151;
+            margin: 0 0 12px;
+        }
+
+        .service-modal-body h4:not(:first-child) {
+            margin-top: 20px;
+        }
+
+        .service-modal-pricing {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .service-modal-pricing .price-main {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #0369a1;
+        }
+
+        .service-modal-pricing .price-alt {
+            font-size: 0.9rem;
+            color: #0284c7;
+            margin-top: 4px;
+        }
+
+        .service-modal-body ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .service-modal-body ul li {
+            padding: 10px 0;
+            padding-left: 28px;
+            position: relative;
+            border-bottom: 1px solid #f3f4f6;
+            color: #4b5563;
+        }
+
+        .service-modal-body ul li:last-child {
+            border-bottom: none;
+        }
+
+        .service-modal-body ul li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        /* Service card cursor */
+        .service-card {
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Color variations for modal headers */
+        .service-modal[data-service="cleaning"] .service-modal-header {
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+        }
+
+        .service-modal[data-service="garden"] .service-modal-header {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        .service-modal[data-service="pet"] .service-modal-header {
+            background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
+        }
+
+        .service-modal[data-service="elderly"] .service-modal-header {
+            background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
+        }
+        
 /* Responsive */
 @media (max-width: 768px) {
     nav ul {

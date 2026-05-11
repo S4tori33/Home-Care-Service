@@ -534,6 +534,7 @@ let selectedOtherId = null;
     } else {
       dashboard.initializeDashboard();
       renderConversationPanel();
+      initializeBookingActionButtons();
       const params = new URLSearchParams(window.location.search);
       const withId = params.get('with');
       if (withId) {
@@ -614,6 +615,157 @@ let selectedOtherId = null;
           selectPartner(el.getAttribute('data-other'));
         });
       });
+    }
+
+    function initializeBookingActionButtons() {
+      document.querySelectorAll('.booking-actions button[data-action]').forEach(button => {
+        button.type = 'button';
+      });
+    }
+
+    document.addEventListener('click', event => {
+      const button = event.target.closest('.booking-actions button[data-action]');
+      if (!button) return;
+      event.preventDefault();
+      event.stopPropagation();
+      const action = button.dataset.action;
+      const bookingId = button.closest('[data-booking-id]')?.dataset.bookingId;
+      if (action && bookingId) {
+        openBookingModal(action, bookingId);
+      }
+    });
+
+    let bookingActionContext = {
+      item: null,
+      action: null
+    };
+
+    function openBookingModal(action, bookingId) {
+      const modal = document.getElementById('bookingActionModal');
+      const deleteView = document.getElementById('bookingModalDeleteView');
+      const editView = document.getElementById('bookingModalEditView');
+      const titleEl = document.getElementById('bookingModalTitle');
+      const subtitleEl = document.getElementById('bookingModalSubtitle');
+      const confirmButton = document.getElementById('bookingModalConfirmButton');
+      const deleteTitle = document.getElementById('bookingModalDeleteTitle');
+      const serviceInput = document.getElementById('bookingServiceInput');
+      const dateInput = document.getElementById('bookingDateInput');
+      const timeInput = document.getElementById('bookingTimeInput');
+      const locationInput = document.getElementById('bookingLocationInput');
+
+      const item = document.querySelector(`[data-booking-id="${bookingId}"]`);
+      if (!modal || !item) {
+        if (!modal) console.error('Booking modal element not found');
+        if (!item) console.error(`Booking item not found for id: ${bookingId}`);
+        return;
+      }
+
+      bookingActionContext.item = item;
+      bookingActionContext.action = action;
+
+      const titleText = item.querySelector('.booking-title')?.textContent.trim() || 'Booking';
+      const meta = Array.from(item.querySelectorAll('.booking-meta')).map(el => el.textContent.trim());
+      const dateTimeText = meta[0] || '';
+      const locationText = meta[1] || '';
+      const dateMatch = dateTimeText.split(' · ')[0] || '';
+      const timeMatch = dateTimeText.split(' · ')[1] || '';
+
+      if (action === 'delete') {
+        titleEl.textContent = 'Cancel Booking';
+        subtitleEl.textContent = 'Please confirm to remove this booking from your schedule.';
+        deleteView.style.display = 'block';
+        editView.style.display = 'none';
+        deleteTitle.textContent = titleText;
+        confirmButton.textContent = 'Delete Booking';
+        confirmButton.classList.add('danger');
+      } else {
+        titleEl.textContent = 'Edit Booking';
+        subtitleEl.textContent = 'Update the booking details and save your changes.';
+        deleteView.style.display = 'none';
+        editView.style.display = 'block';
+        confirmButton.textContent = 'Save Changes';
+        confirmButton.classList.remove('danger');
+        serviceInput.value = titleText;
+        dateInput.value = toInputDateValue(dateMatch);
+        timeInput.value = timeMatch;
+        locationInput.value = locationText;
+      }
+
+      modal.classList.add('modal-open');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeBookingModal() {
+      const modal = document.getElementById('bookingActionModal');
+      if (!modal) return;
+      modal.classList.remove('modal-open');
+      modal.setAttribute('aria-hidden', 'true');
+      bookingActionContext.item = null;
+      bookingActionContext.action = null;
+    }
+
+    function confirmBookingAction() {
+      const context = bookingActionContext;
+      if (!context.item || !context.action) return;
+      if (context.action === 'delete') {
+        context.item.remove();
+        closeBookingModal();
+        alert('The booking has been cancelled.');
+        return;
+      }
+
+      const serviceInput = document.getElementById('bookingServiceInput');
+      const dateInput = document.getElementById('bookingDateInput');
+      const timeInput = document.getElementById('bookingTimeInput');
+      const locationInput = document.getElementById('bookingLocationInput');
+
+      const titleNode = context.item.querySelector('.booking-title');
+      const metaNodes = context.item.querySelectorAll('.booking-meta');
+      if (titleNode) titleNode.textContent = serviceInput.value || titleNode.textContent;
+      if (metaNodes[0]) metaNodes[0].textContent = `${formatBookingDateForDisplay(dateInput.value)} · ${timeInput.value}`;
+      if (metaNodes[1]) metaNodes[1].textContent = locationInput.value || metaNodes[1].textContent;
+
+      closeBookingModal();
+      alert('Your booking changes have been saved.');
+    }
+
+    function toInputDateValue(displayDate) {
+      if (!displayDate) return '';
+      const parsed = new Date(displayDate);
+      if (Number.isNaN(parsed.getTime())) return '';
+      return parsed.toISOString().slice(0, 10);
+    }
+
+    function formatBookingDateForDisplay(dateValue) {
+      if (!dateValue) return 'Date TBD';
+      const parsed = new Date(dateValue);
+      if (Number.isNaN(parsed.getTime())) return dateValue;
+      return parsed.toLocaleDateString(undefined, {
+        weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
+      });
+    }
+
+    window.openBookingModal = openBookingModal;
+    window.closeBookingModal = closeBookingModal;
+    window.confirmBookingAction = confirmBookingAction;
+    window.editBooking = editBooking;
+    window.askDeleteBooking = askDeleteBooking;
+    window.confirmDeleteBooking = confirmDeleteBooking;
+
+    function editBooking(bookingId, button) {
+      if (button) button.blur();
+      openBookingModal('edit', bookingId);
+    }
+
+    function askDeleteBooking(bookingId, button) {
+      if (button) button.blur();
+      openBookingModal('delete', bookingId);
+    }
+
+    function confirmDeleteBooking() {
+      if (bookingActionContext.action === 'delete') {
+        confirmBookingAction();
+      }
     }
 
     function selectPartner(otherUserId) {
